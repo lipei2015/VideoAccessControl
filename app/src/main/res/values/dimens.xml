@@ -1,0 +1,25 @@
+<resources>
+    <!--  Toolbar 高度 -->
+    <dimen name="toolbarHeight">48dp</dimen>
+
+    <!--  Tab 高度 -->
+    <dimen name="tabHeight">38dp</dimen>
+
+    <!-- 所有横向条的高度（自定义横向条使用）  -->
+    <dimen name="barHeight">50dp</dimen>
+
+    <!-- 所有页面常规的padding值 -->
+    <dimen name="padding">12dp</dimen>
+    <dimen name="padding10">10dp</dimen>
+
+    <!-- radius大小 -->
+    <dimen name="radius">3dp</dimen>
+    <dimen name="radius9">9dp</dimen>
+
+    <!-- 水平线高度 -->
+    <dimen name="lineHeight_10dp">10dp</dimen>
+    <dimen name="lineHeight">15dp</dimen>
+    <dimen name="lineHeight_15dp">15dp</dimen>
+    <dimen name="lineHeight_20dp">20dp</dimen>
+
+</resources>

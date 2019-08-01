@@ -1,0 +1,46 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/toolbarHeight" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        android:layout_gravity="bottom"
+        android:background="@color/mainBg"
+        android:checkedButton="@+id/one"
+        android:orientation="horizontal">
+
+        <RadioButton
+            style="@style/indexOptionBarBtn"
+            android:drawableTop="@drawable/index_tab_home_btn_img_selector"
+            android:text="Tab1" />
+
+        <RadioButton
+            style="@style/indexOptionBarBtn"
+            android:drawableTop="@drawable/index_tab_buy_btn_img_selector"
+            android:text="Tab2" />
+
+        <RadioButton
+            style="@style/indexOptionBarBtn"
+            android:drawableTop="@drawable/index_tab_notice_btn_img_selector"
+            android:text="Tab3" />
+
+        <RadioButton
+            style="@style/indexOptionBarBtn"
+            android:drawableTop="@drawable/index_tab_my_btn_img_selector"
+            android:text="Tab4" />
+    </RadioGroup>
+
+    <View
+        style="@style/line_h"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/toolbarHeight" />
+
+</merge>

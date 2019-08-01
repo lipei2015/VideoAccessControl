@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@null"
+        android:src="@mipmap/progress_loading_image_01" />
+
+    <TextView
+        android:id="@+id/tryAgin"
+        style="@style/textStyle14"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:padding="18dp"
+        android:text="@string/reload"
+        android:textColor="#92BFD7"
+        android:visibility="gone" />
+
+
+</FrameLayout>

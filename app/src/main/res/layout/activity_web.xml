@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/include_toolbar" />
+
+    <com.ybkj.videoaccess.weight.refresh_loadmore.RefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbarHeight">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.ybkj.videoaccess.weight.refresh_loadmore.RefreshLayout>
+
+    <com.ybkj.videoaccess.weight.BaseProgress
+        android:id="@+id/webViewProgress"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="@dimen/toolbarHeight"
+        app:backgroundColor="@color/white"
+        app:progressColor="@color/mainColor" />
+
+</merge>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:background="@color/white"
+    android:paddingLeft="15dp">
+
+    <ImageView
+        android:id="@+id/leftImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingRight="15dp"
+        android:src="@null" />
+
+    <TextView
+        android:id="@+id/leftText"
+        style="@style/textStyle14"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/leftImg"
+        android:gravity="left|center_vertical" />
+
+    <EditText
+        android:id="@+id/editInput"
+        style="@style/editStyle"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@id/leftText"
+        android:singleLine="true"
+        android:textColorHint="@color/textColor40"
+        android:textSize="14sp" />
+
+    <ImageButton
+        android:id="@+id/rightImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:background="@null"
+        android:padding="10dp"
+        android:paddingRight="15dp"/>
+
+    <View
+        android:id="@+id/lineView"
+        style="@style/line_h"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/leftImg" />
+
+</RelativeLayout>

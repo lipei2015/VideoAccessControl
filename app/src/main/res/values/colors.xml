@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--.....................全局颜色.....................-->
+    <color name="mainColor">#00B478</color>         <!--主色调-->
+    <color name="mainColorTrans">#7f00B478</color>  <!--半透明主色调-->
+    <color name="mainBg">#FAFAFA</color>            <!--页面背景色-->
+    <color name="barBg">#F9F9F9</color>            <!--bar背景色-->
+
+    <!--......................透明色........................-->
+    <color name="transColor">#00000000</color>
+    <color name="transColor50">#17000000</color>
+    <color name="transColor60">#33000000</color>
+    <color name="transColor80">#55000000</color>
+    <color name="transColor90">#cc000000</color>
+
+
+    <!--......................线条的颜色.....................-->
+    <color name="grayLines">#d2d2d2</color>
+
+    <!--......................文字颜色........................-->
+    <!-- 主体文字（%87黑） -->
+    <color name="textColor87">#212121</color>
+    <!-- 减淡文字（%54黑） -->
+    <color name="textColor54">#757575</color>
+    <color name="textColor50">#929292</color>
+    <!-- 禁用文字（%40黑） -->
+    <color name="textColor40">#aaaaaa</color>
+    <!-- 禁用文字（%26黑） -->
+    <color name="textColor26">#bdbdbd</color>
+
+
+
+    <!--....................其它一些通用颜色.....................-->
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <color name="black29">#49000000</color>
+    <color name="gray17">#eee</color>
+    <color name="gray27">#e2e2e2</color>
+    <color name="gray47">#c2c2c2</color>
+    <color name="gray67">#929292</color>
+    <color name="gray87">#2e2e2e</color>
+    <color name="blue">#00aaee</color>
+    <color name="blueTrans">#7f00aaee</color>
+    <color name="red">#f86868</color>
+    <color name="Red">#FF0000</color>
+    <color name="red_light">#ffff4444</color>
+    <color name="orange">#FD6600</color>
+    <color name="yellow">#F39800</color>
+    <color name="green">#5fc44b</color>
+    <color name="green_dark100">#345B40</color>
+    <color name="green_dark20">#53A05A</color>
+
+</resources>

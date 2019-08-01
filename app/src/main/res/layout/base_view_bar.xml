@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/barHeight"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/leftImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/padding"
+        android:src="@null" />
+
+    <TextView
+        android:id="@+id/leftText"
+        style="@style/textStyle14"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/leftImg"
+        android:layout_marginLeft="12dp"
+        android:gravity="center" />
+
+    <ImageView
+        android:id="@+id/rightImg"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:paddingRight="15dp"
+        android:src="@mipmap/back_right" />
+
+    <TextView
+        android:id="@+id/rightText"
+        style="@style/textStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|right"
+        android:paddingRight="15dp"
+        android:textColor="@color/textColor54"
+        android:textSize="14sp"
+        android:layout_above="@+id/lineView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <View
+        android:id="@+id/lineView"
+        style="@style/line_h"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/leftImg" />
+
+</RelativeLayout>

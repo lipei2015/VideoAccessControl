@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">视频门禁主机APP</string>
+    <string name="promet_no_permission_promet">没有该权限可能导致部分功能不能使用</string>
+    <string name="exit_promet">再按一次狠心退出</string>
+    <string name="server_exception">服务器异常，请稍后再试</string>
+
+    <!-- 下拉刷新 -->
+    <string name="load_more">点击加载更多</string>
+    <string name="loading">正在加载中...</string>
+    <string name="load_fail">加载失败，点击重新加载</string>
+    <string name="load_done">已经加载完毕</string>
+
+    <!-- 登录注册 -->
+    <string name="goods_need_login">需要登录</string>
+
+    <!--...................版本升级.....................-->
+    <string name="upgrade">版本升级</string>
+    <string name="upgradeContent">发现有新的版本，现在升级</string>
+    <string name="nowDownLoad">现在下载</string>
+    <string name="update_permission_promet">没有该权限可能导致部分功能不能使用</string>
+    <string name="downloadProgress">正在下载&#8230;</string>
+    <string name="downloading">正在下载</string>
+    <string name="downloadFailed">下载失败</string>
+    <string name="downloadComplete">下载完成,点击安装</string>
+    <string name="checking_new_version">正在检查新版本</string>
+    <string name="checking_is_newest">已是最新版本</string>
+    <string name="promet_no_permission_sd">没有权限，无法操作存储卡</string>
+    <string name="empty">清空</string>
+    <string name="noData">暂无数据</string>
+    <string name="reload">重新加载</string>
+    <string name="delete">删除</string>
+
+    <!--...................提示框.......................-->
+    <string name="prompt">温馨提示</string>
+    <string name="sureDelete">确定要删除？</string>
+    <string name="cancel">取消</string>
+    <string name="commit">确定</string>
+    <string name="commits">提交</string>
+    <string name="finish">完成</string>
+
+    <!--...................环信客服.....................-->
+    <string name="registing">正在注册账号</string>
+    <string name="connection">正在连接，请稍等</string>
+    <string name="check_version">正在检测版本，请稍等</string>
+    <string name="net_unavaliable">网络不可用</string>
+    <string name="user_exist">用户已存在</string>
+    <string name="regist_fila">注册失败，请稍后再试</string>
+    <string name="login_logining">正在登录&#8230;</string>
+    <string name="online_service">在线客服</string>
+    <string name="takePhotos">拍照</string>
+    <string name="forPhotoSelect">从相册中选择</string>
+    <string name="pictureSelectFailure">图片选择失败</string>
+    <string name="loginFailed">登录失败</string>
+
+
+
+</resources>

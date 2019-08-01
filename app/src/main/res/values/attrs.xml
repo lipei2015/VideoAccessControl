@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- WebView进度条自定义属性 -->
+    <declare-styleable name="BaseProgress">
+        <!-- 进度条背景颜色 -->
+        <attr name="backgroundColor" format="color" />
+        <!-- 进度条结束进度颜色 -->
+        <attr name="progressColor" format="color" />
+        <!-- 进度条开始进度颜色 -->
+        <attr name="progressStartColor" format="color" />
+    </declare-styleable>
+
+    <!-- 轮播图属性 -->
+    <declare-styleable name="FlyBanner">
+        <attr name="points_visibility" format="boolean" />
+        <attr name="points_position" format="enum">
+            <enum name="CENTER" value="0" />
+            <enum name="LEFT" value="1" />
+            <enum name="RIGHT" value="2" />
+        </attr>
+        <attr name="points_container_background" format="reference|color" />
+    </declare-styleable>
+
+    <!--  横向条自定义属性  -->
+    <declare-styleable name="BarView">
+        <!-- 左侧文字 -->
+        <attr name="leftText" format="string" />
+        <!-- 右侧文字（默认TextColor87） -->
+        <attr name="rightText" format="string" />
+        <!-- 左侧图片 -->
+        <attr name="leftImg" format="reference" />
+        <!-- 右侧图片 -->
+        <attr name="rightImg" format="reference" />
+        <!-- 右侧文字颜色 -->
+        <attr name="rightTextColor" format="color" />
+        <!-- 是否显示下划线（默认显示） -->
+        <attr name="isLine" format="boolean" />
+        <!-- 是否显示右侧图标（默认显示） -->
+        <attr name="isRightImg" format="boolean" />
+        <!-- 是否显示左侧图标（默认显示） -->
+        <attr name="isLeftImg" format="boolean" />
+        <!-- 左侧文字大小 -->
+        <attr name="textSizes" format="integer" />
+
+    </declare-styleable>
+
+    <!--  横向条(输入框)自定义属性  -->
+    <declare-styleable name="BarViewForEditText">
+        <!-- 左侧文字 -->
+        <attr name="leftTexts" format="string" />
+        <!-- 左侧文字最小宽度 -->
+        <attr name="leftTextMinWidth" format="dimension" />
+        <!-- 左侧图片 -->
+        <attr name="leftImgs" format="reference" />
+        <!-- 右侧图片 -->
+        <attr name="rightImgs" format="reference" />
+        <!-- EditText Hint-->
+        <attr name="editHints" format="string" />
+        <!-- 是否显示下划线（默认显示） -->
+        <attr name="isLines" format="boolean" />
+        <!--  输入框输入文本类型  -->
+        <attr name="inputType" format="string" />
+        <!--  输入框输入文本最多输入字符个数  -->
+        <attr name="inputMaxLength" format="integer" />
+        <attr name="inputTextSize" format="integer" />
+    </declare-styleable>
+
+    <!-- 自定义表格属性 -->
+    <declare-styleable name="BaseGridLayout">
+        <attr name="title_background" format="reference|color" />
+        <attr name="title_color" format="reference|color" />
+    </declare-styleable>
+
+</resources>

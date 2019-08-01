@@ -1,0 +1,155 @@
+<resources>
+
+    <!-- .......................样式定义....................... -->
+    <style name="mainTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/mainColor</item>
+        <item name="colorPrimaryDark">@color/mainColorTrans</item>
+        <item name="colorAccent">@color/mainColor</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:listDivider">@drawable/divider_bg</item>
+        <item name="android:windowBackground">@color/mainBg</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="whiteTheme" parent="mainTheme">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <!-- ..........................Dialog样式.......................... -->
+    <style name="Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="TransDialog" parent="Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- 弹出框动画样式 -->
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
+    <style name="AnimTop" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_top_in</item>
+        <item name="android:windowExitAnimation">@anim/push_top_out</item>
+    </style>
+
+    <!-- ........................线条定义........................ -->
+    <style name="line_h">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/gray47</item>
+    </style>
+
+    <style name="line_v">
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/gray47</item>
+    </style>
+
+    <!-- ....文字定义【全局：11-20size, default：14size】.... -->
+    <style name="textStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/textColor87</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="textStyle11" parent="@style/textStyle">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="textStyle12" parent="@style/textStyle">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="textStyle13" parent="@style/textStyle">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="textStyle14" parent="@style/textStyle">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="textStyle15" parent="@style/textStyle">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="textStyle16" parent="@style/textStyle">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="textStyle17" parent="@style/textStyle">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="textStyle18" parent="@style/textStyle">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="textStyle19" parent="@style/textStyle">
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <style name="textStyle20" parent="@style/textStyle">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="singleLine" parent="@style/textStyle">
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <!-- ....................................................... -->
+
+    <!-- 自定义TabLayout TextView的大小颜色 -->
+    <style name="MyTabTextStyle" parent="Base.Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">@color/textColor54</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="indexOptionBarBtn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/index_tab_text_selector</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!--长按钮(eg:登录注册按钮) -->
+    <style name="btnStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:background">@drawable/button_common_selector</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!--输入框-->
+    <style name="editStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:textColor">@color/textColor87</item>
+        <item name="android:textColorHint">@color/textColor40</item>
+    </style>
+
+</resources>

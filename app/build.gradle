@@ -1,0 +1,109 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.ybkj.videoaccess"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            // 设置支持的 SO 库构架
+            abiFilters 'armeabi', 'x86'  // 'armeabi-v7a', 'arm64-v8a', 'x86_64', 'mips', 'mips64'
+        }
+
+        // Enabling MultiDex support
+        multiDexEnabled true
+
+        //极光推送
+        manifestPlaceholders = [
+                JPUSH_PKGNAME      : applicationId,
+                JPUSH_APPKEY       : "01f41f72f9ee752e927d6f5e", //JPush上注册的包名对应的AppKey.
+                JPUSH_CHANNEL      : "developer-default", //暂时填写默认值即可.
+                UMENG_CHANNEL_VALUE: "Channel_ID"    //暂时填写默认值即可.
+        ]
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'ybkj'
+            keyPassword 'ybkj_android'
+            storeFile file('YbkjStore.jks')
+            storePassword 'ybkj_android'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false //打包混淆修改为true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    //implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:design:27.1.0'
+    //图片加载
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    //列表Adapter组件
+    implementation 'com.classic.adapter:commonadapter:1.1'
+    //下拉刷新+加载更多组件
+    implementation 'com.chanven.lib:cptr:1.1.0'
+    //ButterKnife依赖 + Lambda表达式
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //事件通知
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    //友盟分析
+    implementation 'com.umeng.analytics:analytics:latest.integration'
+    //网络框架Retrofit + rxJava + OkHttp
+    implementation 'io.reactivex:rxjava:1.1.8'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'com.google.code.gson:gson:2.6.2'
+    //Retrofit Session状态添加保存拦截器
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    //极光推送
+    //    implementation 'cn.jiguang:jpush:2.1.9'
+    //内存检测工具和BugTags异常捕捉工具，发布时一定要去除
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    //图片加载框架glide网络层依赖
+    implementation 'com.squareup.okhttp:okhttp:2.7.2'
+    //解决64k问题
+    implementation 'com.android.support:multidex:1.0.2'
+    //滑动返回
+    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
+    //悬浮置顶RrcyclerView,使用：https://github.com/Gavin-ZYX/StickyDecoration
+    implementation 'com.gavin.com.library:stickyDecoration:1.2.1'
+    //图片选择器【详细使用：https://segmentfault.com/a/1190000004263541】
+    implementation project(':galleryfinal')
+
+    implementation project(':zxing')
+}
