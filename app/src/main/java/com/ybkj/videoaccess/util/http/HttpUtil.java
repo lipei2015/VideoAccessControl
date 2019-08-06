@@ -139,6 +139,23 @@ public class HttpUtil {
 
     }
 
+    public static class HttpResultFuncCommon<T> implements Func1<CommonResult<T>, T> {
+
+        @Override
+        public T call(CommonResult<T> result) {
+            if (!result.getSuccess()) {
+                if (null != result.getMemo()) {
+                    throw new HttpErrorException(0, result.getMemo());
+                } else {
+                    throw new HttpErrorException(0, MyApp.getAppContext().getString(R.string.server_exception));
+                }
+            } else {
+                return result.getData();
+            }
+        }
+
+    }
+
     /**
      * 取消请求
      */

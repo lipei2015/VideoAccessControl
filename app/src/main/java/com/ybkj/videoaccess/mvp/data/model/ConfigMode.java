@@ -2,6 +2,9 @@ package com.ybkj.videoaccess.mvp.data.model;
 
 import com.ybkj.videoaccess.mvp.data.bean.VersionInfo;
 import com.ybkj.videoaccess.mvp.data.inf.IConfigMode;
+import com.ybkj.videoaccess.mvp.data.service.SystemAPIService;
+import com.ybkj.videoaccess.util.http.HttpUtil;
+import com.ybkj.videoaccess.util.http.RxUtil;
 
 import rx.Observable;
 
@@ -15,10 +18,10 @@ public class ConfigMode implements IConfigMode {
 
     @Override
     public Observable<VersionInfo> checkVersion(int appType, String name) {
-        return null;
-        /*return HttpUtil.getInstance().getRetrofit().create(SystemAPIService.class)
+//        return null;
+        return HttpUtil.getInstance().getRetrofit().create(SystemAPIService.class)
                 .checkVersion(appType, name)
                 .map(new HttpUtil.HttpResultFunc<>())
-                .compose(RxUtil.rxSchedulerHelper());*/
+                .compose(RxUtil.rxSchedulerHelper());
     }
 }

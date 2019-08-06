@@ -6,7 +6,7 @@ package com.ybkj.videoaccess.app;
  * Created by HH on 2018/1/19
  */
 public class ConstantApi {
-    public static final String IP = "http://manage.cp138666.info:8081";  //测试IP
+    public static final String IP = "http://132.232.146.67:8989";  //测试IP
     //public static final String IP = "http://new.cp138666.info:8080/ ";  //正式IP
     //public static final String IP = "http://192.168.2.165:8080";  //陈盼IP(用于调试)
     //public static final String IP = "http://192.168.2.53:8080/";  //袁立波IP(用于调试)
@@ -51,5 +51,10 @@ public class ConstantApi {
     public static final String GET_CONFIG = "/api/config/get"; //基础信息接口
     public static final String CHECK_VERSION = "/api/user/getVersionByname"; //检测版本更新
     /******END****/
+
+    /**
+     * 远程开门
+     */
+    public static final String Remot_Open_Debug= "remoteOpenDebug";
 
 }

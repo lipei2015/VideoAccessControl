@@ -6,7 +6,14 @@ import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.app.MyApp;
 import com.ybkj.videoaccess.mvp.control.SystemSplashControl;
+import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
+import com.ybkj.videoaccess.mvp.data.model.DeviceMode;
+import com.ybkj.videoaccess.util.LogUtil;
 import com.ybkj.videoaccess.util.PreferencesUtils;
+import com.ybkj.videoaccess.util.http.CommonResult;
+import com.ybkj.videoaccess.util.http.HttpErrorException;
+import com.ybkj.videoaccess.util.http.HttpSubscriber;
+import com.ybkj.videoaccess.util.http.SubscriberResultListener;
 
 /**
  * 启动页Presenter
@@ -59,5 +66,27 @@ public class SystemSplashPresenter extends SystemSplashControl.ISystemSplashPres
 
             }
         })));*/
+    }
+
+    @Override
+    public void remoteOpenDebug(RequestRemoteOpen body) {
+        addSubscription(new DeviceMode().remoteOpenDebug(body).subscribe(new HttpSubscriber<>(new SubscriberResultListener() {
+            @Override
+            public void onSuccess(Object o) {
+                // 数据返回成功检测
+                String result = (String) o;
+//                LogUtil.i(result.getData().getMessage()+"");
+                /*VersionInfo versionInfo = (VersionInfo) o;
+                if (versionInfo != null) {
+                    PreferencesUtils.getInstance(ConstantSys.PREFERENCE_CONFIG).putString(MyApp.getAppContext(),
+                            ConstantSys.PREFERENCE_VERSION_INFO, new Gson().toJson(versionInfo));
+                }*/
+            }
+
+            @Override
+            public void onError(HttpErrorException errorException) {
+                LogUtil.i(errorException.getMessage()+"");
+            }
+        })));
     }
 }

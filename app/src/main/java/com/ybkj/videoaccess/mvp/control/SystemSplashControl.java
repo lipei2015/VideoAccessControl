@@ -1,6 +1,7 @@
 package com.ybkj.videoaccess.mvp.control;
 import com.ybkj.videoaccess.mvp.base.mvpBase.MvpBasePresenter;
 import com.ybkj.videoaccess.mvp.base.mvpBase.MvpBaseView;
+import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
 import com.ybkj.videoaccess.mvp.data.inf.IConfigMode;
 
 /**
@@ -36,5 +37,10 @@ public interface SystemSplashControl {
          * 获取版本信息
          */
         public abstract void getVersionInfo(int appType, String name);
+
+        /**
+         * 远程开门
+         */
+        public abstract void remoteOpenDebug(RequestRemoteOpen body);
     }
 }

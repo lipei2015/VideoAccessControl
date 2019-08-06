@@ -2,6 +2,7 @@ package com.ybkj.videoaccess.mvp.view.activity;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.RadioGroup;
 
 import com.ybkj.videoaccess.R;
@@ -98,7 +99,7 @@ public class MainActivity extends BaseFragmentActivity {
      */
     private boolean mBackKeyPressed;
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         if (!mBackKeyPressed) {
             ToastUtil.showMsg(getString(R.string.exit_promet));
@@ -112,7 +113,7 @@ public class MainActivity extends BaseFragmentActivity {
         } else {
             onFinishActivity();
         }
-    }
+    }*/
 
     /**
      * 跳转显示对应Fragment
@@ -134,4 +135,24 @@ public class MainActivity extends BaseFragmentActivity {
         super.onDestroy();
     }
 
+    /**
+     * 监听号码输入
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        ToastUtil.showMsg(keyCode+"--");
+        if(keyCode != KeyEvent.KEYCODE_BACK) {
+            switch (keyCode){
+
+                /*case KEYCODE_0:
+
+                    break;*/
+            }
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

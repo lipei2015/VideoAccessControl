@@ -8,6 +8,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -18,10 +21,14 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.google.gson.Gson;
+import com.wrtsz.api.IWrtdevManager;
+import com.wrtsz.api.WrtdevManager;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.SystemSplashControl;
+import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
 import com.ybkj.videoaccess.mvp.data.model.ConfigMode;
 import com.ybkj.videoaccess.mvp.presenter.SystemSplashPresenter;
 import com.ybkj.videoaccess.util.AnimationUtil;
@@ -80,6 +87,46 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
         super.onCreate(savedInstanceState);
         ViewUtil.isFull(this, true);
         setSwipeBackEnable(false);
+
+        RequestRemoteOpen open = new RequestRemoteOpen("00000001004","123456","1","1");
+        mPresenter.remoteOpenDebug(open);
+
+        WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
+            @Override
+            public IBinder asBinder() {
+                return null;
+            }
+
+            /**
+             * 返回微波检测状态：1为有人，0为无人，-1为错误
+             * @return
+             * @throws RemoteException
+             */
+            @Override
+            public int getMicroWaveState() throws RemoteException {
+                return 0;
+            }
+
+            @Override
+            public byte[] getIcCardNo() throws RemoteException {
+                return new byte[0];
+            }
+
+            @Override
+            public int openLed(int i) throws RemoteException {
+                return 0;
+            }
+
+            @Override
+            public int openDoor() throws RemoteException {
+                return 0;
+            }
+        }, new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+            }
+        });
     }
 
     @Override
