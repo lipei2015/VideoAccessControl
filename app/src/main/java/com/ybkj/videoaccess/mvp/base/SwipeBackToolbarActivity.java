@@ -31,13 +31,13 @@ public abstract class SwipeBackToolbarActivity extends AppCompatActivity impleme
         mHelper.onPostCreate();
     }
 
-    @Override
+    /*@Override
     public View findViewById(int id) {
-        View v = super.findViewById(id);
+        View v = (View)super.findViewById(id);
         if (v == null && mHelper != null)
             return mHelper.findViewById(id);
         return v;
-    }
+    }*/
 
     @Override
     public SwipeBackLayout getSwipeBackLayout() {

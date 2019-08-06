@@ -75,7 +75,7 @@ public class BarViewForEditText extends RelativeLayout {
         View view = View.inflate(context, R.layout.base_view_edit_bar, null);
 
         //输入框样式初始化
-        editText =  view.findViewById(R.id.editInput);
+        editText = (EditText) view.findViewById(R.id.editInput);
         editText.setHint(hintText);
         editText.setTextSize(textSize);
         //设置最大字数

@@ -22,8 +22,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
-//import com.wrtsz.api.IWrtdevManager;
-//import com.wrtsz.api.WrtdevManager;
+import com.wrtsz.api.IWrtdevManager;
+import com.wrtsz.api.WrtdevManager;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
@@ -54,10 +54,10 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
     ImageView img;
     @BindView(R.id.indicatorGroup)
     RadioGroup indicatorGroup;
+    @BindView(R.id.viewPager) ViewPager viewPager;
 
     private static final int ANIMATION_TIME = 1000;  //渐变动画时间
     private static final int[] IMAGE_RESOURCE = new int[]{R.mipmap.guide_page01, R.mipmap.guide_page02, R.mipmap.guide_page03};  //滑动图片资源
-    private ViewPager viewPager;
     private SystemSplashViewPagerAdapter adapter;
     private boolean misScrolled;
 
@@ -91,17 +91,17 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
         RequestRemoteOpen open = new RequestRemoteOpen("00000001004","123456","1","1");
         mPresenter.remoteOpenDebug(open);
 
-        /*WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
+        WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
             @Override
             public IBinder asBinder() {
                 return null;
             }
 
-            *//**
+            /**
              * 返回微波检测状态：1为有人，0为无人，-1为错误
              * @return
-             * @throws RemoteException
-             *//*
+             * @throws RemoteException*/
+
             @Override
             public int getMicroWaveState() throws RemoteException {
                 return 0;
@@ -126,7 +126,7 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
             }
-        });*/
+        });
     }
 
     @Override
@@ -142,11 +142,12 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
     @Override
     public void onCheckShowFinish(boolean showWelcome) {
         //进入欢迎页还是启动页
-        if (showWelcome) {
+        /*if (showWelcome) {
             showViewPager();
         } else {
             gotoMain();
-        }
+        }*/
+        gotoMain();
     }
 
     @Override
@@ -157,7 +158,6 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
 
     private void showViewPager() {
         img.setVisibility(View.GONE);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setVisibility(View.VISIBLE);
 
         indicatorGroup.setVisibility(View.VISIBLE);

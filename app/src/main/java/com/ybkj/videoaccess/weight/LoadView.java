@@ -55,9 +55,9 @@ public class LoadView extends FrameLayout implements OnClickListener {
      */
     private void init() {
         noDataInfo = mContext.getString(R.string.noData);
-        rootView = View.inflate(mContext, R.layout.include_loading, null);
-        img = rootView.findViewById(R.id.progress);
-        tryAgin = rootView.findViewById(R.id.tryAgin);
+        rootView = (TextView)View.inflate(mContext, R.layout.include_loading, null);
+        img = (ImageView)rootView.findViewById(R.id.progress);
+        tryAgin = (TextView)rootView.findViewById(R.id.tryAgin);
         setVisibility(View.GONE);
         addView(rootView);
     }

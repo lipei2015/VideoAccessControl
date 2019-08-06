@@ -64,11 +64,11 @@ public class BarView extends RelativeLayout {
     public void initView(Context context) {
         this.context = context;
         View view = View.inflate(context, R.layout.base_view_bar, null);
-        leftTextView =  view.findViewById(R.id.leftText);
-        rightTextView =  view.findViewById(R.id.rightText);
+        leftTextView =  (TextView) view.findViewById(R.id.leftText);
+        rightTextView =  (TextView)view.findViewById(R.id.rightText);
         rightTextView.setTextColor(rightTextColor);
-        ImageView leftImg =  view.findViewById(R.id.leftImg);
-        rightImg =  view.findViewById(R.id.rightImg);
+        ImageView leftImg = (ImageView)view.findViewById(R.id.leftImg);
+        rightImg =  (ImageView)view.findViewById(R.id.rightImg);
         View lineView = view.findViewById(R.id.lineView);
 
         leftTextView.setText(leftText);

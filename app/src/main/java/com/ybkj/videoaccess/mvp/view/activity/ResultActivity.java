@@ -18,7 +18,7 @@ public class ResultActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result);
         String path=getIntent().getStringExtra("picpath");//通过值"picpath"得到照片路径
-        ImageView imageview=findViewById(R.id.pic);
+        ImageView imageview=(ImageView)findViewById(R.id.pic);
         try{FileInputStream fis=new FileInputStream(path);//通过path把照片读到文件输入流中
             Bitmap bitmap= BitmapFactory.decodeStream(fis);//将输入流解码为bitmap
             Matrix matrix=new Matrix();//新建一个矩阵对象

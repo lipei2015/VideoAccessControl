@@ -115,12 +115,12 @@ public class WebActivity extends BaseActivity {
                 }
             }
 
-            @Override
+            /*@Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
 
                 refreshLayout.setRefreshEnable(true);
-            }
+            }*/
 
             /**
              * 对于https开头的网页显示空白问题处理

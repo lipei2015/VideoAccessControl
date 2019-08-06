@@ -52,7 +52,7 @@ public class CustomCameraActivity extends Activity implements SurfaceHolder.Call
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom);
-        mPreview = findViewById(R.id.preview);//初始化预览界面
+        mPreview = (SurfaceView)findViewById(R.id.preview);//初始化预览界面
         mHolder = mPreview.getHolder();
         mHolder.addCallback(this);
         //点击预览界面聚焦

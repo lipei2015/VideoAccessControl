@@ -28,9 +28,9 @@ public class DBDefaultLoadMoreViewFooter implements ILoadMoreViewFactory {
 
         @Override
         public void init(FootViewAdder footViewHolder, View.OnClickListener onClickRefreshListener) {
-            footerView = footViewHolder.addFootView(com.chanven.lib.cptr.R.layout.loadmore_default_footer);
-            footerTv = footerView.findViewById(com.chanven.lib.cptr.R.id.loadmore_default_footer_tv);
-            footerBar = footerView.findViewById(com.chanven.lib.cptr.R.id.loadmore_default_footer_progressbar);
+            footerView = (TextView)footViewHolder.addFootView(com.chanven.lib.cptr.R.layout.loadmore_default_footer);
+            footerTv = (TextView)footerView.findViewById(com.chanven.lib.cptr.R.id.loadmore_default_footer_tv);
+            footerBar = (ProgressBar)footerView.findViewById(com.chanven.lib.cptr.R.id.loadmore_default_footer_progressbar);
             this.onClickRefreshListener = onClickRefreshListener;
             showNormal();
         }
