@@ -121,7 +121,11 @@ public class InterceptorToken implements Interceptor {
                 return STATUS_NEED_LOGIN;
             }*/
             return result1Vo.status;
-        } else {
+        } else if(result != null && result.contains("success") && result.contains("timestamp")){
+            CommonResult<Object> result1Vo = new Gson().fromJson(result, new TypeToken<CommonResult<Object>>() {
+            }.getType());
+            return 1;
+        }else {
             LogUtil.i("返回了不合理的数据结构：" + result);
         }
 

@@ -6,6 +6,7 @@ import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.app.MyApp;
 import com.ybkj.videoaccess.mvp.control.SystemSplashControl;
+import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
 import com.ybkj.videoaccess.mvp.data.model.DeviceMode;
 import com.ybkj.videoaccess.util.LogUtil;
@@ -74,7 +75,7 @@ public class SystemSplashPresenter extends SystemSplashControl.ISystemSplashPres
             @Override
             public void onSuccess(Object o) {
                 // 数据返回成功检测
-                String result = (String) o;
+                DataInfo result = (DataInfo) o;
 //                LogUtil.i(result.getData().getMessage()+"");
                 /*VersionInfo versionInfo = (VersionInfo) o;
                 if (versionInfo != null) {

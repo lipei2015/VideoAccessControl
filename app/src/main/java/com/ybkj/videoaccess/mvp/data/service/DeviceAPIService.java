@@ -1,5 +1,6 @@
 package com.ybkj.videoaccess.mvp.data.service;
 
+import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
 import com.ybkj.videoaccess.util.http.CommonResult;
 import com.ybkj.videoaccess.util.http.Result;
@@ -15,7 +16,7 @@ import static com.ybkj.videoaccess.app.ConstantApi.Remot_Open_Debug;
 
 public interface DeviceAPIService {
     @POST(Remot_Open_Debug)
-    Observable<CommonResult<String>> remoteOpenDebug(@Body RequestRemoteOpen body);
+    Observable<CommonResult<DataInfo>> remoteOpenDebug(@Body RequestRemoteOpen body);
 
     /**
      * 获取配置信息

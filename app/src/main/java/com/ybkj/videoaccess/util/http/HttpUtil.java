@@ -143,6 +143,7 @@ public class HttpUtil {
 
         @Override
         public T call(CommonResult<T> result) {
+//            if (!result.getSuccess().equals("true")) {
             if (!result.getSuccess()) {
                 if (null != result.getMemo()) {
                     throw new HttpErrorException(0, result.getMemo());
