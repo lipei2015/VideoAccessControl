@@ -89,7 +89,7 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
         setSwipeBackEnable(false);
 
         RequestRemoteOpen open = new RequestRemoteOpen("00000001004","123456","1","1");
-        mPresenter.remoteOpenDebug(open);
+//        mPresenter.remoteOpenDebug(open);
 
         WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
             @Override

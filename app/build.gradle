@@ -113,6 +113,8 @@ dependencies {
     implementation 'com.gavin.com.library:stickyDecoration:1.2.1'
     //图片选择器【详细使用：https://segmentfault.com/a/1190000004263541】
     implementation project(':galleryfinal')
-
     implementation project(':zxing')
+
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
 }
