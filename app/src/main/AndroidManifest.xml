@@ -50,6 +50,9 @@
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.SystemSplashActivity"
             android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".mvp.view.activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

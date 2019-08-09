@@ -50,10 +50,9 @@ import butterknife.BindView;
  * Created by HH on 2018/1/19.
  */
 public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, ConfigMode> implements SystemSplashControl.ISystemSplashView {
-    @BindView(R.id.splashBg)
-    ImageView img;
-    @BindView(R.id.indicatorGroup)
-    RadioGroup indicatorGroup;
+    @BindView(R.id.imgCode) ImageView imgCode;
+    @BindView(R.id.splashBg) ImageView img;
+    @BindView(R.id.indicatorGroup) RadioGroup indicatorGroup;
     @BindView(R.id.viewPager) ViewPager viewPager;
 
     private static final int ANIMATION_TIME = 1000;  //渐变动画时间
