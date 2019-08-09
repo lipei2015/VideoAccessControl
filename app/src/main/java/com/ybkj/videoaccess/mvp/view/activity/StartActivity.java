@@ -28,9 +28,9 @@ public class StartActivity extends BaseActivity {
     @Override
     protected void initView() {
         imgCode.setImageBitmap(QRCodeUtil.createQRImage(MyDeviceInfo.getMacDefault(this),
-                ViewUtil.dip2px(this,150),ViewUtil.dip2px(this,150)));
+                ViewUtil.dip2px(this,180),ViewUtil.dip2px(this,180)));
 
-        startActivity(new Intent(this, MainActivity.class));
+//        startActivity(new Intent(this, MainActivity.class));
 //        new Handler().postDelayed(() -> onFinishActivity(), 1000);
     }
 }

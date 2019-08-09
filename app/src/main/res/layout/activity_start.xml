@@ -31,11 +31,10 @@
             android:layout_marginTop="30dp"/>
         <ImageView
             android:id="@+id/imgCode"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/splash"
+            android:scaleType="fitXY"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"/>
     </LinearLayout>
@@ -43,7 +42,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="请使用维护安装APP扫描并进行初始化"
+        android:text="广州千炫信息科技有限公司技术支持"
         android:textColor="@color/white"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
