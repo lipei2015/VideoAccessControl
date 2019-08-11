@@ -50,78 +50,10 @@ public class StartActivity extends BaseActivity {
 //        startActivity(new Intent(this, MainActivity.class));
 //        new Handler().postDelayed(() -> onFinishActivity(), 1000);
 
-        initWrtdev();
+        // 先检测本地有无下载的数据，有的话直接进入主界面展示，没有的话直接每隔2秒拉取数据数据，
+        // 没有数据说明没有绑定成功，拉取到了数据就说明绑定成功，开始下载数据并且进入主页播放日常视频
 
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-        int widthPixels = outMetrics.widthPixels;
-        int heightPixels = outMetrics.heightPixels;
-        Log.i("StartActivity", "widthPixels = " + widthPixels + ",heightPixels = " + heightPixels);
-        //widthPixels = 1440, heightPixels = 2768
+
     }
-
-    private void initWrtdev() {
-        WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
-            @Override
-            public IBinder asBinder() {
-                return null;
-            }
-
-            /**
-             * 返回微波检测状态：1为有人，0为无人，-1为错误
-             * @return
-             * @throws RemoteException */
-
-            @Override
-            public int getMicroWaveState() throws RemoteException {
-                return 0;
-            }
-
-            @Override
-            public byte[] getIcCardNo() throws RemoteException {
-                return new byte[0];
-            }
-
-            @Override
-            public int openLed(int i) throws RemoteException {
-                return 0;
-            }
-
-            @Override
-            public int openDoor() throws RemoteException {
-                return 0;
-            }
-        }, new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                ToastUtil.showMsg(msg.what+"   99999999999999");
-                super.handleMessage(msg);
-            }
-        });
-
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                int value = wrtdevManager.getMicroWaveState();
-
-                Message message = new Message();
-                message.what = value;
-                faceHandler.sendMessage(message);
-            }
-        };
-        timer.schedule(timerTask, 5000, 1500);//延时1s，每隔500毫秒执行一次run方法
-    }
-
-    Handler faceHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-//            ToastUtil.showMsg(msg.what+"   --------");
-            if (msg.what == 1) {
-                //do something
-            }
-            super.handleMessage(msg);
-        }
-    };
 
 }
