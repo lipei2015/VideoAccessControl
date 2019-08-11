@@ -29,4 +29,6 @@
     <dimen name="start_text_margin_top_2">20px</dimen>
     <dimen name="start_text_margin_bottom">30px</dimen>
 
+    <dimen name="home_title_margin_top">30px</dimen>
+
 </resources>

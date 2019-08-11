@@ -94,7 +94,7 @@ public class MainActivity extends BaseFragmentActivity {
         upgradeUtil = new UpgradeUtil(this);
         checkPermission();
 
-        initMqtt();
+//        initMqtt();
     }
 
     public static String getAndroidId(Context context) {

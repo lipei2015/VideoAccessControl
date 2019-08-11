@@ -126,6 +126,8 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
                 super.handleMessage(msg);
             }
         });
+
+        int state = wrtdevManager.getMicroWaveState();
     }
 
     @Override

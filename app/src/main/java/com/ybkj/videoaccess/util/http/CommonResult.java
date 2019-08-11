@@ -6,6 +6,7 @@ public class CommonResult<T> {
     private long timestamp;
 //    private String token;
     private String memo;    // 扩展字段
+    private String token;
 
     public T getData() {
         return data;

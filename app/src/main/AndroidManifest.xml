@@ -64,7 +64,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/mainTheme"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+
+        </activity>
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.WebActivity"
             android:launchMode="singleTop"
