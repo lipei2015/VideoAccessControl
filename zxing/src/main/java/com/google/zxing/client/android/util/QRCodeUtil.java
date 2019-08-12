@@ -25,6 +25,9 @@ public class QRCodeUtil {
             }
             Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+
+            hints.put(EncodeHintType.MARGIN, "1");//二维码空白区域,最小为0也有白边,只是很小,最小是6像素左右
+
             //图像数据转换，使用了矩阵转换
             BitMatrix bitMatrix = new QRCodeWriter().encode(url, BarcodeFormat.QR_CODE, QR_WIDTH, QR_HEIGHT, hints);
             int[] pixels = new int[QR_WIDTH * QR_HEIGHT];

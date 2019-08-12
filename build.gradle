@@ -9,6 +9,9 @@ buildscript {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        maven {
+            url "https://repo.eclipse.org/content/repositories/paho-releases/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
