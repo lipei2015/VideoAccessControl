@@ -16,6 +16,12 @@ import com.wrtsz.api.WrtdevManager;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
+import com.ybkj.videoaccess.mvp.control.StartControl;
+import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
+import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
+import com.ybkj.videoaccess.mvp.data.model.StartModel;
+import com.ybkj.videoaccess.mvp.presenter.StartPresenter;
+import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.MyDeviceInfo;
 import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.ToastUtil;
@@ -26,7 +32,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 
-public class StartActivity extends BaseActivity {
+public class StartActivity extends BaseActivity<StartPresenter, StartModel> implements StartControl.IStartView{
     @BindView(R.id.imgCode) ImageView imgCode;
 
     private PreferencesUtils preferencesUtils;
@@ -39,6 +45,16 @@ public class StartActivity extends BaseActivity {
     @Override
     protected String setTitle() {
         return null;
+    }
+
+    @Override
+    protected StartModel createModel() {
+        return new StartModel();
+    }
+
+    @Override
+    protected StartPresenter createPresenter() {
+        return new StartPresenter();
     }
 
     @Override
@@ -55,6 +71,13 @@ public class StartActivity extends BaseActivity {
         if(!downloaded){
             startActivity(new Intent(this, HomeActivity.class));
             new Handler().postDelayed(() -> onFinishActivity(), 1000);
+        }else{
+            RequestFullDataLoadBean requestFullDataLoadBean = new RequestFullDataLoadBean();
+            requestFullDataLoadBean.setMemo("");
+            requestFullDataLoadBean.setType("FULL_LOAD");
+            requestFullDataLoadBean.setMjseq(mac);
+            requestFullDataLoadBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
+            mPresenter.fullDataLoad(requestFullDataLoadBean);
         }
 
 //        ViewUtil.dip2px(this,180)
@@ -65,7 +88,10 @@ public class StartActivity extends BaseActivity {
         // 先检测本地有无下载的数据，有的话直接进入主界面展示，没有的话直接每隔2秒拉取数据数据，
         // 没有数据说明没有绑定成功，拉取到了数据就说明绑定成功，开始下载数据并且进入主页播放日常视频
 
-
     }
 
+    @Override
+    public void showFullDataLoad(DataInfo dataInfo) {
+
+    }
 }

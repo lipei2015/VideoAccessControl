@@ -1,6 +1,7 @@
 package com.ybkj.videoaccess.mvp.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -12,13 +13,16 @@ import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.data.model.HomeModel;
 import com.ybkj.videoaccess.mvp.presenter.HomePresenter;
+import com.ybkj.videoaccess.util.LogUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
-    WrtdevManager wrtdevManager = null;
+    private WrtdevManager wrtdevManager = null;
+    private Timer timer;
+    private TimerTask timerTask;
 
     @Override
     protected int setLayoutId() {
@@ -36,67 +40,54 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     }
 
     private void initWrtdev() {
-        /*WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
-            @Override
-            public IBinder asBinder() {
-                return null;
-            }
-
-            *//**
-             * 返回微波检测状态：1为有人，0为无人，-1为错误
-             * @return
-             * @throws RemoteException *//*
-
-            @Override
-            public int getMicroWaveState() throws RemoteException {
-                return 0;
-            }
-
-            @Override
-            public byte[] getIcCardNo() throws RemoteException {
-                return new byte[0];
-            }
-
-            @Override
-            public int openLed(int i) throws RemoteException {
-                return 0;
-            }
-
-            @Override
-            public int openDoor() throws RemoteException {
-                return 0;
-            }
-        }, new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                ToastUtil.showMsg(msg.what+"   99999999999999");
-                super.handleMessage(msg);
-            }
-        });*/
-
 //        wrtdevManager = (WrtdevManager) getSystemService(Context.WRTSZ_SERVICE);
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
 
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
+        startTimer();
+    }
+
+    /**
+     * 开始有无人像出现监听
+     */
+    private void startTimer(){
+        timer = new Timer();
+        timerTask = new TimerTask() {
             @Override
             public void run() {
-                /*int value = wrtdevManager.getMicroWaveState();
+                int value = wrtdevManager.getMicroWaveState();
 
                 Message message = new Message();
                 message.what = value;
-                faceHandler.sendMessage(message);*/
+                faceHandler.sendMessage(message);
             }
         };
-        timer.schedule(timerTask, 5000, 1500);//延时1s，每隔500毫秒执行一次run方法
+        timer.schedule(timerTask, 3000, 1500);//延时1s，每隔500毫秒执行一次run方法
+    }
+
+    /**
+     * 取消有无人像出现监听
+     */
+    private void cancelTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     Handler faceHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-//            ToastUtil.showMsg(msg.what+"   --------");
-            if (msg.what == 1) {
-                //do something
+            LogUtil.i(msg.what+"++");
+            switch (msg.what){
+                case 1:
+                    // 有人出现
+                    cancelTimer();
+                    startActivity(new Intent(HomeActivity.this,CustomCameraActivity.class));
+                    break;
+                case 0:
+                    // 无人出现
+
+                    break;
             }
             super.handleMessage(msg);
         }

@@ -56,12 +56,13 @@ public class CustomCameraActivity extends Activity implements SurfaceHolder.Call
         mHolder = mPreview.getHolder();
         mHolder.addCallback(this);
         //点击预览界面聚焦
-        mPreview.setOnClickListener(new View.OnClickListener() {
+        /*mPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCamera.autoFocus(null);
             }
-        });
+        });*/
+//        mCamera.autoFocus(null);
 
         startTimer();
     }
@@ -96,14 +97,6 @@ public class CustomCameraActivity extends Activity implements SurfaceHolder.Call
             super.handleMessage(msg);
         }
     };
-    /*Runnable r = new Runnable() {
-        @Override
-        public void run() {
-            //do something
-            //每隔1s循环执行run方法
-            mHandler.postDelayed(this, 1000);
-        }
-    };*/
 
     //定义“拍照”方法
     public void capture(View view) {

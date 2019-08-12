@@ -48,8 +48,7 @@
             android:value="GlideModule" />
 
         <activity
-            android:name="com.ybkj.videoaccess.mvp.view.activity.SystemSplashActivity"
-            android:screenOrientation="portrait">
+            android:name="com.ybkj.videoaccess.mvp.view.activity.SystemSplashActivity">
 
         </activity>
         <activity android:name=".mvp.view.activity.StartActivity">
@@ -86,12 +85,10 @@
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.CustomCameraActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:theme="@style/whiteTheme" />
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.StartCameraActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:theme="@style/whiteTheme" />
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.ResultActivity"

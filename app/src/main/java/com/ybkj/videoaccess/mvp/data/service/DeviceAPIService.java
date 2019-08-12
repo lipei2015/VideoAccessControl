@@ -2,6 +2,7 @@ package com.ybkj.videoaccess.mvp.data.service;
 
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDevDeployBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
 import com.ybkj.videoaccess.util.http.CommonResult;
 import com.ybkj.videoaccess.util.http.Result;
@@ -35,7 +36,7 @@ public interface DeviceAPIService {
      * @return
      */
     @POST(fullDataLoad)
-    Observable<CommonResult<DataInfo>> fullDataLoad(@Body RequestDevDeployBean body);
+    Observable<CommonResult<DataInfo>> fullDataLoad(@Body RequestFullDataLoadBean body);
 
     /**
      * 获取配置信息

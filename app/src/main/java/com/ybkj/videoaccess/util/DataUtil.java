@@ -17,6 +17,8 @@ public class DataUtil {
      */
     public static String dateFormatYMDHMSMS = "yyyy-MM-dd HH:mm:ss";
 
+    public static String dateFormatYMDHMSMSString = "yyyyMMddHHmmss";
+
     /**
      * 时间日期格式化到年月日.
      */
@@ -33,6 +35,15 @@ public class DataUtil {
         try {
             Date data = new Date(currentTime);
             return new SimpleDateFormat(dateFormatYMDHMSMS).format(data);
+        } catch (Exception e) {
+            return "未知时间";
+        }
+    }
+
+    public static String getYMDHMSString(long currentTime) {
+        try {
+            Date data = new Date(currentTime);
+            return new SimpleDateFormat(dateFormatYMDHMSMSString).format(data);
         } catch (Exception e) {
             return "未知时间";
         }
