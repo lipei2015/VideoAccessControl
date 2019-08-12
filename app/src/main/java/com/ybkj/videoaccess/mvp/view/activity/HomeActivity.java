@@ -81,11 +81,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                int value = wrtdevManager.getMicroWaveState();
+                /*int value = wrtdevManager.getMicroWaveState();
 
                 Message message = new Message();
                 message.what = value;
-                faceHandler.sendMessage(message);
+                faceHandler.sendMessage(message);*/
             }
         };
         timer.schedule(timerTask, 5000, 1500);//延时1s，每隔500毫秒执行一次run方法

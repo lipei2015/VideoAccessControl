@@ -10,7 +10,7 @@ public class ConstantSys {
     /**
      * User相关
      **/
-    public static final String PREFERENCE_USER_NAME = "userPre";  //user文件名
+    public static final String PREFERENCE_USER_NAME = "VideoAccessControl";  //user文件名
     public static final String PREFERENCE_USER_KEY_ID = "id"; //Id
     public static final String PREFERENCE_USER_KEY_HEADIMG = "headImg";
     public static final String PREFERENCE_USER_KEY_HEADIMG_LOCAL = "headImgLocal"; //本地头像地址
@@ -22,6 +22,8 @@ public class ConstantSys {
     public static final String PREFERENCE_USER_BALANCE_NO = "user_balance_no";  //不可提现余额
     public static final String PREFERENCE_USER_CAN_WITHDRAWALS = "can_withdrawals";
     public static final String PREFERENCE_USER_KEY_SCORE = "score"; // 积分
+
+    public static final String PREFERENCE_DOWNLOADED_DATA = "downloadedData"; // 是否已下载过数据
     /******END*****/
 
     /**

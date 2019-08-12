@@ -14,8 +14,10 @@ import com.google.zxing.client.android.util.QRCodeUtil;
 import com.wrtsz.api.IWrtdevManager;
 import com.wrtsz.api.WrtdevManager;
 import com.ybkj.videoaccess.R;
+import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.util.MyDeviceInfo;
+import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.util.ViewUtil;
 
@@ -26,6 +28,8 @@ import butterknife.BindView;
 
 public class StartActivity extends BaseActivity {
     @BindView(R.id.imgCode) ImageView imgCode;
+
+    private PreferencesUtils preferencesUtils;
 
     @Override
     protected int setLayoutId() {
@@ -44,6 +48,14 @@ public class StartActivity extends BaseActivity {
         ToastUtil.showMsg(mac);
         imgCode.setImageBitmap(QRCodeUtil.createQRImage(mac,
                 (int)getResources().getDimension(R.dimen.start_code_size),(int)getResources().getDimension(R.dimen.start_code_size)));
+
+        preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
+        boolean downloaded = preferencesUtils.getBoolean(ConstantSys.PREFERENCE_DOWNLOADED_DATA,false);
+
+        if(!downloaded){
+            startActivity(new Intent(this, HomeActivity.class));
+            new Handler().postDelayed(() -> onFinishActivity(), 1000);
+        }
 
 //        ViewUtil.dip2px(this,180)
 
