@@ -1,12 +1,12 @@
 package com.ybkj.videoaccess.mvp.view.activity;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.view.KeyEvent;
 
-import com.wrtsz.api.IWrtdevManager;
 import com.wrtsz.api.WrtdevManager;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
@@ -18,6 +18,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
+    WrtdevManager wrtdevManager = null;
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_home;
@@ -34,16 +36,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     }
 
     private void initWrtdev() {
-        WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
+        /*WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
             @Override
             public IBinder asBinder() {
                 return null;
             }
 
-            /**
+            *//**
              * 返回微波检测状态：1为有人，0为无人，-1为错误
              * @return
-             * @throws RemoteException */
+             * @throws RemoteException *//*
 
             @Override
             public int getMicroWaveState() throws RemoteException {
@@ -70,7 +72,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
                 ToastUtil.showMsg(msg.what+"   99999999999999");
                 super.handleMessage(msg);
             }
-        });
+        });*/
+
+//        wrtdevManager = (WrtdevManager) getSystemService(Context.WRTSZ_SERVICE);
+        wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
 
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
