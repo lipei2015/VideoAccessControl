@@ -83,7 +83,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/whiteTheme" />
         <activity
-            android:name="com.ybkj.videoaccess.mvp.view.activity.CustomCameraActivity"
+            android:name="com.ybkj.videoaccess.mvp.view.activity.FaceCheckActivity"
             android:launchMode="singleTop"
             android:theme="@style/whiteTheme" />
         <activity

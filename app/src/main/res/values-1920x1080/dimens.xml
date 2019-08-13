@@ -35,4 +35,5 @@
     <!--  -->
     <dimen name="list_dialog_padding">30dp</dimen>
     <dimen name="list_dialog_item_height">50dp</dimen>
+    <dimen name="list_dialog_item_margin_top">15dp</dimen>
 </resources>

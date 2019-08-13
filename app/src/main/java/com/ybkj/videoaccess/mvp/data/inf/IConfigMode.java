@@ -15,7 +15,7 @@ public interface IConfigMode extends MvpBaseModel {
      * 检测版本更新
      *
      * @param appType    App类型（0：安卓，1：ios）
-     * @param name       Android传“欢乐彩票”
+     * @param name       Android传“欢乐”
      * @return
      */
     Observable<VersionInfo> checkVersion(int appType, String name);

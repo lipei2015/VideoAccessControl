@@ -16,6 +16,6 @@ public class StartCameraActivity extends Activity {
     }
 
     public void  customCamera(View view){
-        startActivity(new Intent(this,CustomCameraActivity.class));
+        startActivity(new Intent(this, FaceCheckActivity.class));
     }
 }

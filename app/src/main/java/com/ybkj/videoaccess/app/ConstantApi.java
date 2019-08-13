@@ -7,43 +7,12 @@ package com.ybkj.videoaccess.app;
  */
 public class ConstantApi {
     public static final String IP = "http://132.232.146.67:8989";  //测试IP
+
+    public static final String IP_DEVICE = "https://192.168.10.15/wrtsz/dev_api/";  //测试IP https://192.168.10.15/wrtsz/dev_api/face/recognition?
     //public static final String IP = "http://new.cp138666.info:8080/ ";  //正式IP
     //public static final String IP = "http://192.168.2.165:8080";  //陈盼IP(用于调试)
     //public static final String IP = "http://192.168.2.53:8080/";  //袁立波IP(用于调试)
 
-    /**
-     * H5链接
-     **/
-
-    /******END*****/
-
-    /**
-     * 赛程信息
-     */
-
-    /**
-     * 购彩
-     **/
-
-    /******END*****/
-
-    /**
-     * 用户
-     **/
-    public static final String SYSTEM_FEEDBACK_SUBMIT = "/api/feedback/feedback"; //提交反馈
-    /******END*****/
-
-    /**
-     * 订单
-     **/
-
-    /******END*****/
-
-    /**
-     * 支付模块
-     */
-
-    /******END*****/
 
     /**
      * 配置信息
