@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.wrtsz.api.WrtdevManager;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.FaceCheckControl;
@@ -18,6 +19,7 @@ import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.model.FaceCheckModel;
 import com.ybkj.videoaccess.mvp.presenter.FaceCheckPresenter;
 import com.ybkj.videoaccess.util.DataUtil;
+import com.ybkj.videoaccess.util.ImageUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,6 +45,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     private int widthPixels;
     private int heightPixels;
 
+    private WrtdevManager wrtdevManager = null;
+
     @Override
     protected int setLayoutId() {
         return R.layout.custom;
@@ -55,9 +59,10 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 
     @Override
     protected void initView() {
-//        mPreview = (SurfaceView)findViewById(R.id.preview);//初始化预览界面
         mHolder = mPreview.getHolder();
         mHolder.addCallback(this);
+
+        wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
 
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
@@ -107,7 +112,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         public void onPictureTaken(byte[] data, Camera camera) {
 //            safeToTakePicture = true;
             long now = System.currentTimeMillis();
-            File tempfile = new File("/sdcard/emp"+now+".png");//新建一个文件对象tempfile，并保存在某路径中
+            String path = "/sdcard/emp"+now+".png";
+            File tempfile = new File(path);//新建一个文件对象tempfile，并保存在某路径中
 
             try {
                 FileOutputStream fos = new FileOutputStream(tempfile);
@@ -121,6 +127,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                 FaceCheckActivity.this.finish();//关闭现有界面
 
                 //TODO 调用设备SDK进行人像检测，若返回人像ID就表示成功，再调用设备开门接口，再调用开门记录上传接口，若成功则返回到上一个界面
+                ImageUtil.imageToBase64(tempfile.getAbsolutePath());
+
                 RequestGateOpenRecordBean requestGateOpenRecordBean = new RequestGateOpenRecordBean();
                 requestGateOpenRecordBean.setPid("");
                 requestGateOpenRecordBean.setType("1");

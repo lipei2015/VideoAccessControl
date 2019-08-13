@@ -38,7 +38,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     }
 
     private void initWrtdev() {
-//        wrtdevManager = (WrtdevManager) getSystemService(Context.WRTSZ_SERVICE);
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
 
         startTimer();
