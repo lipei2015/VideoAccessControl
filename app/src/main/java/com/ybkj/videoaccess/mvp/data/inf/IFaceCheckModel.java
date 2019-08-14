@@ -6,5 +6,6 @@ import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import rx.Observable;
 
 public interface IFaceCheckModel extends MvpBaseModel {
+    Observable<String> recognition(String image);
     Observable<String> gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean);
 }

@@ -20,7 +20,6 @@ import rx.Observable;
 
 import static com.ybkj.videoaccess.app.ConstantApi.CHECK_VERSION;
 import static com.ybkj.videoaccess.app.ConstantApi.GET_CONFIG;
-import static com.ybkj.videoaccess.app.ConstantApi.SYSTEM_FEEDBACK_SUBMIT;
 
 /**
  * 系统接口
@@ -52,16 +51,6 @@ public interface SystemAPIService {
     @Multipart
     @POST
     Observable<Result<List<String>>> uploadImgMore(@Url String url, @PartMap Map<String, RequestBody> maps);
-
-    /**
-     * 提交反馈
-     * @param content 内容
-     * @param pictures 图片数组
-     * @return String
-     */
-    @FormUrlEncoded
-    @POST(SYSTEM_FEEDBACK_SUBMIT)
-    Observable<Result<String>> feedbackSubmit(@Field("content") String content, @Field("pictures") String pictures);
 
     /**
      * 检测版本更新

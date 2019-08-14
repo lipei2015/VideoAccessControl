@@ -8,7 +8,8 @@ package com.ybkj.videoaccess.app;
 public class ConstantApi {
     public static final String IP = "http://132.232.146.67:8989";  //测试IP
 
-    public static final String IP_DEVICE = "https://192.168.10.15/wrtsz/dev_api/";  //测试IP https://192.168.10.15/wrtsz/dev_api/face/recognition?
+//    public static final String IP_DEVICE = "https://192.168.10.15/wrtsz/dev_api/";  //测试IP https://192.168.10.15/wrtsz/dev_api/face/recognition?
+    public static final String IP_DEVICE = "http://127.0.0.1/wrtsz/dev_api/";  //测试IP https://192.168.10.15/wrtsz/dev_api/face/recognition?
     //public static final String IP = "http://new.cp138666.info:8080/ ";  //正式IP
     //public static final String IP = "http://192.168.2.165:8080";  //陈盼IP(用于调试)
     //public static final String IP = "http://192.168.2.53:8080/";  //袁立波IP(用于调试)
@@ -55,22 +56,18 @@ public class ConstantApi {
      * (4)摄像头配置信息，一个加密JSON文件，结构暂无法定义
      */
     public static final String ipcSettings= "ipcSettings";
-
     /**
      * (5)媒体文件播放策略，用来控制门禁主机通用播放配置单独的json文件
      */
     public static final String playingStrategy= "playingStrategy";
-
     /**
      * (6)媒体文件，媒体文件作为文件包下载，包含单个文件播放顺序配置以及媒体文件，媒体文件播放支持图片和视频播放。下面表格介绍了配置文件media.cfg文件的字段
      */
     public static final String mediasDownload= "mediasDownload";
-
     /**
      *主机分屏策略，暂未定义
      */
     public static final String screenSplitStrategy= "screenSplitStrategy";
-
     /**
      * 4.居住人员信息下载数据结构定义
      */
@@ -95,22 +92,18 @@ public class ConstantApi {
      * 8.摄像头联动抓拍数据结构定义，暂无定义，需要参考onvif协议确定
      */
     public static final String IPCSettings= "IPCSettings";
-
     /**
      * 9.开门记录上传
      */
     public static final String gateOpenRecord= "gateOpenRecord";
-
     /**
      * 密码开门数据交互定义
      */
     public static final String pwdValidation= "pwdValidation";
-
     /**
      * 14.媒体文件下载接口，该接口需要根据媒体规则，每日凌晨去服务器端检查新的媒体文件并获取到文件清单并下载。
      */
     public static final String MediaDownload= "MediaDownload";
-
     /**
      * 播放规则下发定义
      */

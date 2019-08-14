@@ -3,6 +3,7 @@ package com.ybkj.videoaccess.util.http;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ybkj.videoaccess.util.LogUtil;
+import com.ybkj.videoaccess.util.ToastUtil;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -112,6 +113,7 @@ public class InterceptorToken implements Interceptor {
         }
 
         String result = new String(buffer.clone().readString(charset));
+        ToastUtil.showMsg(result+"  result");
         if (result != null && result.contains("status") && result.contains("msg") && result.contains("content")) {
             Result<Object> result1Vo = new Gson().fromJson(result, new TypeToken<Result<Object>>() {
             }.getType());

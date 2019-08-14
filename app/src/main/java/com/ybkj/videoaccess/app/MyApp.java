@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.umeng.analytics.MobclickAgent;
+import com.ybkj.videoaccess.util.CommonUtil;
 import com.ybkj.videoaccess.util.http.HttpUtil;
 
 import static com.ybkj.videoaccess.app.ConstantSys.APPKEY_UMENG;
@@ -38,6 +39,8 @@ public class MyApp extends Application {
         context = getApplicationContext();
 
         //初始化网络请求工具
+        String ip = "https://"+ CommonUtil.getIPAddress(this);
+        DeviceApi.getInstance().setIP(ip);
         HttpUtil.getInstance().init(this);
 
         //友盟应用统计

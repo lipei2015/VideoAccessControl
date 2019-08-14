@@ -15,12 +15,14 @@ import com.wrtsz.api.IWrtdevManager;
 import com.wrtsz.api.WrtdevManager;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
+import com.ybkj.videoaccess.app.DeviceApi;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.StartControl;
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.model.StartModel;
 import com.ybkj.videoaccess.mvp.presenter.StartPresenter;
+import com.ybkj.videoaccess.util.CommonUtil;
 import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.MyDeviceInfo;
 import com.ybkj.videoaccess.util.PreferencesUtils;
@@ -61,9 +63,14 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
     protected void initView() {
 //        String mac = MyDeviceInfo.getMacDefault(this);
         String mac = MyDeviceInfo.getDeviceId(this);
-        ToastUtil.showMsg(mac);
+//        ToastUtil.showMsg(mac);
         imgCode.setImageBitmap(QRCodeUtil.createQRImage(mac,
                 (int)getResources().getDimension(R.dimen.start_code_size),(int)getResources().getDimension(R.dimen.start_code_size)));
+
+//        String ip = "http://"+CommonUtil.getIPAddress(this);
+//        String ip = "http://192.168.1.23";
+//        ToastUtil.showMsg(DeviceApi.getInstance().getIP()+"  ");
+//        DeviceApi.getInstance().setIP(ip);
 
         preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
         boolean downloaded = preferencesUtils.getBoolean(ConstantSys.PREFERENCE_DOWNLOADED_DATA,false);
@@ -79,6 +86,8 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
             requestFullDataLoadBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
             mPresenter.fullDataLoad(requestFullDataLoadBean);
         }
+
+
 
 //        ViewUtil.dip2px(this,180)
 

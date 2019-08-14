@@ -100,7 +100,15 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/whiteTheme" />
-        
+
+        <receiver
+            android:name=".mvp.view.activity.MyReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

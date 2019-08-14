@@ -9,6 +9,7 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantApi;
+import com.ybkj.videoaccess.app.DeviceApi;
 import com.ybkj.videoaccess.app.MyApp;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.http.cache.InterceptorGsonCache;
@@ -110,7 +111,8 @@ public class HttpUtil {
 
     private void initRetrofit() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(ConstantApi.IP)
+//                .baseUrl(ConstantApi.IP)
+                .baseUrl(DeviceApi.getInstance().getIP())
                 .client(okHttpClient)
                 .addConverterFactory(MyGsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

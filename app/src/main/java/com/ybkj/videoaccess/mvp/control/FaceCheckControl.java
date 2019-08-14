@@ -5,11 +5,13 @@ import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.inf.IFaceCheckModel;
 
 public interface FaceCheckControl {
-    abstract class IFaceCheckPresenter extends MvpBasePresenter<IFaceCheckModel, IFaceCheckView> {
-        public abstract void gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean);
+    interface IFaceCheckView{
+
+        void showGateOpenRecordResult(String result);
     }
 
-    interface IFaceCheckView{
-        void showGateOpenRecordResult(String result);
+    abstract class IFaceCheckPresenter extends MvpBasePresenter<IFaceCheckModel, IFaceCheckView> {
+        public abstract void recognition(String image);
+        public abstract void gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean);
     }
 }

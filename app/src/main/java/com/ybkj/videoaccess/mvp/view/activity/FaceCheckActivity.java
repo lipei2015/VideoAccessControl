@@ -58,6 +58,16 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     }
 
     @Override
+    protected FaceCheckPresenter createPresenter() {
+        return new FaceCheckPresenter();
+    }
+
+    @Override
+    protected FaceCheckModel createModel() {
+        return new FaceCheckModel();
+    }
+
+    @Override
     protected void initView() {
         mHolder = mPreview.getHolder();
         mHolder.addCallback(this);
@@ -79,6 +89,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //        mCamera.autoFocus(null);
 
         startTimer();
+        mPresenter.recognition("45465456456");
+//        mPresenter.gateOpenRecord(new RequestGateOpenRecordBean());
     }
 
     /*@Override
@@ -155,7 +167,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 
             @Override
             public void run() {
-                Log.e("time", "daochu");
+//                Log.e("time", "daochu");
                 if(safeToTakePicture) {
                     mHandler.sendEmptyMessage(0);
                 }
