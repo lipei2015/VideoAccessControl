@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -97,6 +98,15 @@ public class CommonUtil {
             //当前无网络连接,请在设置中打开网络
         }
         return null;
+    }
+
+    /**
+     * 重启设备
+     * @param context
+     */
+    public static void RebootDevice(Context context){
+        PowerManager pManager=(PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        pManager.reboot(null);
     }
 
     /**

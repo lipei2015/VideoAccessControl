@@ -19,6 +19,7 @@ import com.ybkj.videoaccess.app.DeviceApi;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.StartControl;
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
+import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.model.StartModel;
 import com.ybkj.videoaccess.mvp.presenter.StartPresenter;
@@ -70,6 +71,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 //        String ip = "http://"+CommonUtil.getIPAddress(this);
 //        String ip = "http://192.168.1.23";
 //        ToastUtil.showMsg(DeviceApi.getInstance().getIP()+"  ");
+        Log.e("ip",DeviceApi.getInstance().getIP()+"   "+mac);
 //        DeviceApi.getInstance().setIP(ip);
 
         preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
@@ -100,7 +102,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
     }
 
     @Override
-    public void showFullDataLoad(DataInfo dataInfo) {
+    public void showFullDataLoad(FullDataInfo dataInfo) {
 
     }
 }

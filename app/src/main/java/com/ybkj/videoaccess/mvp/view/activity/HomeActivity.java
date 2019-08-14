@@ -35,13 +35,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     @Override
     protected void initView() {
         initWrtdev();
+
+        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
     }
 
     private void initWrtdev() {
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
 
         startTimer();
-        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
     }
 
     /**
@@ -104,7 +105,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         ToastUtil.showMsg(keyCode+"--------");
 
-        if(listDialog == null){
+        /*if(listDialog == null){
             listDialog = new ListDialog(HomeActivity.this);
             listDialog.show();
         }else{
@@ -156,7 +157,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
             }else{
                 listDialog.show();
             }
-        }
+        }*/
 
         /*if(keyCode == KeyEvent.KEYCODE_BACK) {
             return false;

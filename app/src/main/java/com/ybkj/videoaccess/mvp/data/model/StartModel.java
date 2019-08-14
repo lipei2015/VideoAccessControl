@@ -1,6 +1,7 @@
 package com.ybkj.videoaccess.mvp.data.model;
 
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
+import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.inf.IStartModel;
 import com.ybkj.videoaccess.mvp.data.service.QXAPIService;
@@ -11,7 +12,7 @@ import rx.Observable;
 
 public class StartModel implements IStartModel {
     @Override
-    public Observable<DataInfo> fullDataLoad(RequestFullDataLoadBean body) {
+    public Observable<FullDataInfo> fullDataLoad(RequestFullDataLoadBean body) {
         return HttpUtil.getInstance().getRetrofit().create(QXAPIService.class)
                 .fullDataLoad(body)
                 .map(new HttpUtil.HttpResultFuncCommon<>())

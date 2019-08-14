@@ -1,6 +1,7 @@
 package com.ybkj.videoaccess.mvp.data.model;
 
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
+import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
 import com.ybkj.videoaccess.mvp.data.inf.IFaceCheckModel;
 import com.ybkj.videoaccess.mvp.data.service.DeviceAPIService;
 import com.ybkj.videoaccess.mvp.data.service.QXAPIService;
@@ -19,7 +20,7 @@ public class FaceCheckModel implements IFaceCheckModel {
     }
 
     @Override
-    public Observable<String> gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean) {
+    public Observable<StringMessageInfo> gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean) {
         return HttpUtil.getInstance().getRetrofit().create(QXAPIService.class)
                 .gateOpenRecord(requestGateOpenRecordBean)
                 .map(new HttpUtil.HttpResultFuncCommon<>())

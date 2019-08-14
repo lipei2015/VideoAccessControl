@@ -4,7 +4,6 @@ public class CommonResult<T> {
     private boolean success;
     private T data;
     private long timestamp;
-//    private String token;
     private String memo;    // 扩展字段
     private String token;
 
@@ -20,13 +19,13 @@ public class CommonResult<T> {
         this.timestamp = timestamp;
     }
 
-    /*public String getToken() {
+    public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
-    }*/
+    }
 
     public String getMemo() {
         return memo;

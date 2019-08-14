@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.ybkj.videoaccess.mvp.control.StartControl;
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
+import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.util.LogUtil;
 import com.ybkj.videoaccess.util.http.HttpErrorException;
@@ -23,8 +24,8 @@ public class StartPresenter extends StartControl.IStartPresenter {
             @Override
             public void onSuccess(Object o) {
                 // 数据返回成功检测
-                DataInfo result = (DataInfo) o;
-//                LogUtil.i(result.getData().getMessage()+"");
+                FullDataInfo result = (FullDataInfo) o;
+                LogUtil.i(result.getTOKEN()+"");
                 /*VersionInfo versionInfo = (VersionInfo) o;
                 if (versionInfo != null) {
                     PreferencesUtils.getInstance(ConstantSys.PREFERENCE_CONFIG).putString(MyApp.getAppContext(),

@@ -113,7 +113,6 @@ public class InterceptorToken implements Interceptor {
         }
 
         String result = new String(buffer.clone().readString(charset));
-        ToastUtil.showMsg(result+"  result");
         if (result != null && result.contains("status") && result.contains("msg") && result.contains("content")) {
             Result<Object> result1Vo = new Gson().fromJson(result, new TypeToken<Result<Object>>() {
             }.getType());
@@ -124,7 +123,7 @@ public class InterceptorToken implements Interceptor {
             }*/
             return result1Vo.status;
         } else if(result != null && result.contains("success") && result.contains("timestamp")){
-            CommonResult<Object> result1Vo = new Gson().fromJson(result, new TypeToken<CommonResult<Object>>() {
+            CommonResult<Object> commonResult = new Gson().fromJson(result, new TypeToken<CommonResult<Object>>() {
             }.getType());
             return 1;
         }else {

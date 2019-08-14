@@ -3,6 +3,7 @@ package com.ybkj.videoaccess.util.http;
 import android.util.Log;
 
 import com.ybkj.videoaccess.app.ConstantApi;
+import com.ybkj.videoaccess.app.DeviceApi;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,20 +30,20 @@ public class BaseUrlInterceptor implements Interceptor {
             //匹配获得新的BaseUrl
             String headerValue = headerValues.get(0);
             HttpUrl newBaseUrl = null;
-            if ("test1".equals(headerValue)) {
+            if ("qxapi".equals(headerValue)) {
                 newBaseUrl = HttpUrl.parse(ConstantApi.IP);
-            }else if ("test2".equals(headerValue)) {
-                newBaseUrl = HttpUrl.parse(ConstantApi.IP_DEVICE);
+            }else if ("deviceapi".equals(headerValue)) {
+                newBaseUrl = HttpUrl.parse(DeviceApi.getInstance().getIP());
             }else{
                 newBaseUrl = oldHttpUrl;
             }
             //重建新的HttpUrl，修改需要修改的url部分
             HttpUrl newFullUrl = oldHttpUrl
                     .newBuilder()
-                    .scheme("https")//更换网络协议
+//                    .scheme("https")//更换网络协议
                     .host(newBaseUrl.host())//更换主机名
                     .port(newBaseUrl.port())//更换端口
-                    .removePathSegment(0)//移除第一个参数
+//                    .removePathSegment(0)//移除第一个参数
                     .build();
             //重建这个request，通过builder.url(newFullUrl).build()；
             // 然后返回一个response至此结束修改

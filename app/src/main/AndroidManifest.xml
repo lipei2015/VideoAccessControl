@@ -47,7 +47,11 @@
         <meta-data
             android:name="com.ybkj.videoaccess.util.MyGlideModules"
             android:value="GlideModule" />
+                <!--<intent-filter>
+                        <action android:name="android.intent.action.MAIN" />
 
+                        <category android:name="android.intent.category.LAUNCHER" />
+                    </intent-filter>-->
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.SystemSplashActivity">
 

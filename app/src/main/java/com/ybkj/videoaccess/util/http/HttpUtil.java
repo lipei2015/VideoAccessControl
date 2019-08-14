@@ -78,6 +78,7 @@ public class HttpUtil {
 
         //添加Token自动登录拦截器
         builder.addInterceptor(new InterceptorToken());
+        builder.addInterceptor(new BaseUrlInterceptor());
 
         //添加cookie持久化登录拦截器
         ClearableCookieJar cookieJar =
@@ -111,8 +112,8 @@ public class HttpUtil {
 
     private void initRetrofit() {
         retrofit = new Retrofit.Builder()
-//                .baseUrl(ConstantApi.IP)
-                .baseUrl(DeviceApi.getInstance().getIP())
+                .baseUrl(ConstantApi.IP)
+//                .baseUrl(DeviceApi.getInstance().getIP())
                 .client(okHttpClient)
                 .addConverterFactory(MyGsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

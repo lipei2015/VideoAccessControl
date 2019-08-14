@@ -7,16 +7,14 @@ package com.ybkj.videoaccess.app;
  */
 public class ConstantApi {
     public static final String IP = "http://132.232.146.67:8989";  //测试IP
+//    public static final String IP = "http://api.gkaorlz.com/";  //测试IP
 
 //    public static final String IP_DEVICE = "https://192.168.10.15/wrtsz/dev_api/";  //测试IP https://192.168.10.15/wrtsz/dev_api/face/recognition?
-    public static final String IP_DEVICE = "http://127.0.0.1/wrtsz/dev_api/";  //测试IP https://192.168.10.15/wrtsz/dev_api/face/recognition?
-    //public static final String IP = "http://new.cp138666.info:8080/ ";  //正式IP
-    //public static final String IP = "http://192.168.2.165:8080";  //陈盼IP(用于调试)
-    //public static final String IP = "http://192.168.2.53:8080/";  //袁立波IP(用于调试)
+    public static final String IP_DEVICE = "https://127.0.0.1/wrtsz/dev_api/";  //测试IP https://192.168.10.15/wrtsz/dev_api/face/recognition?
 
 
     /**
-     * 配置信息
+     * 配置信息GateOpenRecord
      **/
     public static final String GET_CONFIG = "/api/config/get"; //基础信息接口
     public static final String CHECK_VERSION = "/api/user/getVersionByname"; //检测版本更新

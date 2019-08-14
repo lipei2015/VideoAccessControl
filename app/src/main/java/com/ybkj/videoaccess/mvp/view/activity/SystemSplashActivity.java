@@ -88,46 +88,7 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
         setSwipeBackEnable(false);
 
         RequestRemoteOpen open = new RequestRemoteOpen("00000001004","123456","1","1");
-//        mPresenter.remoteOpenDebug(open);
-
-        WrtdevManager wrtdevManager = new WrtdevManager(new IWrtdevManager() {
-            @Override
-            public IBinder asBinder() {
-                return null;
-            }
-
-            /**
-             * 返回微波检测状态：1为有人，0为无人，-1为错误
-             * @return
-             * @throws RemoteException*/
-
-            @Override
-            public int getMicroWaveState() throws RemoteException {
-                return 0;
-            }
-
-            @Override
-            public byte[] getIcCardNo() throws RemoteException {
-                return new byte[0];
-            }
-
-            @Override
-            public int openLed(int i) throws RemoteException {
-                return 0;
-            }
-
-            @Override
-            public int openDoor() throws RemoteException {
-                return 0;
-            }
-        }, new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-            }
-        });
-
-        int state = wrtdevManager.getMicroWaveState();
+        mPresenter.remoteOpenDebug(open);
     }
 
     @Override
@@ -148,7 +109,7 @@ public class SystemSplashActivity extends BaseActivity<SystemSplashPresenter, Co
         } else {
             gotoMain();
         }*/
-        gotoMain();
+//        gotoMain();
     }
 
     @Override
