@@ -40,7 +40,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //    private SurfaceView mPreview;
     @BindView(R.id.preview) SurfaceView mPreview;
     private SurfaceHolder mHolder;
-    private int cameraId = 1;//声明cameraId属性，ID为1调用前置摄像头，为0调用后置摄像头。此处因有特殊需要故调用前置摄像头
+    private int cameraId = 0;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private int widthPixels;
     private int heightPixels;

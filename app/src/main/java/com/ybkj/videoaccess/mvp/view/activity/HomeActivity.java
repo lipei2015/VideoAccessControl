@@ -3,6 +3,7 @@ package com.ybkj.videoaccess.mvp.view.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.wrtsz.api.WrtdevManager;
@@ -36,11 +37,15 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     protected void initView() {
         initWrtdev();
 
-        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+//        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
     }
 
     private void initWrtdev() {
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
+
+        Log.e("openDoor",wrtdevManager.openDoor()+"++");
+        Log.e("openLed1",wrtdevManager.openLed(1)+"++");
+        Log.e("openLed0",wrtdevManager.openLed(0)+"++");
 
         startTimer();
     }
@@ -58,10 +63,17 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
                 Message message = new Message();
                 message.what = value;
                 faceHandler.sendMessage(message);*/
+                byte[] bytes = wrtdevManager.getIcCardNo();
+
+                if(bytes != null && bytes.length > 0){
+                    for(byte bt:bytes){
+                        Log.e("openDoor",bt+"++");
+                    }
+
+                }
             }
         };
-        timer.schedule(timerTask, 3000, 1500);//延时1s，每隔500毫秒执行一次run方法
-
+        timer.schedule(timerTask, 3000, 15000);//延时1s，每隔500毫秒执行一次run方法
     }
 
     /**
