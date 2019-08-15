@@ -15,21 +15,21 @@ public class JWebSocketClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        Log.e("JWebSocketClient", "onOpen()");
+        Log.i("JWebSocketClient", "onOpen()");
     }
 
     @Override
     public void onMessage(String message) {
-        Log.e("JWebSocketClient", "onMessage()");
+        Log.i("JWebSocketClient", "onMessage()");
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        Log.e("JWebSocketClient", "onClose()");
+        Log.i("JWebSocketClient", "onClose()");
     }
 
     @Override
     public void onError(Exception ex) {
-        Log.e("JWebSocketClient", "onError()");
+        Log.i("JWebSocketClient", "onError()");
     }
 }

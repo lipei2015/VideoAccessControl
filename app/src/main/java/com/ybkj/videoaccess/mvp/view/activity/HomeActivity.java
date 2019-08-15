@@ -117,6 +117,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     private void initWrtdev() {
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
 
+//        Log.e("openDoor",wrtdevManager.openDoor()+"++");
+//        Log.e("openLed1",wrtdevManager.openLed(1)+"++");
+//        Log.e("openLed0",wrtdevManager.openLed(0)+"++");
+
         startTimer();
     }
 
@@ -133,6 +137,15 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
                 Message message = new Message();
                 message.what = value;
                 faceHandler.sendMessage(message);*/
+
+                /*byte[] bytes = wrtdevManager.getIcCardNo();
+
+                if(bytes != null && bytes.length > 0){
+                    for(byte bt:bytes){
+                        Log.e("openDoor",bt+"++");
+                    }
+
+                }*/
             }
         };
         timer.schedule(timerTask, 3000, 1500);//延时1s，每隔500毫秒执行一次run方法
