@@ -9,10 +9,13 @@ import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.KeyEvent;
 
 import com.wrtsz.api.WrtdevManager;
+import com.wrtsz.intercom.master.IFaceApi;
+import com.ybkj.videoaccess.IFaceApi;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.data.model.HomeModel;
@@ -31,10 +34,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     private Timer timer;
     private TimerTask timerTask;
 
+    // WebSocket服务
     private JWebSocketClient client;
     private JWebSocketClientService.JWebSocketClientBinder binder;
     private JWebSocketClientService jWebSClientService;
     private RemoteMessageReceiver remoteMessageReceiver;
+
+    //定义aidl接口变量
+    private IFaceApi iFaceApi;
 
     @Override
     protected int setLayoutId() {
@@ -59,6 +66,29 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
 
 //        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
     }
+
+    //创建ServiceConnection的匿名类
+    private ServiceConnection connection = new ServiceConnection() {
+
+        //重写onServiceConnected()方法和onServiceDisconnected()方法
+        //在Activity与Service建立关联和解除关联的时候调用
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+
+        //在Activity与Service建立关联时调用
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
+            iFaceApi = IFaceApi.Stub.asInterface(service);
+            try {
+                //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
+                iFaceApi.recognition("skfjskfjsfkd","");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     /**
      * 绑定服务
