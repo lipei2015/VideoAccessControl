@@ -1,40 +1,24 @@
 package com.ybkj.videoaccess.mvp.view.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.RadioGroup;
 
 import com.ybkj.videoaccess.R;
-import com.ybkj.videoaccess.app.ConstantApi;
 import com.ybkj.videoaccess.eventbus.EventBusEmpty;
 import com.ybkj.videoaccess.mvp.base.BaseFragmentActivity;
 import com.ybkj.videoaccess.mvp.view.fragment.HomeTab1Fragment;
 import com.ybkj.videoaccess.mvp.view.fragment.HomeTab3Fragment;
 import com.ybkj.videoaccess.mvp.view.fragment.HomeTab2Fragment;
 import com.ybkj.videoaccess.mvp.view.fragment.HomeTab4Fragment;
-import com.ybkj.videoaccess.util.MyDeviceInfo;
 import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.util.UpgradeUtil;
 import com.ybkj.videoaccess.util.ViewUtil;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.android.service.MqttService;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -56,7 +40,6 @@ public class MainActivity extends BaseFragmentActivity {
     private UpgradeUtil upgradeUtil;
 
     private String TAG = "MainActivity";
-    private MqttAndroidClient mqttAndroidClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,100 +77,12 @@ public class MainActivity extends BaseFragmentActivity {
         upgradeUtil = new UpgradeUtil(this);
         checkPermission();
 
-//        initMqtt();
     }
 
     public static String getAndroidId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
-    public void initMqtt() {
-//        Intent serviceIntent = new Intent(MainActivity.this,MqttService.class);
-//        startService(serviceIntent);
-
-//        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), ConstantApi.IP, "00000001004");
-
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        String imei = telephonyManager.getDeviceId();*/
-
-//        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), "tcp://132.232.146.67:8989", "00000001004");
-//        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), "tcp://132.232.146.67:8989", imei);
-        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), "tcp://132.232.146.67:8989",
-                getAndroidId(getApplicationContext()));
-        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-
-        // 配置MQTT连接
-        mqttConnectOptions.setAutomaticReconnect(true);
-        mqttConnectOptions.setCleanSession(false);
-        mqttConnectOptions.setUserName(null);
-        mqttConnectOptions.setPassword(null);
-        mqttConnectOptions.setConnectionTimeout(10);  //超时时间
-        mqttConnectOptions.setKeepAliveInterval(15); //心跳时间,单位秒
-        mqttConnectOptions.setAutomaticReconnect(true);//自动重连
-
-        mqttAndroidClient.setCallback(new MqttCallbackExtended() {
-            @Override
-            public void connectComplete(boolean reconnect, String serverURI) {
-                Log.i(TAG, "reconnect ---> " + reconnect + "       serverURI--->" + serverURI);
-                subscribeToTopic();
-            }
-
-            @Override
-            public void connectionLost(Throwable cause) {
-                Log.i(TAG, "cause ---> " + cause);
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                Log.i(TAG, "messageArrived topic ---> " + topic + "       message--->" + message);
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-                Log.i(TAG, "token ---> " + token);
-            }
-        });
-
-        try {
-            mqttAndroidClient.connect(mqttConnectOptions);
-            Log.e(TAG, "MQTT start connect");
-        } catch (MqttException e) {
-            e.printStackTrace();
-            Log.e(TAG, "MQTT connect error");
-        }
-    }
-
-//    final String subscriptionTopic = "exampleAndroidTopic";
-    final String subscriptionTopic = "remoteOpenDebug";
-
-    private void subscribeToTopic() {
-        try {
-            mqttAndroidClient.subscribe(subscriptionTopic, 0, null, new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Log.e(TAG, "onFailure ---> " + asyncActionToken);
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.e(TAG, "onFailure ---> " + exception);
-                }
-            });
-        } catch (MqttException e) {
-            Log.e(TAG, "subscribeToTopic is error");
-            e.printStackTrace();
-        }
-    }
 
     private void checkPermission() {
         requestPermission(1, Manifest.permission.WRITE_EXTERNAL_STORAGE, new OnRequestPermissionListener() {

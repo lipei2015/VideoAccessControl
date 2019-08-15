@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -62,19 +63,25 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
     @Override
     protected void initView() {
+        preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
+
+        String device_id = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
+        if(TextUtils.isEmpty(device_id)){
+            device_id = MyDeviceInfo.getDeviceId(this);
+        }
 //        String mac = MyDeviceInfo.getMacDefault(this);
-        String mac = MyDeviceInfo.getDeviceId(this);
+//        String mac = MyDeviceInfo.getDeviceId(this);
 //        ToastUtil.showMsg(mac);
-        imgCode.setImageBitmap(QRCodeUtil.createQRImage(mac,
+        imgCode.setImageBitmap(QRCodeUtil.createQRImage(device_id,
                 (int)getResources().getDimension(R.dimen.start_code_size),(int)getResources().getDimension(R.dimen.start_code_size)));
 
 //        String ip = "http://"+CommonUtil.getIPAddress(this);
 //        String ip = "http://192.168.1.23";
 //        ToastUtil.showMsg(DeviceApi.getInstance().getIP()+"  ");
-        Log.e("ip",DeviceApi.getInstance().getIP()+"   "+mac);
+        Log.e("ip",DeviceApi.getInstance().getIP()+"   "+device_id);
 //        DeviceApi.getInstance().setIP(ip);
 
-        preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
+
         boolean downloaded = preferencesUtils.getBoolean(ConstantSys.PREFERENCE_DOWNLOADED_DATA,false);
 
         if(!downloaded){
@@ -84,7 +91,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
             RequestFullDataLoadBean requestFullDataLoadBean = new RequestFullDataLoadBean();
             requestFullDataLoadBean.setMemo("");
             requestFullDataLoadBean.setType("FULL_LOAD");
-            requestFullDataLoadBean.setMjseq(mac);
+            requestFullDataLoadBean.setMjseq(device_id);
             requestFullDataLoadBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
             mPresenter.fullDataLoad(requestFullDataLoadBean);
         }

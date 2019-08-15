@@ -1,8 +1,15 @@
 package com.ybkj.videoaccess.mvp.view.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.wrtsz.api.WrtdevManager;
@@ -13,6 +20,8 @@ import com.ybkj.videoaccess.mvp.presenter.HomePresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
 import com.ybkj.videoaccess.util.LogUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
+import com.ybkj.videoaccess.websocket.JWebSocketClient;
+import com.ybkj.videoaccess.websocket.JWebSocketClientService;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,6 +30,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     private WrtdevManager wrtdevManager = null;
     private Timer timer;
     private TimerTask timerTask;
+
+    private JWebSocketClient client;
+    private JWebSocketClientService.JWebSocketClientBinder binder;
+    private JWebSocketClientService jWebSClientService;
+    private RemoteMessageReceiver remoteMessageReceiver;
 
     @Override
     protected int setLayoutId() {
@@ -36,7 +50,68 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     protected void initView() {
         initWrtdev();
 
-        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+        //启动远程监听服务
+        startJWebSClientService();
+        //绑定服务
+        bindService();
+        //注册广播
+        registerReceiver();
+
+//        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+    }
+
+    /**
+     * 绑定服务
+     */
+    private void bindService() {
+        Intent bindIntent = new Intent(this, JWebSocketClientService.class);
+        bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
+    }
+    /**
+     * 启动服务（websocket客户端服务）
+     */
+    private void startJWebSClientService() {
+        Intent intent = new Intent(this, JWebSocketClientService.class);
+        startService(intent);
+    }
+
+    /**
+     * 动态注册广播
+     */
+    private void registerReceiver() {
+        remoteMessageReceiver = new RemoteMessageReceiver();
+        IntentFilter filter = new IntentFilter("com.xch.servicecallback.content");
+        registerReceiver(remoteMessageReceiver, filter);
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            Log.e("HomeActivity", "服务与活动成功绑定");
+            binder = (JWebSocketClientService.JWebSocketClientBinder) iBinder;
+            jWebSClientService = binder.getService();
+            client = jWebSClientService.client;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            Log.e("HomeActivity", "服务与活动成功断开");
+        }
+    };
+
+    private class RemoteMessageReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message=intent.getStringExtra("message");
+            Log.e("onReceive", "收到："+message);
+            /*ChatMessage chatMessage=new ChatMessage();
+            chatMessage.setContent(message);
+            chatMessage.setIsMeSend(0);
+            chatMessage.setIsRead(1);
+            chatMessage.setTime(System.currentTimeMillis()+"");
+            chatMessageList.add(chatMessage);
+            initChatMsgListView();*/
+        }
     }
 
     private void initWrtdev() {

@@ -115,6 +115,8 @@ dependencies {
     implementation project(':galleryfinal')
     implementation project(':zxing')
 
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
+
+    implementation "org.java-websocket:Java-WebSocket:1.4.0"
 }

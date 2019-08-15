@@ -10,13 +10,20 @@
     <!--<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>-->
     <!-- 往SDCard写入数据权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+
+    <!-- 解锁屏幕需要的权限 -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!-- 申请电源锁需要的权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--震动权限-->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 
     <application
@@ -31,7 +38,15 @@
         tools:replace="android:theme"
         android:sharedUserId="android.uid.system">
 
-        <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <service
+            android:name=".websocket.JWebSocketClientService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".websocket.JWebSocketClientService$GrayInnerService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":gray" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -56,14 +71,16 @@
             android:name="com.ybkj.videoaccess.mvp.view.activity.SystemSplashActivity">
 
         </activity>
-        <activity android:name=".mvp.view.activity.StartActivity">
+        <activity android:name=".mvp.view.activity.StartActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.view.activity.HomeActivity">
+        <activity android:name=".mvp.view.activity.HomeActivity"
+            android:screenOrientation="portrait">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -90,11 +107,13 @@
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.FaceCheckActivity"
             android:launchMode="singleTop"
-            android:theme="@style/whiteTheme" />
+            android:theme="@style/whiteTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.StartCameraActivity"
             android:launchMode="singleTop"
-            android:theme="@style/whiteTheme" />
+            android:theme="@style/whiteTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.ResultActivity"
             android:launchMode="singleTop"
@@ -104,7 +123,7 @@
             android:name="com.ybkj.videoaccess.mvp.view.activity.BeginScanActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/whiteTheme" />
+            android:theme="@style/whiteTheme"/>
 
         <receiver
             android:name=".mvp.view.activity.MyReceiver"

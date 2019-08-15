@@ -24,6 +24,7 @@ public class ConstantSys {
     public static final String PREFERENCE_USER_KEY_SCORE = "score"; // 积分
 
     public static final String PREFERENCE_DOWNLOADED_DATA = "downloadedData"; // 是否已下载过数据
+    public static final String PREFERENCE_DEVICE_ID = "device_id"; // 设备唯一ID
     /******END*****/
 
     /**
