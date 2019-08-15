@@ -4,6 +4,7 @@ import com.ybkj.videoaccess.mvp.base.mvpBase.MvpBaseModel;
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestResourcesBean;
 
 import rx.Observable;
 
@@ -15,4 +16,6 @@ public interface IStartModel extends MvpBaseModel {
      * @return
      */
     Observable<FullDataInfo> fullDataLoad(RequestFullDataLoadBean body);
+
+    Observable<FullDataInfo> resources(RequestResourcesBean body);
 }

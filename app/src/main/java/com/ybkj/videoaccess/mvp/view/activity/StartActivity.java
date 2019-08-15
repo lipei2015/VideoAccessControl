@@ -22,6 +22,7 @@ import com.ybkj.videoaccess.mvp.control.StartControl;
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestResourcesBean;
 import com.ybkj.videoaccess.mvp.data.model.StartModel;
 import com.ybkj.videoaccess.mvp.presenter.StartPresenter;
 import com.ybkj.videoaccess.util.CommonUtil;
@@ -40,6 +41,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
     @BindView(R.id.imgCode) ImageView imgCode;
 
     private PreferencesUtils preferencesUtils;
+    private String device_id;
 
     @Override
     protected int setLayoutId() {
@@ -65,7 +67,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
     protected void initView() {
         preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
 
-        String device_id = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
+        device_id = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
         if(TextUtils.isEmpty(device_id)){
             device_id = MyDeviceInfo.getDeviceId(this);
         }
@@ -110,6 +112,10 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
     @Override
     public void showFullDataLoad(FullDataInfo dataInfo) {
-
+        RequestResourcesBean requestResourcesBean = new RequestResourcesBean();
+        requestResourcesBean.setMjseq(device_id);
+        requestResourcesBean.setToken(dataInfo.getTOKEN());
+        requestResourcesBean.setRES_TYPE("1");
+        mPresenter.resources(requestResourcesBean);
     }
 }

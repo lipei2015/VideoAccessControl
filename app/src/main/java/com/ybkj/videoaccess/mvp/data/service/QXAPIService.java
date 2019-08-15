@@ -7,6 +7,7 @@ import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
+import com.ybkj.videoaccess.mvp.data.bean.RequestResourcesBean;
 import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
 import com.ybkj.videoaccess.util.http.CommonResult;
 import com.ybkj.videoaccess.util.http.Result;
@@ -24,6 +25,7 @@ import static com.ybkj.videoaccess.app.ConstantApi.devDeploy;
 import static com.ybkj.videoaccess.app.ConstantApi.fullDataLoad;
 import static com.ybkj.videoaccess.app.ConstantApi.gateOpenRecord;
 import static com.ybkj.videoaccess.app.ConstantApi.pwdValidation;
+import static com.ybkj.videoaccess.app.ConstantApi.resources;
 
 public interface QXAPIService {
     @POST(Remot_Open_Debug)
@@ -46,6 +48,15 @@ public interface QXAPIService {
     @Headers("urlname:qxapi")
     @POST(fullDataLoad)
     Observable<CommonResult<FullDataInfo>> fullDataLoad(@Body RequestFullDataLoadBean body);
+
+    /**
+     * 初始化资源请求接口
+     * @param body
+     * @return
+     */
+    @Headers("urlname:qxapi")
+    @POST(resources)
+    Observable<CommonResult<FullDataInfo>> resources(@Body RequestResourcesBean body);
 
 
     /**

@@ -13,11 +13,15 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.google.android.things.pio.Gpio;
+import com.google.android.things.pio.GpioCallback;
+import com.google.android.things.pio.PeripheralManager;
+import com.google.gson.Gson;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
-import com.ybkj.videoaccess.IFaceApi;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
+import com.ybkj.videoaccess.mvp.data.bean.RemoteResultBean;
 import com.ybkj.videoaccess.mvp.data.model.HomeModel;
 import com.ybkj.videoaccess.mvp.presenter.HomePresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
@@ -26,6 +30,7 @@ import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.websocket.JWebSocketClient;
 import com.ybkj.videoaccess.websocket.JWebSocketClientService;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -64,21 +69,106 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
         //注册广播
         registerReceiver();
 
-//        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+        // 实例化远程调用设备SDK服务
+        initAidlService();
+
+//        initPeripheralManager();
+
+        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+    }
+
+    //输入和输出GPIO引脚名称
+    private static final String GPIO_IN_NAME = "BCM21";
+    private static final String GPIO_OUT_NAME = "BCM5";
+
+    //输入和输出Gpio
+    private Gpio mGpioIn;
+    private Gpio mGpioOut;
+    private void initPeripheralManager(){
+        PeripheralManager manager = PeripheralManager.getInstance();
+        try {
+            //打开并设置输入Gpio，监听输入信号变化（开关按钮的开关）
+            mGpioIn = manager.openGpio(GPIO_IN_NAME);
+            mGpioIn.setDirection(Gpio.DIRECTION_IN);
+            mGpioIn.setEdgeTriggerType(Gpio.EDGE_FALLING);
+            mGpioIn.setActiveType(Gpio.ACTIVE_HIGH);
+//            mGpioIn.registerGpioCallback(mGpioCallback);
+
+            //打开并设置输出Gpio
+            mGpioOut = manager.openGpio(GPIO_OUT_NAME);
+            mGpioOut.setDirection(Gpio.DIRECTION_OUT_INITIALLY_HIGH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*private GpioCallback mGpioCallback = new GpioCallback() {
+        @Override
+        public boolean onGpioEdge(Gpio gpio) {
+            try {
+                //当按开关按钮的时候，改变输出Gpio的信号，从而控制LED灯的亮和灭
+                mGpioOut.setValue(!mGpioOut.getValue());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+
+        @Override
+        public void onGpioError(Gpio gpio, int error) {
+        }
+    };*/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //关闭Gpio
+        if (mGpioIn != null) {
+            try {
+//                mGpioIn.unregisterGpioCallback(mGpioCallback);
+                mGpioIn.close();
+                mGpioIn = null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (mGpioOut != null) {
+            try {
+                mGpioOut.close();
+                mGpioOut = null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void initAidlService(){
+        // 通过Intent指定服务端的服务名称和所在包，与远程Service进行绑定
+        //参数与服务器端的action要一致,即"服务器包名.aidl接口文件名"
+        Intent intent = new Intent("com.wrtsz.intercom.master.IFaceApi");
+
+        //Android5.0后无法只通过隐式Intent绑定远程Service
+        //需要通过setPackage()方法指定包名
+        intent.setPackage("com.wrtsz.intercom.master");
+
+        //绑定服务,传入intent和ServiceConnection对象
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     //创建ServiceConnection的匿名类
     private ServiceConnection connection = new ServiceConnection() {
-
         //重写onServiceConnected()方法和onServiceDisconnected()方法
         //在Activity与Service建立关联和解除关联的时候调用
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            Log.e("onServiceDisconnected", "aidl远程服务断开成功");
         }
 
         //在Activity与Service建立关联时调用
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.e("onServiceConnected", "aidl远程服务连接成功");
             //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
             iFaceApi = IFaceApi.Stub.asInterface(service);
             try {
@@ -88,6 +178,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
                 e.printStackTrace();
             }
         }
+
     };
 
     /**
@@ -133,6 +224,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
         @Override
         public void onReceive(Context context, Intent intent) {
             String message=intent.getStringExtra("message");
+            RemoteResultBean remoteResultBean = new Gson().fromJson(message,RemoteResultBean.class);
             Log.e("onReceive", "收到："+message);
             /*ChatMessage chatMessage=new ChatMessage();
             chatMessage.setContent(message);
