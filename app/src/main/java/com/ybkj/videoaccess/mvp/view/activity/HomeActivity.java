@@ -74,7 +74,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
 
 //        initPeripheralManager();
 
-        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+//        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
     }
 
     //输入和输出GPIO引脚名称
@@ -146,14 +146,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     private void initAidlService(){
         // 通过Intent指定服务端的服务名称和所在包，与远程Service进行绑定
         //参数与服务器端的action要一致,即"服务器包名.aidl接口文件名"
-        Intent intent = new Intent("com.wrtsz.intercom.master.IFaceApi");
+//        Intent intent = new Intent("com.wrtsz.intercom.master.IFaceApi");
+        Intent intent = new Intent("com.wrtsz.intercom.master.WRT_FACE_SERVICE");
 
         //Android5.0后无法只通过隐式Intent绑定远程Service
         //需要通过setPackage()方法指定包名
         intent.setPackage("com.wrtsz.intercom.master");
 
         //绑定服务,传入intent和ServiceConnection对象
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        boolean iss = bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Log.e("iss",iss+"---");
     }
 
     //创建ServiceConnection的匿名类
@@ -173,7 +175,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
             iFaceApi = IFaceApi.Stub.asInterface(service);
             try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
-                iFaceApi.recognition("skfjskfjsfkd","");
+                String result = iFaceApi.recognition("skfjskfjsfkd","");
+                Log.e("result", "result:"+result);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
