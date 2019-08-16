@@ -38,17 +38,17 @@ interface IFaceApi {
        “failed_image_error”:使用 base64 方式时,可能返回该错误，
        表示对应的 base64 无法解析成图片或者解析成不支持的图片。
 
-       FaceInfos
+       DeviceFaceInfos
         JSON
         人脸信息列表， 是一个 json 数组， 只有当 RetStr 为“ok” 时，
        该参数才有实际意义。 如果没有输入参数
-       NeedQualityDetection， 则 FaceInfos 中就不包含
+       NeedQualityDetection， 则 DeviceFaceInfos 中就不包含
        FaceQualityScore。 如果没有人脸， 则该项内容为空
 
        示例：
        {
        "RetStr":"ok",
-       "FaceInfos": [
+       "DeviceFaceInfos": [
        {
        "X": 156,
        "Y": 129,

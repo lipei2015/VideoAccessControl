@@ -36,4 +36,5 @@
     <dimen name="list_dialog_item_height">70px</dimen>
     <dimen name="list_dialog_item_margin_top">20px</dimen>
 
+    <dimen name="dialog_item_text_size">25sp</dimen>
 </resources>
