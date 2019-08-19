@@ -37,16 +37,13 @@ public class ConstantSys {
     /**
      * 第三方APP KEY
      **/
-    public static final String APPKEY_BUGTAGS = "7703b37ae6896df44b4bc22d2de4b360";  //BugTags测试key
-    public static final String APPKEY_UMENG = "59954da89f06fd3cc10001d6";//友盟AppKey
-    public static final String APPKEY_COSTOMER = "gzyubei#lottery";  //环信客服AppKey
-    public static final String CUSTOMER_KEFU = "KeFu";//环信客服账号
+    public static final String APPKEY_UMENG = "5d5a459c3fc195fcc7000eab";//友盟AppKey
     /******END*****/
 
     /**
      * SD卡目录
      **/
-    public static final String MAIN_PATH = "/Ybkj/VideoAccess";
+    public static final String MAIN_PATH = "/sdcard/faceinfo/";
     public static final String CACHE_PATH = MAIN_PATH + "/Cache"; //所有缓存目录
     public static final String CACHE_IMG = CACHE_PATH + "/CacheImg";  //Glide图片缓存目录
     public static final String FILE_TEMP = CACHE_PATH + "/Temp"; //用户头像、APK、上传的图片文件夹【临时文件夹，方便清除】

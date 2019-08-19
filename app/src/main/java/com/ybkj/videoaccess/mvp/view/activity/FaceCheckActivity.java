@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
+import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.FaceCheckControl;
 import com.ybkj.videoaccess.mvp.data.bean.DeviceRecognitionResult;
@@ -29,6 +30,7 @@ import com.ybkj.videoaccess.mvp.data.model.FaceCheckModel;
 import com.ybkj.videoaccess.mvp.presenter.FaceCheckPresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.ConfirmDialog;
 import com.ybkj.videoaccess.util.DataUtil;
+import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.ImageUtil;
 import com.ybkj.videoaccess.util.TextToSpeechUtil;
 
@@ -64,6 +66,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     //定义aidl接口变量
     private IFaceApi iFaceApi;
     private TextToSpeechUtil textToSpeechUtil;
+    private String localPath;
 
     @Override
     protected int setLayoutId() {
@@ -97,6 +100,9 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         widthPixels = outMetrics.widthPixels;
         heightPixels = outMetrics.heightPixels;
+
+        localPath = ConstantSys.MAIN_PATH;
+        FileUtil.createDirectory(localPath);
 
         //点击预览界面聚焦
         /*mPreview.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +175,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         public void onPictureTaken(byte[] data, Camera camera) {
 //            safeToTakePicture = true;
             long now = System.currentTimeMillis();
-            String path = "/sdcard/emp"+now+".png";
+            String path = localPath+now+".png";
             File tempfile = new File(path);//新建一个文件对象tempfile，并保存在某路径中
 
             try {

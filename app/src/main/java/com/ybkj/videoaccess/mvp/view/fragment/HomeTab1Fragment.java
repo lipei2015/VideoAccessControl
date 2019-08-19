@@ -1,14 +1,11 @@
 package com.ybkj.videoaccess.mvp.view.fragment;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseFragment;
-import com.ybkj.videoaccess.mvp.view.activity.StartCameraActivity;
 
 import butterknife.BindView;
 
@@ -51,9 +48,9 @@ public class HomeTab1Fragment extends BaseFragment {
                 intent2.putExtra("window", 0);
                 context.sendBroadcast(intent2);*/
 
-                Intent intent4 = new Intent();
-                intent4.setClass(context, StartCameraActivity.class);
-                startActivity(intent4);
+//                Intent intent4 = new Intent();
+//                intent4.setClass(context, StartCameraActivity.class);
+//                startActivity(intent4);
 
             }
         });

@@ -89,7 +89,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
         boolean downloaded = preferencesUtils.getBoolean(ConstantSys.PREFERENCE_DOWNLOADED_DATA,false);
 
-        if(downloaded){
+        if(!downloaded){
             startActivity(new Intent(this, HomeActivity.class));
             new Handler().postDelayed(() -> onFinishActivity(), 1000);
         }else{

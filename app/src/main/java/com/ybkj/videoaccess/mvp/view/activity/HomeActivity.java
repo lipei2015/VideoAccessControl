@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.google.gson.Gson;
+import com.google.zxing.client.android.CaptureActivity;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
@@ -47,6 +48,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
 
     //定义aidl接口变量
     private IFaceApi iFaceApi;
+    public final static int SCANNING_REQUEST_CODE = 1;
 
     @Override
     protected int setLayoutId() {
@@ -78,7 +80,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
         audioMngHelper.setAudioType(AudioMngHelper.TYPE_RING);
 //        audioMngHelper.setVoice100(60);
 
-        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+//        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
     }
 
     private void initAidlService(){
@@ -258,7 +260,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         ToastUtil.showMsg(keyCode+"--------");
 
-        /*if(listDialog == null){
+        if(listDialog == null){
             listDialog = new ListDialog(HomeActivity.this);
             listDialog.show();
         }else{
@@ -285,7 +287,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
                         break;
                     case 12:
                         // 5
-
+                        listDialog.onItemClick(5);
                         break;
                     case 13:
                         // 6
@@ -310,11 +312,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
             }else{
                 listDialog.show();
             }
-        }*/
+        }
 
-        /*if(keyCode == KeyEvent.KEYCODE_BACK) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(this, CaptureActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(intent, SCANNING_REQUEST_CODE);
             return false;
-        }*/
+        }
 
         return super.onKeyDown(keyCode, event);
     }

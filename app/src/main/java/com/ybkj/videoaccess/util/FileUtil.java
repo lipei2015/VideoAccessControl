@@ -305,4 +305,16 @@ public class FileUtil {
         }
         return fileSizeString;
     }
+
+    /**
+     * 判断文件夹是否存在，不存在就新建
+     * @param path
+     */
+    public static void createDirectory(String path){
+        File file = new File(path);
+        if(!file.exists()){
+            file.mkdir();
+        }
+    }
+
 }

@@ -13,6 +13,7 @@ public class ListDialog extends BaseDialog implements View.OnClickListener {
     private Button button_2;
     private Button button_3;
     private Button button_4;
+    private Button button_5;
     private View v;
     private ConfirmDialog.OnConfirm onConfirm;
 
@@ -31,6 +32,7 @@ public class ListDialog extends BaseDialog implements View.OnClickListener {
         button_2 = (Button) v.findViewById(R.id.button_2);
         button_3 = (Button) v.findViewById(R.id.button_3);
         button_4 = (Button) v.findViewById(R.id.button_4);
+        button_5 = (Button) v.findViewById(R.id.button_5);
         setContentView(v);
     }
 
@@ -43,7 +45,7 @@ public class ListDialog extends BaseDialog implements View.OnClickListener {
         dismiss();
         switch (value){
             case 1:
-
+                // 人脸注册
                 break;
             case 2:
 
@@ -52,6 +54,9 @@ public class ListDialog extends BaseDialog implements View.OnClickListener {
 
                 break;
             case 4:
+
+                break;
+            case 5:
 
                 break;
         }

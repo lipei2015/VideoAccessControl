@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_dialog_item_height"
         android:background="@drawable/button_common_selector"
-        android:text="1 通行密码"
+        android:text="1 人脸注册"
         android:textColor="@color/white"
         android:textSize="25sp" />
 
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_dialog_item_height"
         android:background="@drawable/button_common_selector"
-        android:text="2 呼叫业主"
+        android:text="2 通行密码"
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/list_dialog_item_margin_top"
         android:textSize="25sp" />
@@ -33,13 +33,22 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_dialog_item_height"
         android:background="@drawable/button_common_selector"
-        android:text="3 卡片关联"
+        android:text="3 呼叫业主"
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/list_dialog_item_margin_top"
         android:textSize="25sp" />
 
     <Button
         android:id="@+id/button_4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_dialog_item_height"
+        android:background="@drawable/button_common_selector"
+        android:layout_marginTop="@dimen/list_dialog_item_margin_top"
+        android:text="4 卡片关联"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+    <Button
+        android:id="@+id/button_5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_dialog_item_height"
         android:background="@drawable/button_common_selector"

@@ -112,17 +112,17 @@
             android:theme="@style/whiteTheme"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.ybkj.videoaccess.mvp.view.activity.StartCameraActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/whiteTheme"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.ResultActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/whiteTheme" />
         <activity
             android:name="com.ybkj.videoaccess.mvp.view.activity.BeginScanActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/whiteTheme"/>
+        <activity
+            android:name="com.ybkj.videoaccess.mvp.view.activity.FaceRegistActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/whiteTheme"/>
