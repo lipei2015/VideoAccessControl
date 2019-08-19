@@ -362,14 +362,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.capture, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -394,7 +394,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             return super.onOptionsItemSelected(item);
         }
         return true;
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -446,7 +446,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     /**
      * A valid barcode has been found, so give an indication of success and show the results.
-     *
+     * 二维码扫描结果出来后，调用此方法
      * @param rawResult   The contents of the barcode.
      * @param scaleFactor amount by which thumbnail was scaled
      * @param barcode     A greyscale bitmap of the camera data which was decoded.
@@ -485,7 +485,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     // Wait a moment or else it will scan the same barcode continuously about 3 times
                     restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
                 } else {
-                    handleDecodeInternally(rawResult, resultHandler, barcode);
+//                    handleDecodeInternally(rawResult, resultHandler, barcode);
+
+                    Intent intent = new Intent();
+                    intent.setClassName(this, "com.ybkj.videoaccess.mvp.view.activity.FaceRegistActivity");
+                    intent.putExtra("address",rawResult.getText());
+                    startActivity(intent);
+                    finish();
                 }
                 break;
         }

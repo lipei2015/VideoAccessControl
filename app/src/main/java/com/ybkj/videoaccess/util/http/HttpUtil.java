@@ -78,7 +78,7 @@ public class HttpUtil {
 
         //添加Token自动登录拦截器
         builder.addInterceptor(new InterceptorToken());
-        builder.addInterceptor(new BaseUrlInterceptor());
+//        builder.addInterceptor(new BaseUrlInterceptor());
 
         //添加cookie持久化登录拦截器
         ClearableCookieJar cookieJar =

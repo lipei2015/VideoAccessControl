@@ -89,7 +89,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
         boolean downloaded = preferencesUtils.getBoolean(ConstantSys.PREFERENCE_DOWNLOADED_DATA,false);
 
-        if(!downloaded){
+        if(downloaded){
             startActivity(new Intent(this, HomeActivity.class));
             new Handler().postDelayed(() -> onFinishActivity(), 1000);
         }else{
@@ -100,8 +100,6 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
             requestFullDataLoadBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
             mPresenter.fullDataLoad(requestFullDataLoadBean);
         }
-
-
 
 //        ViewUtil.dip2px(this,180)
 
@@ -118,7 +116,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
         RequestResourcesBean requestResourcesBean = new RequestResourcesBean();
         requestResourcesBean.setMjseq(device_id);
         requestResourcesBean.setToken(dataInfo.getTOKEN());
-        requestResourcesBean.setRES_TYPE("1");
+        requestResourcesBean.setRes_type("3");
         mPresenter.resources(requestResourcesBean);
     }
 }

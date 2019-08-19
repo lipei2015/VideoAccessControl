@@ -43,6 +43,8 @@ public class ConstantSys {
     /**
      * SD卡目录
      **/
+    public static final String CHECK_PATH = "/sdcard/faceCheckPic/";
+    public static final String REGIST_PATH = "/sdcard/faceRegistPic/";
     public static final String MAIN_PATH = "/sdcard/faceinfo/";
     public static final String CACHE_PATH = MAIN_PATH + "/Cache"; //所有缓存目录
     public static final String CACHE_IMG = CACHE_PATH + "/CacheImg";  //Glide图片缓存目录

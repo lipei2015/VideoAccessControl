@@ -101,7 +101,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         widthPixels = outMetrics.widthPixels;
         heightPixels = outMetrics.heightPixels;
 
-        localPath = ConstantSys.MAIN_PATH;
+        localPath = ConstantSys.CHECK_PATH;
         FileUtil.createDirectory(localPath);
 
         //点击预览界面聚焦
@@ -202,8 +202,6 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
             }
         }
     };
-
-
 
     Timer closeTimer;
     private void cancelCountDownTimer() {
@@ -331,14 +329,6 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
             }
         }, 1300);
     }
-
-    /*Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            capture(mPreview);
-            super.handleMessage(msg);
-        }
-    };*/
 
     /**
      * 定义“拍照”方法
