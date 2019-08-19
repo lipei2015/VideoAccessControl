@@ -76,7 +76,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_ALARM);
         audioMngHelper.setAudioType(AudioMngHelper.TYPE_RING);
-        audioMngHelper.setVoice100(90);
+//        audioMngHelper.setVoice100(60);
 
         startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
     }

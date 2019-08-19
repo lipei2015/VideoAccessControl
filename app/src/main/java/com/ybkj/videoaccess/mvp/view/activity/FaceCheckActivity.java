@@ -90,7 +90,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         mHolder = mPreview.getHolder();
         mHolder.addCallback(this);
 
-        textToSpeechUtil = new TextToSpeechUtil(this);
+//        textToSpeechUtil = new TextToSpeechUtil(this);
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
 
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -182,21 +182,22 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                 startActivity(intent);//打开新的activity，即打开展示照片的布局界面
                 FaceCheckActivity.this.finish();//关闭现有界面*/
 
+                // 拍照之后继续显示预览界面
+                setStartPreview (mCamera, mHolder);
+
                 Message msg = new Message();
                 msg.what = CASE_DEAL_PICTURE;
                 Bundle bundle = new Bundle();
                 bundle.putString("path",tempfile.getAbsolutePath());
                 msg.setData(bundle);
                 handler.sendMessage(msg);
-
-
-                //TODO 调用设备SDK进行人像检测，若返回人像ID就表示成功，再调用设备开门接口，再调用开门记录上传接口，若成功则返回到上一个界面
-//                ImageUtil.imageToBase64(tempfile.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     };
+
+
 
     Timer closeTimer;
     private void cancelCountDownTimer() {
@@ -206,7 +207,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         }
     }
 
-    private int countDown = 5;      // 提示框隐藏倒计时，从5秒开始
+    private int countDown = 5;      // 提示框隐藏倒计时，从5秒开始，一秒调用一次
     private void startCountDownTimer() {
         closeTimer = new Timer();
         closeTimer.schedule(new TimerTask() {
@@ -218,9 +219,6 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                 countDown -- ;
                 message.arg1 = countDown;
                 handler.sendMessage(message);
-//                if(confirmDialog != null && confirmDialog.isShowing()){
-//                    confirmDialog.dismiss();
-//                }
             }
         }, 1000,1000);
     }
@@ -234,6 +232,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                     capture(mPreview);
                     break;
                 case CASE_DEAL_PICTURE:
+                    //TODO 调用设备SDK进行人像检测，若返回人像ID就表示成功，再调用设备开门接口，再调用开门记录上传接口，若成功则返回到上一个界面
                     // 处理拍出来的照片
                     String path = msg.getData().getString("path");
                     String requestResult = null;
@@ -280,7 +279,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                             cancelCountDownTimer();
                             startCountDownTimer();
 
-                            textToSpeechUtil.notifyNewMessage("你好");
+//                            textToSpeechUtil.notifyNewMessage("你好");
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -353,7 +352,6 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                 }
             }
         });
-
     }
 
     /**
@@ -431,7 +429,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
      */
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        setStartPreview(mCamera, mHolder);
+        setStartPreview (mCamera, mHolder);
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.google.zxing.client.android.util.QRCodeUtil;
 import com.wrtsz.api.IWrtdevManager;
 import com.wrtsz.api.WrtdevManager;
@@ -21,6 +22,7 @@ import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.StartControl;
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
+import com.ybkj.videoaccess.mvp.data.bean.InitInfoBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestResourcesBean;
 import com.ybkj.videoaccess.mvp.data.model.StartModel;
@@ -74,7 +76,8 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 //        String mac = MyDeviceInfo.getMacDefault(this);
 //        String mac = MyDeviceInfo.getDeviceId(this);
 //        ToastUtil.showMsg(mac);
-        imgCode.setImageBitmap(QRCodeUtil.createQRImage(device_id,
+        InitInfoBean initInfoBean = new InitInfoBean(device_id);
+        imgCode.setImageBitmap(QRCodeUtil.createQRImage(new Gson().toJson(initInfoBean),
                 (int)getResources().getDimension(R.dimen.start_code_size),(int)getResources().getDimension(R.dimen.start_code_size)));
 
 //        String ip = "http://"+CommonUtil.getIPAddress(this);
@@ -86,7 +89,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
         boolean downloaded = preferencesUtils.getBoolean(ConstantSys.PREFERENCE_DOWNLOADED_DATA,false);
 
-        if(!downloaded){
+        if(downloaded){
             startActivity(new Intent(this, HomeActivity.class));
             new Handler().postDelayed(() -> onFinishActivity(), 1000);
         }else{
