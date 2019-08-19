@@ -3,6 +3,7 @@ package com.ybkj.videoaccess.mvp.data.service;
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDevDeployBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestDownloadUserFaceBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
@@ -22,10 +23,12 @@ import rx.Observable;
 import static com.ybkj.videoaccess.app.ConstantApi.GET_CONFIG;
 import static com.ybkj.videoaccess.app.ConstantApi.Remot_Open_Debug;
 import static com.ybkj.videoaccess.app.ConstantApi.devDeploy;
+import static com.ybkj.videoaccess.app.ConstantApi.downloadUserFace;
 import static com.ybkj.videoaccess.app.ConstantApi.fullDataLoad;
 import static com.ybkj.videoaccess.app.ConstantApi.gateOpenRecord;
 import static com.ybkj.videoaccess.app.ConstantApi.pwdValidation;
 import static com.ybkj.videoaccess.app.ConstantApi.resources;
+import static com.ybkj.videoaccess.app.ConstantApi.userAuthReport;
 
 public interface QXAPIService {
     @POST(Remot_Open_Debug)
@@ -58,6 +61,17 @@ public interface QXAPIService {
     @POST(resources)
     Observable<CommonResult<FullDataInfo>> resources(@Body RequestResourcesBean body);
 
+    /**
+     * 此接口是针对于用户注册的时候的用户信息拉取，即此时拉取过来的用户是未完成人脸数据核验的居住人员。
+     * 即经过房东审批但是没有验证人脸，通过居住人员通过app向门禁主机展示二维码实现人脸登记之前拉取人员信息。
+     * @param body
+     * @return
+     */
+    @POST(downloadUserFace)
+    Observable<CommonResult<FullDataInfo>> downloadUserFace(@Body RequestDownloadUserFaceBean body);
+
+    @POST(userAuthReport)
+    Observable<CommonResult<FullDataInfo>> userAuthReport(@Body RequestResourcesBean body);
 
     /**
      * 开门记录上传

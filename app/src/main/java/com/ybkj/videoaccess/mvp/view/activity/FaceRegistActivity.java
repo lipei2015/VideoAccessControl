@@ -190,7 +190,7 @@ public class FaceRegistActivity extends BaseActivity implements SurfaceHolder.Ca
 
                     if(iFaceApi != null){
                         try {
-                            DeviceRegistResult deviceRegistResult = GsonUtils.gson.fromJson(iFaceApi.reg(path,null,"",0),
+                            DeviceRegistResult deviceRegistResult = GsonUtils.getGson().fromJson(iFaceApi.reg(path,null,"",0),
                                     DeviceRegistResult.class);
                             if(deviceRegistResult.getRetStr().equals("")){
                                 // 注册成功

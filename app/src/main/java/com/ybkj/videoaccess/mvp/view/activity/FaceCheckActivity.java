@@ -31,6 +31,7 @@ import com.ybkj.videoaccess.mvp.presenter.FaceCheckPresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.ConfirmDialog;
 import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
+import com.ybkj.videoaccess.util.GsonUtils;
 import com.ybkj.videoaccess.util.ImageUtil;
 import com.ybkj.videoaccess.util.TextToSpeechUtil;
 
@@ -244,7 +245,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                         // 进行远程调用设备人脸识别SDK
                         if(iFaceApi != null) {
                             requestResult = iFaceApi.recognition(ImageUtil.imageToBase64(path), null);
-                            DeviceRecognitionResult deviceRecognitionResult = new Gson().fromJson(requestResult, DeviceRecognitionResult.class);
+                            DeviceRecognitionResult deviceRecognitionResult = GsonUtils.getGson().fromJson(requestResult, DeviceRecognitionResult.class);
 
                             if (deviceRecognitionResult != null && deviceRecognitionResult.getRetStr().equals("ok")) {
                                 // 人脸识别成功，先开门
