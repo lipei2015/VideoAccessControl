@@ -71,6 +71,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
 
     private final int CASE_TAKE_PICTURE = 0;
     private final int CASE_DEAL_PICTURE = 1;
+    private final int CASE_COUNT_DOWN = 2;      // 提示框倒计时
+    private ConfirmDialog confirmDialog;
 
     private PreferencesUtils preferencesUtils;
     private String device_id;
@@ -134,11 +136,45 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     @Override
     public void showCheckRegistResult(RegistCheckInfo registCheckInfo) {
         userName = registCheckInfo.getName();
-        if(registCheckInfo.isValidation_result()) {
+        if(!registCheckInfo.isValidation_result()) {
             startTimer();
         }else{
             // 提示验证失败
+            if (confirmDialog == null) {
+                confirmDialog = new ConfirmDialog(FaceRegistActivity.this);
+                confirmDialog.setNoTitle(true);
+                confirmDialog.setLeftVisiable(false);
+                confirmDialog.setMessage("用户未经登记，不能进行登记采集(5S)");
+            }
+            confirmDialog.show();
+            countDown = 5;
+            cancelCountDownTimer();
+            startCountDownTimer();
         }
+    }
+
+    Timer closeTimer;
+    private void cancelCountDownTimer() {
+        if (closeTimer != null) {
+            closeTimer.cancel();
+            closeTimer = null;
+        }
+    }
+
+    private int countDown = 5;      // 提示框隐藏倒计时，从5秒开始，一秒调用一次
+    private void startCountDownTimer() {
+        closeTimer = new Timer();
+        closeTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = CASE_COUNT_DOWN;
+                countDown -- ;
+                message.arg1 = countDown;
+                handler.sendMessage(message);
+            }
+        }, 1000,1000);
     }
 
     private void initAidlService(){
@@ -232,13 +268,26 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                             DeviceRegistResult deviceRegistResult = GsonUtils.getGson().fromJson(iFaceApi.reg(path,null,userName,0),
                                     DeviceRegistResult.class);
                             if(deviceRegistResult.getRetStr().equals("")){
-                                // 注册成功
+                                //TODO 注册成功,将人脸数据连同人员标识上传到后台
                             }else{
-
+                                // 注册失败，语音提示
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
+                    }
+                    break;
+                case CASE_COUNT_DOWN:
+                    int time = msg.arg1;
+                    if(time < 0){
+                        cancelCountDownTimer();
+                        if(confirmDialog != null && confirmDialog.isShowing()){
+                            confirmDialog.cancel();
+                            finish();
+                        }
+                    }else{
+                        confirmDialog.setMessage("用户未经登记，不能进行登记采集("+time+"S)");
+                        confirmDialog.show();
                     }
                     break;
             }

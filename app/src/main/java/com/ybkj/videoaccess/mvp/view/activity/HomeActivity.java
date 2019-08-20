@@ -24,6 +24,7 @@ import com.ybkj.videoaccess.mvp.data.model.HomeModel;
 import com.ybkj.videoaccess.mvp.presenter.HomePresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
 import com.ybkj.videoaccess.util.AudioMngHelper;
+import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.LogUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.websocket.JWebSocketClient;
@@ -84,11 +85,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
 
 //        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
 
-        ByteBuffer bb = ByteBuffer.wrap(new byte[12]);
+        /*ByteBuffer bb = ByteBuffer.wrap(new byte[12]);
         byte[] bytes = new byte[]{23,33,55,55};
         // 存入字符串
-        bb.asCharBuffer().put("abdcef");
-        Log.e("ByteBuffer",Arrays.toString(bb.array()));
+        bb.asCharBuffer().put("7c635c9d");
+        Log.e("ByteBuffer",Arrays.toString(bb.array()));*/
+
+        byte[] bytes = new byte[]{23,33,55,55};
+        Log.e("ByteBuffer", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"");
     }
 
     private void initAidlService(){
@@ -280,6 +284,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
                     case 8:
                         // 1
                         listDialog.onItemClick(1);
+                        Intent intent = new Intent(this, CaptureActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivityForResult(intent, SCANNING_REQUEST_CODE);
                         break;
                     case 9:
                         // 2
