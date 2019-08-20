@@ -2,6 +2,7 @@ package com.ybkj.videoaccess.mvp.data.service;
 
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
+import com.ybkj.videoaccess.mvp.data.bean.RegistCheckInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDevDeployBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDownloadUserFaceBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
@@ -68,7 +69,7 @@ public interface QXAPIService {
      * @return
      */
     @POST(downloadUserFace)
-    Observable<CommonResult<FullDataInfo>> downloadUserFace(@Body RequestDownloadUserFaceBean body);
+    Observable<CommonResult<RegistCheckInfo>> downloadUserFace(@Body RequestDownloadUserFaceBean body);
 
     @POST(userAuthReport)
     Observable<CommonResult<FullDataInfo>> userAuthReport(@Body RequestResourcesBean body);

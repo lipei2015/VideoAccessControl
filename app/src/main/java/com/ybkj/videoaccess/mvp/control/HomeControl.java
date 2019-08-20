@@ -1,6 +1,7 @@
 package com.ybkj.videoaccess.mvp.control;
 
 import com.ybkj.videoaccess.mvp.base.mvpBase.MvpBasePresenter;
+import com.ybkj.videoaccess.mvp.base.mvpBase.MvpBaseView;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.inf.IHomeMode;
 
@@ -9,7 +10,7 @@ public interface HomeControl {
 //        public abstract void gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean);
     }
 
-    interface IHomeView{
+    interface IHomeView extends MvpBaseView {
 //        public void showGateOpenRecordResult(String result);
     }
 }

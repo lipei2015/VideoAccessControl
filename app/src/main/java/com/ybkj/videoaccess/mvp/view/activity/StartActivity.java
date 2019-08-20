@@ -72,6 +72,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
         device_id = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
         if(TextUtils.isEmpty(device_id)){
             device_id = MyDeviceInfo.getDeviceId(this);
+            preferencesUtils.putString(ConstantSys.PREFERENCE_DEVICE_ID,device_id);
         }
 //        String mac = MyDeviceInfo.getMacDefault(this);
 //        String mac = MyDeviceInfo.getDeviceId(this);
@@ -89,7 +90,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
         boolean downloaded = preferencesUtils.getBoolean(ConstantSys.PREFERENCE_DOWNLOADED_DATA,false);
 
-        if(downloaded){
+        if(!downloaded){
             startActivity(new Intent(this, HomeActivity.class));
             new Handler().postDelayed(() -> onFinishActivity(), 1000);
         }else{

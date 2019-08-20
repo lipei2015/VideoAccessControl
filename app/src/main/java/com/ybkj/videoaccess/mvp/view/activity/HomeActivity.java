@@ -29,6 +29,8 @@ import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.websocket.JWebSocketClient;
 import com.ybkj.videoaccess.websocket.JWebSocketClientService;
 
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -81,6 +83,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
 //        audioMngHelper.setVoice100(60);
 
 //        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+
+        ByteBuffer bb = ByteBuffer.wrap(new byte[12]);
+        byte[] bytes = new byte[]{23,33,55,55};
+        // 存入字符串
+        bb.asCharBuffer().put("abdcef");
+        Log.e("ByteBuffer",Arrays.toString(bb.array()));
     }
 
     private void initAidlService(){

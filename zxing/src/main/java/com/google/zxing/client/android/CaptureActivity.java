@@ -489,7 +489,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
                     Intent intent = new Intent();
                     intent.setClassName(this, "com.ybkj.videoaccess.mvp.view.activity.FaceRegistActivity");
-                    intent.putExtra("address",rawResult.getText());
+                    intent.putExtra("pid",rawResult.getText());
                     startActivity(intent);
                     finish();
                 }

@@ -25,15 +25,21 @@ import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
+import com.ybkj.videoaccess.mvp.control.FaceRegistControl;
 import com.ybkj.videoaccess.mvp.data.bean.DeviceRecognitionResult;
 import com.ybkj.videoaccess.mvp.data.bean.DeviceRegistResult;
+import com.ybkj.videoaccess.mvp.data.bean.RegistCheckInfo;
+import com.ybkj.videoaccess.mvp.data.bean.RequestDownloadUserFaceBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
+import com.ybkj.videoaccess.mvp.data.model.FaceRegistModel;
+import com.ybkj.videoaccess.mvp.presenter.FaceRegistPresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.ConfirmDialog;
 import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
 import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.GsonUtils;
 import com.ybkj.videoaccess.util.ImageUtil;
+import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.TextToSpeechUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
 
@@ -48,7 +54,7 @@ import butterknife.BindView;
 /**
  * 人脸信息绑定注册
  */
-public class FaceRegistActivity extends BaseActivity implements SurfaceHolder.Callback {
+public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRegistModel> implements FaceRegistControl.IFaceRegistView,SurfaceHolder.Callback {
     private boolean safeToTakePicture = false;
     private Camera mCamera;
     @BindView(R.id.preview) SurfaceView mPreview;
@@ -66,6 +72,11 @@ public class FaceRegistActivity extends BaseActivity implements SurfaceHolder.Ca
     private final int CASE_TAKE_PICTURE = 0;
     private final int CASE_DEAL_PICTURE = 1;
 
+    private PreferencesUtils preferencesUtils;
+    private String device_id;
+    private String pid;
+    private String userName;
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_face_regist;
@@ -77,14 +88,28 @@ public class FaceRegistActivity extends BaseActivity implements SurfaceHolder.Ca
     }
 
     @Override
+    protected FaceRegistPresenter createPresenter() {
+        return new FaceRegistPresenter();
+    }
+
+    @Override
+    protected FaceRegistModel createModel() {
+        return new FaceRegistModel();
+    }
+
+    @Override
     protected void initView() {
-        Log.e("address",getIntent().getStringExtra("address"));
+        pid = getIntent().getStringExtra("pid");
+        Log.e("address",pid);
 
         mHolder = mPreview.getHolder();
         mHolder.addCallback(this);
 
 //        textToSpeechUtil = new TextToSpeechUtil(this);
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
+
+        preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
+        device_id = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
 
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
@@ -95,11 +120,25 @@ public class FaceRegistActivity extends BaseActivity implements SurfaceHolder.Ca
         FileUtil.createDirectory(localPath);
 
         //TODO 先判断传过来的用户信息是否与本栋楼匹配，匹配才进行拍照人脸注册
-
+        RequestDownloadUserFaceBean bean = new RequestDownloadUserFaceBean();
+        bean.setPid("123456");
+        bean.setMac(device_id);
+        bean.setOptype("1");
+        mPresenter.downloadUserFace(bean);
 //        startTimer();
 
         // 实例化远程调用设备SDK服务
 //        initAidlService();
+    }
+
+    @Override
+    public void showCheckRegistResult(RegistCheckInfo registCheckInfo) {
+        userName = registCheckInfo.getName();
+        if(registCheckInfo.isValidation_result()) {
+            startTimer();
+        }else{
+            // 提示验证失败
+        }
     }
 
     private void initAidlService(){
@@ -190,7 +229,7 @@ public class FaceRegistActivity extends BaseActivity implements SurfaceHolder.Ca
 
                     if(iFaceApi != null){
                         try {
-                            DeviceRegistResult deviceRegistResult = GsonUtils.getGson().fromJson(iFaceApi.reg(path,null,"",0),
+                            DeviceRegistResult deviceRegistResult = GsonUtils.getGson().fromJson(iFaceApi.reg(path,null,userName,0),
                                     DeviceRegistResult.class);
                             if(deviceRegistResult.getRetStr().equals("")){
                                 // 注册成功
@@ -395,11 +434,10 @@ public class FaceRegistActivity extends BaseActivity implements SurfaceHolder.Ca
                 break;
         }
 
-        if(keyCode == KeyEvent.KEYCODE_BACK) {
+        /*if(keyCode == KeyEvent.KEYCODE_BACK) {
             return false;
-        }
+        }*/
 
         return super.onKeyDown(keyCode, event);
     }
-
 }
