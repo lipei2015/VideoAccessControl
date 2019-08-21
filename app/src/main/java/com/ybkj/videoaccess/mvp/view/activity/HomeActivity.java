@@ -10,8 +10,15 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity;
@@ -19,26 +26,35 @@ import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
+import com.ybkj.videoaccess.mvp.control.HomeControl;
 import com.ybkj.videoaccess.mvp.data.bean.RemoteResultBean;
+import com.ybkj.videoaccess.mvp.data.bean.VedioInfo;
 import com.ybkj.videoaccess.mvp.data.model.HomeModel;
 import com.ybkj.videoaccess.mvp.presenter.HomePresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
 import com.ybkj.videoaccess.util.AudioMngHelper;
+import com.ybkj.videoaccess.util.CommonUtil;
 import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.LogUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.websocket.JWebSocketClient;
 import com.ybkj.videoaccess.websocket.JWebSocketClientService;
+import com.ybkj.videoaccess.weight.VedioHorizontalScorllView;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import butterknife.BindView;
 
 /**
  * 主界面日常视频播放
  */
-public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
+public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> implements HomeControl.IHomeView {
+    @BindView(R.id.horizontalScorllView) VedioHorizontalScorllView horizontalScorllView;
     private WrtdevManager wrtdevManager = null;
     private Timer timer;
     private TimerTask timerTask;
@@ -68,14 +84,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
         initWrtdev();
 
         //启动远程监听服务
-        startJWebSClientService();
+//        startJWebSClientService();
         //绑定服务
-        bindService();
+//        bindService();
         //注册广播
-        registerReceiver();
+//        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
 
         AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -93,12 +109,27 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
 
         byte[] bytes = new byte[]{23,33,55,55};
         Log.e("ByteBuffer", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"");
+
+        List<VedioInfo> vedioInfoList = new ArrayList<>();
+        for(int i=0;i<5;i++) {
+            VedioInfo vedioInfo = new VedioInfo("123","我是测试视频"+i);
+            vedioInfoList.add(vedioInfo);
+        }
+        horizontalScorllView.initData(vedioInfoList, new VedioHorizontalScorllView.IOnItemCheck() {
+            @Override
+            public void onItemCheck(VedioInfo vedioInfo) {
+
+            }
+        });
+
+        // 测试重启设备
+        //CommonUtil.RebootDevice(HomeActivity.this);
     }
 
     private void initAidlService(){
         // 通过Intent指定服务端的服务名称和所在包，与远程Service进行绑定
         //参数与服务器端的action要一致,即"服务器包名.aidl接口文件名"
-//        Intent intent = new Intent("com.wrtsz.intercom.master.IFaceApi");
+        //Intent intent = new Intent("com.wrtsz.intercom.master.IFaceApi");
         Intent intent = new Intent("com.wrtsz.intercom.master.WRT_FACE_SERVICE");
 
         //Android5.0后无法只通过隐式Intent绑定远程Service
@@ -181,13 +212,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
             String message=intent.getStringExtra("message");
             RemoteResultBean remoteResultBean = new Gson().fromJson(message,RemoteResultBean.class);
             Log.e("onReceive", "收到："+message);
-            /*ChatMessage chatMessage=new ChatMessage();
-            chatMessage.setContent(message);
-            chatMessage.setIsMeSend(0);
-            chatMessage.setIsRead(1);
-            chatMessage.setTime(System.currentTimeMillis()+"");
-            chatMessageList.add(chatMessage);
-            initChatMsgListView();*/
         }
     }
 
@@ -338,4 +362,23 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel>{
 
         return super.onKeyDown(keyCode, event);
     }
+
+    /**
+     * 上传开门记录结果
+     * @param result
+     */
+    @Override
+    public void showGateOpenRecordResult(String result) {
+
+    }
+
+    /**
+     * 密码开门结果
+     * @param result
+     */
+    @Override
+    public void showPwdValidation(String result) {
+
+    }
+
 }

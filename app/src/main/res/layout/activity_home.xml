@@ -11,4 +11,30 @@
         android:textColor="@color/white"
         android:gravity="center_horizontal"
         android:layout_marginTop="@dimen/home_title_margin_top"/>
+    <LinearLayout android:layout_marginTop="@dimen/home_title_margin_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_vedio_height">
+        <VideoView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_vedio_height"
+            android:background="@mipmap/p3"/>
+    </LinearLayout>
+    <!--<android.support.v4.view.ViewPager android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_vp_height">
+
+    </android.support.v4.view.ViewPager>-->
+    <com.ybkj.videoaccess.weight.VedioHorizontalScorllView android:id="@+id/horizontalScorllView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_vp_height"
+        android:scrollbars="none">
+    </com.ybkj.videoaccess.weight.VedioHorizontalScorllView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="广州千炫信息科技有限公司"
+        android:textSize="@dimen/home_name_font_size"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/home_title_margin_top"/>
 </LinearLayout>

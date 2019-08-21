@@ -31,6 +31,14 @@
 
 
     <dimen name="home_title_margin_top">60dp</dimen>
+    <dimen name="home_name_font_size">16sp</dimen>
+    <dimen name="home_vedio_height">200dp</dimen>
+    <dimen name="home_vp_height">140dp</dimen>
+    <dimen name="home_vp_image_height">70dp</dimen>
+    <dimen name="home_vp_image_width">110dp</dimen>
+    <dimen name="home_vp_padding_bottom">15dp</dimen>
+    <dimen name="home_vp_title_size">14sp</dimen>
+    <dimen name="vedio_item_text_margin_top">10dp</dimen>
 
     <!--  -->
     <dimen name="list_dialog_padding">30dp</dimen>

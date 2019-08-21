@@ -27,11 +27,7 @@ public class StartPresenter extends StartControl.IStartPresenter {
                 // 数据返回成功检测
                 FullDataInfo result = (FullDataInfo) o;
                 LogUtil.i(result.getTOKEN()+"");
-                /*VersionInfo versionInfo = (VersionInfo) o;
-                if (versionInfo != null) {
-                    PreferencesUtils.getInstance(ConstantSys.PREFERENCE_CONFIG).putString(MyApp.getAppContext(),
-                            ConstantSys.PREFERENCE_VERSION_INFO, new Gson().toJson(versionInfo));
-                }*/
+
                 mView.showFullDataLoad(result);
             }
 
@@ -50,11 +46,7 @@ public class StartPresenter extends StartControl.IStartPresenter {
                 // 数据返回成功检测
                 FullDataInfo result = (FullDataInfo) o;
                 LogUtil.i(result.getTOKEN()+"");
-                /*VersionInfo versionInfo = (VersionInfo) o;
-                if (versionInfo != null) {
-                    PreferencesUtils.getInstance(ConstantSys.PREFERENCE_CONFIG).putString(MyApp.getAppContext(),
-                            ConstantSys.PREFERENCE_VERSION_INFO, new Gson().toJson(versionInfo));
-                }*/
+
                 mView.showFullDataLoad(result);
             }
 
