@@ -31,6 +31,7 @@ import com.ybkj.videoaccess.mvp.data.bean.RemoteResultBean;
 import com.ybkj.videoaccess.mvp.data.bean.VedioInfo;
 import com.ybkj.videoaccess.mvp.data.model.HomeModel;
 import com.ybkj.videoaccess.mvp.presenter.HomePresenter;
+import com.ybkj.videoaccess.mvp.view.dialog.InputDialog;
 import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
 import com.ybkj.videoaccess.util.AudioMngHelper;
 import com.ybkj.videoaccess.util.CommonUtil;
@@ -284,7 +285,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
     };
 
-    private ListDialog listDialog;
+    private ListDialog listDialog;      // 选项列表框
+    private InputDialog inputDialog;    // 密码输入框
 
     /**
      * 监听数字输入
@@ -313,7 +315,18 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                         startActivityForResult(intent, SCANNING_REQUEST_CODE);
                         break;
                     case 9:
-                        // 2
+                        // 2 输入开门密码
+                        if(inputDialog == null){
+                            inputDialog = new InputDialog(HomeActivity.this);
+                            inputDialog.show();
+                        }else{
+                            if(inputDialog.isShowing()){
+                                // 正在输入密码
+                            }else{
+                                //
+
+                            }
+                        }
                         listDialog.onItemClick(2);
                         break;
                     case 10:
@@ -369,7 +382,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      */
     @Override
     public void showGateOpenRecordResult(String result) {
-
+//        mPresenter.gateOpenRecord(null);
     }
 
     /**
