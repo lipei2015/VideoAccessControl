@@ -53,7 +53,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //    private SurfaceView mPreview;
     @BindView(R.id.preview) SurfaceView mPreview;
     private SurfaceHolder mHolder;
-    private int cameraId = 1;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+    private int cameraId = 0;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private int widthPixels;
     private int heightPixels;
@@ -118,7 +118,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //        mPresenter.recognition("45465456456");
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        mPresenter.gateOpenRecord(new RequestGateOpenRecordBean());
     }
@@ -153,13 +153,13 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
             Log.e("onServiceConnected", "aidl远程服务连接成功");
             //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
             iFaceApi = IFaceApi.Stub.asInterface(service);
-            try {
+            /*try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
                 String result = iFaceApi.recognition("skfjskfjsfkd","");
-                Log.e("result", "result:"+result);
+//                Log.e("result", "result:"+result);
             } catch (RemoteException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
     };
@@ -212,6 +212,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         }
     }
 
+    private int count = 3;  // 人脸识别次数
     private int countDown = 5;      // 提示框隐藏倒计时，从5秒开始，一秒调用一次
     private void startCountDownTimer() {
         closeTimer = new Timer();
@@ -246,6 +247,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                         if(iFaceApi != null) {
                             requestResult = iFaceApi.recognition(ImageUtil.imageToBase64(path), null);
                             DeviceRecognitionResult deviceRecognitionResult = GsonUtils.getGson().fromJson(requestResult, DeviceRecognitionResult.class);
+                            Log.e("deviceRecognitionResult",deviceRecognitionResult.getRetStr());
 
                             if (deviceRecognitionResult != null && deviceRecognitionResult.getRetStr().equals("ok")) {
                                 // 人脸识别成功，先开门
@@ -260,17 +262,23 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                 requestGateOpenRecordBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
                                 mPresenter.gateOpenRecord(requestGateOpenRecordBean);
                             } else {
-                                // 识别识别，弹出提示框“对不起，您不是授权用户（5S）”倒计时隐藏
-                                if (confirmDialog == null) {
-                                    confirmDialog = new ConfirmDialog(FaceCheckActivity.this);
-                                    confirmDialog.setNoTitle(true);
-                                    confirmDialog.setLeftVisiable(false);
-                                    confirmDialog.setMessage("对不起，您不是授权用户(5S)");
+                                // 人脸识别，3次失败后弹出提示框“对不起，您不是授权用户（5S）”倒计时隐藏
+                                count --;
+                                if(count == 0) {
+                                    if (confirmDialog == null) {
+                                        confirmDialog = new ConfirmDialog(FaceCheckActivity.this);
+                                        confirmDialog.setNoTitle(true);
+                                        confirmDialog.setLeftVisiable(false);
+                                        confirmDialog.setMessage("对不起，您不是授权用户(5S)");
+                                    }
+                                    confirmDialog.show();
+
+                                    countDown = 5;
+                                    cancelCountDownTimer();
+                                    startCountDownTimer();
+                                }else{
+                                    startTimer();
                                 }
-                                confirmDialog.show();
-                                countDown = 5;
-                                cancelCountDownTimer();
-                                startCountDownTimer();
                             }
                         }else{
                             if (confirmDialog == null) {
@@ -328,7 +336,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                     handler.sendEmptyMessage(CASE_TAKE_PICTURE);
                 }
             }
-        }, 1300);
+        }, 1500);
     }
 
     /**

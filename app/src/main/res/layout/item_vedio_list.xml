@@ -3,7 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/home_vp_padding_bottom"
-    android:id="@+id/layoutVedio">
+    android:id="@+id/layoutVedio"
+    android:layout_margin="@dimen/start_code_size">
     <ImageView android:id="@+id/imgVedio"
         android:layout_width="@dimen/home_vp_image_width"
         android:layout_height="@dimen/home_vp_image_height"

@@ -50,7 +50,7 @@ public class FaceCheckPresenter extends FaceCheckControl.IFaceCheckPresenter {
                     PreferencesUtils.getInstance(ConstantSys.PREFERENCE_CONFIG).putString(MyApp.getAppContext(),
                             ConstantSys.PREFERENCE_VERSION_INFO, new Gson().toJson(versionInfo));
                 }*/
-//                mView.showGateOpenRecordResult(result);
+                mView.showGateOpenRecordResult(result.getMessage());
             }
 
             @Override

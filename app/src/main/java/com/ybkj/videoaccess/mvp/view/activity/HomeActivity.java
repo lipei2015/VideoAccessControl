@@ -94,10 +94,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 实例化远程调用设备SDK服务
 //        initAidlService();
 
-        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
+//        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_ALARM);
-        audioMngHelper.setAudioType(AudioMngHelper.TYPE_RING);
+//        audioMngHelper.setAudioType(AudioMngHelper.TYPE_RING);
 //        audioMngHelper.setVoice100(60);
 
 //        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
@@ -108,8 +108,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         bb.asCharBuffer().put("7c635c9d");
         Log.e("ByteBuffer",Arrays.toString(bb.array()));*/
 
-        byte[] bytes = new byte[]{23,33,55,55};
-        Log.e("ByteBuffer", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"");
+//        byte[] bytes = new byte[]{23,33,55,55};
+//        Log.e("ByteBuffer", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"");
 
         List<VedioInfo> vedioInfoList = new ArrayList<>();
         for(int i=0;i<5;i++) {
@@ -124,7 +124,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         });
 
         // 测试重启设备
-        //CommonUtil.RebootDevice(HomeActivity.this);
+//        CommonUtil.RebootDevice(HomeActivity.this);
     }
 
     private void initAidlService(){
@@ -225,7 +225,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
 //        Log.e("getMagnetometerStatus",wrtdevManager.getMagnetometerStatus()+"++");
 
-        startTimer();
+//        startTimer();
     }
 
     /**
@@ -236,24 +236,21 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                /*int value = wrtdevManager.getMicroWaveState();
-
+                int value = wrtdevManager.getMicroWaveState();
                 Message message = new Message();
                 message.what = value;
-                faceHandler.sendMessage(message);*/
+                faceHandler.sendMessage(message);
 
-                /*byte[] bytes = wrtdevManager.getIcCardNo();
-
+                byte[] bytes = wrtdevManager.getIcCardNo();
                 if(bytes != null && bytes.length > 0){
                     for(byte bt:bytes){
-                        Log.e("openDoor",bt+"++");
+//                        Log.e("openDoor",bt+"++");
                     }
-
-                }*/
+                }
+                Log.e("ICCarcNumber", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"   "+value);
             }
         };
-        timer.schedule(timerTask, 3000, 1500);//延时1s，每隔500毫秒执行一次run方法
-
+        timer.schedule(timerTask, 1000, 2000);//延时1s，每隔500毫秒执行一次run方法
     }
 
     /**
@@ -285,6 +282,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
     };
 
+    @Override
+    public void onResume() {
+//        startTimer();
+        super.onResume();
+    }
+
     private ListDialog listDialog;      // 选项列表框
     private InputDialog inputDialog;    // 密码输入框
 
@@ -296,74 +299,47 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        ToastUtil.showMsg(keyCode+"--------");
-
         if(listDialog == null){
-            listDialog = new ListDialog(HomeActivity.this);
+            listDialog = new ListDialog(HomeActivity.this, new ListDialog.OnKeyDownListener() {
+                @Override
+                public void onKeyDown(int key) {
+                    switch (key){
+                        case 1:
+                            // 人脸注册
+                            Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivityForResult(intent, SCANNING_REQUEST_CODE);
+                            break;
+                        case 2:
+                            // 2 输入开门密码
+                            if(inputDialog == null){
+                                inputDialog = new InputDialog(HomeActivity.this, new InputDialog.OnKeyDownListener() {
+                                    @Override
+                                    public void onKeyDown(int keyCode) {
+
+                                    }
+                                });
+                                inputDialog.show();
+                            }else{
+                                inputDialog.show();
+                            }
+                            break;
+                        case 3:
+                            // 3 通行密码
+                            break;
+                        case 4:
+                            // 4 卡片关联
+
+                            break;
+                        case 5:
+                            // #关闭
+                            break;
+                    }
+                }
+            });
             listDialog.show();
         }else{
-            if(listDialog.isShowing()){
-                switch (keyCode){
-                    case 7:
-                        // 0
-                        break;
-                    case 8:
-                        // 1
-                        listDialog.onItemClick(1);
-                        Intent intent = new Intent(this, CaptureActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivityForResult(intent, SCANNING_REQUEST_CODE);
-                        break;
-                    case 9:
-                        // 2 输入开门密码
-                        if(inputDialog == null){
-                            inputDialog = new InputDialog(HomeActivity.this);
-                            inputDialog.show();
-                        }else{
-                            if(inputDialog.isShowing()){
-                                // 正在输入密码
-                            }else{
-                                //
-
-                            }
-                        }
-                        listDialog.onItemClick(2);
-                        break;
-                    case 10:
-                        // 3
-                        listDialog.onItemClick(3);
-                        break;
-                    case 11:
-                        // 4
-                        listDialog.onItemClick(4);
-                        break;
-                    case 12:
-                        // 5
-                        listDialog.onItemClick(5);
-                        break;
-                    case 13:
-                        // 6
-                        break;
-                    case 14:
-                        // 7
-                        break;
-                    case 15:
-                        // 8
-
-                        break;
-                    case 16:
-                        // 9
-                        break;
-                    case 135:
-                        // *
-                        break;
-                    case 136:
-                        // #
-                        break;
-                }
-            }else{
-                listDialog.show();
-            }
+            listDialog.show();
         }
 
         if(keyCode == KeyEvent.KEYCODE_BACK) {
@@ -372,7 +348,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             startActivityForResult(intent, SCANNING_REQUEST_CODE);
             return false;
         }
-
         return super.onKeyDown(keyCode, event);
     }
 

@@ -1,60 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/list_dialog_padding"
-    android:background="@drawable/shape_white"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/list_dialog_padding">
+    android:layout_height="match_parent"
+    android:gravity="center">
 
-    <Button
-        android:id="@+id/button_1"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_dialog_item_height"
-        android:background="@drawable/button_common_selector"
-        android:text="1 人脸注册"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/list_dialog_padding"
+        android:background="@drawable/shape_white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/list_dialog_padding">
 
-    <Button
-        android:id="@+id/button_2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_dialog_item_height"
-        android:background="@drawable/button_common_selector"
-        android:text="2 通行密码"
-        android:textColor="@color/white"
-        android:layout_marginTop="@dimen/list_dialog_item_margin_top"
-        android:textSize="25sp" />
+        <Button
+            android:id="@+id/button_1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_dialog_item_height"
+            android:background="@drawable/button_common_selector"
+            android:text="1 人脸注册"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
-    <Button
-        android:id="@+id/button_3"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_dialog_item_height"
-        android:background="@drawable/button_common_selector"
-        android:text="3 呼叫业主"
-        android:textColor="@color/white"
-        android:layout_marginTop="@dimen/list_dialog_item_margin_top"
-        android:textSize="25sp" />
+        <Button
+            android:id="@+id/button_2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_dialog_item_height"
+            android:layout_marginTop="@dimen/list_dialog_item_margin_top"
+            android:background="@drawable/button_common_selector"
+            android:text="2 通行密码"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
-    <Button
-        android:id="@+id/button_4"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_dialog_item_height"
-        android:background="@drawable/button_common_selector"
-        android:layout_marginTop="@dimen/list_dialog_item_margin_top"
-        android:text="4 卡片关联"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
-    <Button
-        android:id="@+id/button_5"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_dialog_item_height"
-        android:background="@drawable/button_common_selector"
-        android:layout_marginTop="@dimen/list_dialog_item_margin_top"
-        android:text="* 关闭"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        <Button
+            android:id="@+id/button_3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_dialog_item_height"
+            android:layout_marginTop="@dimen/list_dialog_item_margin_top"
+            android:background="@drawable/button_common_selector"
+            android:text="3 呼叫业主"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
+        <Button
+            android:id="@+id/button_4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_dialog_item_height"
+            android:layout_marginTop="@dimen/list_dialog_item_margin_top"
+            android:background="@drawable/button_common_selector"
+            android:text="4 卡片关联"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/button_5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_dialog_item_height"
+            android:layout_marginTop="@dimen/list_dialog_item_margin_top"
+            android:background="@drawable/button_common_selector"
+            android:text="# 关闭"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+    </LinearLayout>
 </LinearLayout>

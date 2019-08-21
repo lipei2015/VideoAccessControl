@@ -23,8 +23,8 @@
     <dimen name="lineHeight_20dp">20dp</dimen>
 
     <!-- 启动页 -->
-    <dimen name="start_title_font_size">26sp</dimen>
-    <dimen name="start_text_font_size">22sp</dimen>
+    <dimen name="start_title_font_size">28sp</dimen>
+    <dimen name="start_text_font_size">23sp</dimen>
     <dimen name="start_code_size">280px</dimen>
     <dimen name="start_text_margin_top_1">20px</dimen>
     <dimen name="start_text_margin_top_2">20px</dimen>

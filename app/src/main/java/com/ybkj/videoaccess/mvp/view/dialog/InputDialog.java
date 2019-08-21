@@ -1,6 +1,7 @@
 package com.ybkj.videoaccess.mvp.view.dialog;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,32 +18,17 @@ import com.ybkj.videoaccess.mvp.base.BaseDialog;
 public class InputDialog extends BaseDialog {
     private TextView title;
     private View v;
-    private OnConfirm onConfirm;
-    private OnItemConfirm onItemConfirm;
-    private View cancel;
     private EditText etPwd;
     private TextView tvPwdRight;
     private TextView tvPwdError;
     private boolean needClosed = true; // 点击确定是否隐藏弹窗
+    private OnKeyDownListener onKeyDownListener;
 
-    public InputDialog(Context context) {
+    public InputDialog(Context context,OnKeyDownListener onKeyDownListener) {
         super(context);
         findView(context);
         setCancelable(true);
-    }
-
-    public InputDialog(Context context, OnConfirm onConfirm) {
-        super(context);
-        this.onConfirm = onConfirm;
-        findView(context);
-        setCancelable(true);
-    }
-
-    public InputDialog(Context context, OnItemConfirm onItemConfirm) {
-        super(context);
-        this.onItemConfirm = onItemConfirm;
-        findView(context);
-        setCancelable(false);
+        this.onKeyDownListener = onKeyDownListener;
     }
 
     /**
@@ -83,13 +69,81 @@ public class InputDialog extends BaseDialog {
         return this;
     }
 
-    public interface OnConfirm {
-        void onConfirm();
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        ToastUtil.showMsg(keyCode+"++++++++");
+        switch (keyCode){
+            case 7:
+                // 0
+                break;
+            case 8:
+                // 1
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(1);
+                }
+                dismiss();
+                break;
+            case 9:
+                // 2 输入开门密码
+                /*if(inputDialog == null){
+                    inputDialog = new InputDialog(HomeActivity.this);
+                    inputDialog.show();
+                }else{
+                    if(inputDialog.isShowing()){
+                        // 正在输入密码
+                    }else{
+                        //
+
+                    }
+                }*/
+
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(2);
+                }
+                dismiss();
+                break;
+            case 10:
+                // 3通行密码
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(3);
+                }
+                dismiss();
+                break;
+            case 11:
+                // 4 卡片关联
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(4);
+                }
+                dismiss();
+                break;
+            case 12:
+                // 5
+                break;
+            case 13:
+                // 6
+                break;
+            case 14:
+                // 7
+                break;
+            case 15:
+                // 8
+
+                break;
+            case 16:
+                // 9
+                break;
+            case 135:
+                // *
+                break;
+            case 136:
+                // # 关闭
+                dismiss();
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
-    public interface OnItemConfirm {
-        void onConfirm();
-
-        void onCancel();
+    public interface OnKeyDownListener {
+        void onKeyDown(int keyCode);
     }
 }

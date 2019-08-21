@@ -105,8 +105,12 @@ public class CommonUtil {
      * @param context
      */
     public static void RebootDevice(Context context){
-        PowerManager pManager=(PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        pManager.reboot(null);
+        try {
+            PowerManager pManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            pManager.reboot(null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

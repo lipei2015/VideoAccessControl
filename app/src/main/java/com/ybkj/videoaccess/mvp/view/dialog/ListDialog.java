@@ -1,26 +1,32 @@
 package com.ybkj.videoaccess.mvp.view.dialog;
 
 import android.content.Context;
+import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.zxing.client.android.CaptureActivity;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseDialog;
+import com.ybkj.videoaccess.mvp.view.activity.HomeActivity;
+import com.ybkj.videoaccess.util.ToastUtil;
 
-public class ListDialog extends BaseDialog implements View.OnClickListener {
+public class ListDialog extends BaseDialog {
     private Button button_1;
     private Button button_2;
     private Button button_3;
     private Button button_4;
     private Button button_5;
     private View v;
-    private ConfirmDialog.OnConfirm onConfirm;
+    private OnKeyDownListener onKeyDownListener;
 
-    public ListDialog(Context context) {
+    public ListDialog(Context context,OnKeyDownListener onKeyDownListener) {
         super(context);
         findView(context);
         setCancelable(true);
+        this.onKeyDownListener = onKeyDownListener;
     }
 
     /**
@@ -37,28 +43,68 @@ public class ListDialog extends BaseDialog implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-
-    }
-
-    public void onItemClick(int value){
-        dismiss();
-        switch (value){
-            case 1:
-                // 人脸注册
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        ToastUtil.showMsg(keyCode+"++++++++");
+        switch (keyCode){
+            case 7:
+                // 0
                 break;
-            case 2:
+            case 8:
+                // 1
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(1);
+                }
+                dismiss();
+                break;
+            case 9:
+                // 2 输入开门密码
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(2);
+                }
+                dismiss();
+                break;
+            case 10:
+                // 3通行密码
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(3);
+                }
+                dismiss();
+                break;
+            case 11:
+                // 4 卡片关联
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(4);
+                }
+                dismiss();
+                break;
+            case 12:
+                // 5
+                break;
+            case 13:
+                // 6
+                break;
+            case 14:
+                // 7
+                break;
+            case 15:
+                // 8
 
                 break;
-            case 3:
-
+            case 16:
+                // 9
                 break;
-            case 4:
-
+            case 135:
+                // *
                 break;
-            case 5:
-
+            case 136:
+                // # 关闭
+                dismiss();
                 break;
         }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public interface OnKeyDownListener {
+        void onKeyDown(int keyCode);
     }
 }

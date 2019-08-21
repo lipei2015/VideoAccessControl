@@ -62,6 +62,10 @@ android {
             force 'com.android.support:support-v4:27.0.2'
         }
     }
+
+    dexOptions {
+        javaMaxHeapSize "1g"
+    }
 }
 
 dependencies {

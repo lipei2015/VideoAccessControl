@@ -14,7 +14,8 @@
             android:text="出租屋视频门禁系统"
             android:textSize="@dimen/start_title_font_size"
             android:textColor="@color/white"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:textStyle="bold"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
