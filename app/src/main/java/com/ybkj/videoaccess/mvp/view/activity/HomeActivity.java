@@ -320,6 +320,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
                                     @Override
                                     public void onSubmit(String pwd) {
+                                        // 门禁主机APP保存当前楼栋的住户和密码规则（非明文），
+                                        // 在用户输入密码的时候进行验证，验证通过之后调用进门记录接口生成开门记录
 
                                     }
                                 });

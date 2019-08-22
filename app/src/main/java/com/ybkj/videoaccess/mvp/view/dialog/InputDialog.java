@@ -86,7 +86,7 @@ public class InputDialog extends BaseDialog {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        ToastUtil.showMsg(keyCode+"++++++++");
         switch (keyCode){
-            case 7:
+            /*case 7:
                 // 0
                 break;
             case 8:
@@ -98,18 +98,6 @@ public class InputDialog extends BaseDialog {
                 break;
             case 9:
                 // 2 输入开门密码
-                /*if(inputDialog == null){
-                    inputDialog = new InputDialog(HomeActivity.this);
-                    inputDialog.show();
-                }else{
-                    if(inputDialog.isShowing()){
-                        // 正在输入密码
-                    }else{
-                        //
-
-                    }
-                }*/
-
                 if(onKeyDownListener != null){
                     onKeyDownListener.onKeyDown(2);
                 }
@@ -144,7 +132,7 @@ public class InputDialog extends BaseDialog {
                 break;
             case 16:
                 // 9
-                break;
+                break;*/
             case 135:
                 // * 确认提交密码
                 onKeyDownListener.onSubmit(etPwd.getText().toString());
