@@ -53,7 +53,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //    private SurfaceView mPreview;
     @BindView(R.id.preview) SurfaceView mPreview;
     private SurfaceHolder mHolder;
-    private int cameraId = 0;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+    private int cameraId = 1;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private int widthPixels;
     private int heightPixels;
@@ -115,12 +115,9 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //        mCamera.autoFocus(null);
 
         startTimer();
-//        mPresenter.recognition("45465456456");
 
         // 实例化远程调用设备SDK服务
         initAidlService();
-
-//        mPresenter.gateOpenRecord(new RequestGateOpenRecordBean());
     }
 
     private void initAidlService(){
@@ -134,8 +131,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         intent.setPackage("com.wrtsz.intercom.master");
 
         //绑定服务,传入intent和ServiceConnection对象
-        boolean iss = bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        Log.e("iss",iss+"---");
+//        boolean iss = bindService(intent, connection, Context.BIND_AUTO_CREATE);
+//        Log.e("iss",iss+"---");
     }
 
     //创建ServiceConnection的匿名类
@@ -183,6 +180,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                 FileOutputStream fos = new FileOutputStream(tempfile);
                 fos.write(data);//将照片放入文件中
                 fos.close();//关闭文件
+
+                cancelTimer();
 
                 /*Intent intent = new Intent(FaceCheckActivity.this, ResultActivity.class);//新建信使对象
                 intent.putExtra("picpath", tempfile.getAbsolutePath());//打包文件给信使
@@ -281,17 +280,22 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                 }
                             }
                         }else{
-                            if (confirmDialog == null) {
-                                confirmDialog = new ConfirmDialog(FaceCheckActivity.this);
-                                confirmDialog.setNoTitle(true);
-                                confirmDialog.setLeftVisiable(false);
-                                confirmDialog.setMessage("对不起，您不是授权用户(5S)");
+                            count --;
+                            Log.e("count",count+"---");
+                            if(count == 0) {
+                                if (confirmDialog == null) {
+                                    confirmDialog = new ConfirmDialog(FaceCheckActivity.this);
+                                    confirmDialog.setNoTitle(true);
+                                    confirmDialog.setLeftVisiable(false);
+                                    confirmDialog.setMessage("对不起，您不是授权用户(5S)");
+                                }
+                                confirmDialog.show();
+                                countDown = 5;
+                                cancelCountDownTimer();
+                                startCountDownTimer();
+                            }else{
+                                startTimer();
                             }
-                            confirmDialog.show();
-                            countDown = 5;
-                            cancelCountDownTimer();
-                            startCountDownTimer();
-
 //                            textToSpeechUtil.notifyNewMessage("你好");
                         }
                     } catch (RemoteException e) {
@@ -336,7 +340,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                     handler.sendEmptyMessage(CASE_TAKE_PICTURE);
                 }
             }
-        }, 1500);
+        }, 2000);
     }
 
     /**
@@ -449,7 +453,12 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     }
 
     @Override
-    public void showGateOpenRecordResult(String result) {
-
+    public void showGateOpenRecordResult(boolean isSuccess) {
+        if(isSuccess){
+            // 上传成功，关闭当前界面
+            finish();
+        }else{
+            // 上传失败，需记录，等有网络时再上传
+        }
     }
 }

@@ -7,11 +7,14 @@ import com.ybkj.videoaccess.mvp.data.inf.IFaceCheckModel;
 
 public interface FaceCheckControl {
     interface IFaceCheckView extends MvpBaseView {
-        void showGateOpenRecordResult(String result);
+        /**
+         * 上传开门记录结果
+         * @param isSuccess
+         */
+        void showGateOpenRecordResult(boolean isSuccess);
     }
 
     abstract class IFaceCheckPresenter extends MvpBasePresenter<IFaceCheckModel, IFaceCheckView> {
-        public abstract void recognition(String image);
         public abstract void gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean);
     }
 }
