@@ -18,27 +18,20 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.google.gson.Gson;
-import com.google.zxing.client.android.CaptureActivity;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.FaceRegistControl;
-import com.ybkj.videoaccess.mvp.data.bean.DeviceRecognitionResult;
 import com.ybkj.videoaccess.mvp.data.bean.DeviceRegistResult;
 import com.ybkj.videoaccess.mvp.data.bean.RegistCheckInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDownloadUserFaceBean;
-import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.model.FaceRegistModel;
 import com.ybkj.videoaccess.mvp.presenter.FaceRegistPresenter;
-import com.ybkj.videoaccess.mvp.view.dialog.ConfirmDialog;
-import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
-import com.ybkj.videoaccess.util.DataUtil;
+import com.ybkj.videoaccess.mvp.view.dialog.PrometDialog;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.GsonUtils;
-import com.ybkj.videoaccess.util.ImageUtil;
 import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.TextToSpeechUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
@@ -72,7 +65,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     private final int CASE_TAKE_PICTURE = 0;
     private final int CASE_DEAL_PICTURE = 1;
     private final int CASE_COUNT_DOWN = 2;      // 提示框倒计时
-    private ConfirmDialog confirmDialog;
+    private PrometDialog confirmDialog;
 
     private PreferencesUtils preferencesUtils;
     private String device_id;
@@ -141,9 +134,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         }else{
             // 提示验证失败
             if (confirmDialog == null) {
-                confirmDialog = new ConfirmDialog(FaceRegistActivity.this);
+                confirmDialog = new PrometDialog(FaceRegistActivity.this);
                 confirmDialog.setNoTitle(true);
-                confirmDialog.setLeftVisiable(false);
                 confirmDialog.setMessage("用户未经登记，不能进行登记采集(5S)");
             }
             confirmDialog.show();

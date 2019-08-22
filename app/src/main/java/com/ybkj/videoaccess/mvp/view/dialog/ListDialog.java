@@ -2,8 +2,12 @@ package com.ybkj.videoaccess.mvp.view.dialog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -40,6 +44,16 @@ public class ListDialog extends BaseDialog {
         button_4 = (Button) v.findViewById(R.id.button_4);
         button_5 = (Button) v.findViewById(R.id.button_5);
         setContentView(v);
+
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attr = window.getAttributes();
+            if (attr != null) {
+                attr.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                attr.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                attr.gravity = Gravity.CENTER;//设置dialog 在布局中的位置
+            }
+        }
     }
 
     @Override

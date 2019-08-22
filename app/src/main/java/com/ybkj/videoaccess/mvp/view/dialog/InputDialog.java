@@ -1,8 +1,12 @@
 package com.ybkj.videoaccess.mvp.view.dialog;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,7 +25,6 @@ public class InputDialog extends BaseDialog {
     private EditText etPwd;
     private TextView tvPwdRight;
     private TextView tvPwdError;
-    private boolean needClosed = true; // 点击确定是否隐藏弹窗
     private OnKeyDownListener onKeyDownListener;
 
     public InputDialog(Context context,OnKeyDownListener onKeyDownListener) {
@@ -41,6 +44,16 @@ public class InputDialog extends BaseDialog {
         tvPwdRight = (TextView) v.findViewById(R.id.tvPwdRight);
         tvPwdError = (TextView) v.findViewById(R.id.tvPwdError);
         setContentView(v);
+
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attr = window.getAttributes();
+            if (attr != null) {
+                attr.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                attr.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                attr.gravity = Gravity.CENTER;//设置dialog 在布局中的位置
+            }
+        }
     }
 
     /**
@@ -133,10 +146,12 @@ public class InputDialog extends BaseDialog {
                 // 9
                 break;
             case 135:
-                // *
+                // * 确认提交密码
+                onKeyDownListener.onSubmit(etPwd.getText().toString());
                 break;
             case 136:
                 // # 关闭
+                etPwd.setText("");
                 dismiss();
                 break;
         }
@@ -145,5 +160,6 @@ public class InputDialog extends BaseDialog {
 
     public interface OnKeyDownListener {
         void onKeyDown(int keyCode);
+        void onSubmit(String pwd);
     }
 }

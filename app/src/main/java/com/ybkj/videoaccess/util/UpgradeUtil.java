@@ -17,7 +17,7 @@ import com.google.gson.GsonBuilder;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.data.bean.VersionInfo;
-import com.ybkj.videoaccess.mvp.view.dialog.ConfirmDialog;
+import com.ybkj.videoaccess.mvp.view.dialog.PrometDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -120,8 +120,8 @@ public class UpgradeUtil {
                 upgradeListener.onUpdate();
             }
 
-            ConfirmDialog confirmDialog;
-            confirmDialog = new ConfirmDialog(context, new ConfirmDialog.OnConfirm() {
+            PrometDialog confirmDialog;
+            confirmDialog = new PrometDialog(context, new PrometDialog.OnConfirm() {
                 @Override
                 public void onConfirm() {
                     showNotification();
@@ -134,7 +134,7 @@ public class UpgradeUtil {
             confirmDialog.setMessage(context.getString(R.string.upgradeContent));
             if (versionInfo.getUpgradeType() == 2) {
                 // 强更
-                confirmDialog.setLeftVisiable(false);
+//                confirmDialog.setLeftVisiable(false);
                 confirmDialog.setCancelable(false);
                 confirmDialog.setClosedEnable(false);
             } else if (versionInfo.getUpgradeType() == 1) {

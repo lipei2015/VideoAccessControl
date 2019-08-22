@@ -13,10 +13,13 @@ import android.os.RemoteException;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -92,7 +95,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -101,12 +104,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        audioMngHelper.setVoice100(60);
 
 //        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
-
-        /*ByteBuffer bb = ByteBuffer.wrap(new byte[12]);
-        byte[] bytes = new byte[]{23,33,55,55};
-        // 存入字符串
-        bb.asCharBuffer().put("7c635c9d");
-        Log.e("ByteBuffer",Arrays.toString(bb.array()));*/
 
 //        byte[] bytes = new byte[]{23,33,55,55};
 //        Log.e("ByteBuffer", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"");
@@ -159,8 +156,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             iFaceApi = IFaceApi.Stub.asInterface(service);
             try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
-                String result = iFaceApi.recognition("skfjskfjsfkd","");
-                Log.e("result", "result:"+result);
+                String result1 = iFaceApi.recognition_config(10,1);
+                Log.e("result1", "result:"+result1);
+//                String result = iFaceApi.recognition("skfjskfjsfkd","");
+//                Log.e("result", "result:"+result);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -318,14 +317,20 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                                     public void onKeyDown(int keyCode) {
 
                                     }
+
+                                    @Override
+                                    public void onSubmit(String pwd) {
+
+                                    }
                                 });
                                 inputDialog.show();
                             }else{
                                 inputDialog.show();
                             }
+                            CommonUtil.hiddenSoftInput(HomeActivity.this);
                             break;
                         case 3:
-                            // 3 通行密码
+                            // 3 呼叫业主
                             break;
                         case 4:
                             // 4 卡片关联
@@ -337,6 +342,15 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     }
                 }
             });
+            /*Window window = listDialog.getWindow();
+            if (listDialog != null && window != null) {
+                WindowManager.LayoutParams attr = window.getAttributes();
+                if (attr != null) {
+                    attr.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    attr.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    attr.gravity = Gravity.CENTER;//设置dialog 在布局中的位置
+                }
+            }*/
             listDialog.show();
         }else{
             listDialog.show();

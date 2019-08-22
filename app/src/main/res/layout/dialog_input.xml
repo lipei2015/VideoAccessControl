@@ -12,12 +12,13 @@
 
     <TextView
         android:id="@+id/dialogTitle"
-        style="@style/textStyle"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/list_dialog_item_width"
+        android:layout_height="@dimen/list_dialog_item_height"
         android:gravity="center"
         android:paddingTop="25dp"
         android:text="请输入密码"
-        android:textSize="18sp" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/dialog_title_text_size" />
 
     <!--<TextView
         android:id="@+id/dialogMessage"
@@ -29,40 +30,57 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"/>-->
     <EditText android:id="@+id/etPwd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/list_dialog_item_width"
+        android:layout_height="@dimen/list_dialog_item_height"
         android:layout_marginLeft="40px"
         android:layout_marginRight="40px"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:textSize="@dimen/dialog_input_text_size"/>
 
-    <Button
-        android:id="@+id/btnPromet"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="@dimen/list_dialog_item_width"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@null"
-        android:text="# 关闭"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:gravity="center">
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="@dimen/list_dialog_item_width"
+            android:layout_height="@dimen/list_dialog_item_height"
+            android:background="@null"
+            android:layout_weight="1"
+            android:text="* 确认"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dialog_input_promet_text_size"/>
+        <Button
+            android:id="@+id/btnPromet"
+            android:layout_width="@dimen/list_dialog_item_width"
+            android:layout_height="@dimen/list_dialog_item_height"
+            android:background="@null"
+            android:text="# 关闭"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:textSize="@dimen/dialog_input_promet_text_size"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvPwdRight"
-        style="@style/textStyle"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/list_dialog_item_width"
+        android:layout_height="@dimen/list_dialog_item_height"
         android:textColor="@color/black"
-        android:textSize="@dimen/dialog_item_text_size"
+        android:textSize="@dimen/dialog_title_text_size"
         android:gravity="center_horizontal"
         android:visibility="gone"
         android:text="门已开"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/tvPwdError"
-        style="@style/textStyle"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/list_dialog_item_width"
+        android:layout_height="@dimen/list_dialog_item_height"
         android:textColor="@color/red"
         android:text="密码错误，请重新输入"
-        android:textSize="@dimen/dialog_item_text_size"
+        android:textSize="@dimen/dialog_title_text_size"
         android:gravity="center_horizontal"
         android:visibility="gone"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 </LinearLayout>

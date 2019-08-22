@@ -1,7 +1,6 @@
 package com.ybkj.videoaccess.mvp.view.activity;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.ImageFormat;
@@ -17,7 +16,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.google.gson.Gson;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
@@ -28,7 +26,7 @@ import com.ybkj.videoaccess.mvp.data.bean.DeviceRecognitionResult;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.model.FaceCheckModel;
 import com.ybkj.videoaccess.mvp.presenter.FaceCheckPresenter;
-import com.ybkj.videoaccess.mvp.view.dialog.ConfirmDialog;
+import com.ybkj.videoaccess.mvp.view.dialog.PrometDialog;
 import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.GsonUtils;
@@ -53,12 +51,12 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //    private SurfaceView mPreview;
     @BindView(R.id.preview) SurfaceView mPreview;
     private SurfaceHolder mHolder;
-    private int cameraId = 1;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+    private int cameraId = 0;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private int widthPixels;
     private int heightPixels;
 
-    private ConfirmDialog confirmDialog;
+    private PrometDialog confirmDialog;
     private WrtdevManager wrtdevManager = null;
     private final int CASE_TAKE_PICTURE = 0;
     private final int CASE_DEAL_PICTURE = 1;
@@ -265,9 +263,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                 count --;
                                 if(count == 0) {
                                     if (confirmDialog == null) {
-                                        confirmDialog = new ConfirmDialog(FaceCheckActivity.this);
+                                        confirmDialog = new PrometDialog(FaceCheckActivity.this);
                                         confirmDialog.setNoTitle(true);
-                                        confirmDialog.setLeftVisiable(false);
                                         confirmDialog.setMessage("对不起，您不是授权用户(5S)");
                                     }
                                     confirmDialog.show();
@@ -284,9 +281,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                             Log.e("count",count+"---");
                             if(count == 0) {
                                 if (confirmDialog == null) {
-                                    confirmDialog = new ConfirmDialog(FaceCheckActivity.this);
+                                    confirmDialog = new PrometDialog(FaceCheckActivity.this);
                                     confirmDialog.setNoTitle(true);
-                                    confirmDialog.setLeftVisiable(false);
                                     confirmDialog.setMessage("对不起，您不是授权用户(5S)");
                                 }
                                 confirmDialog.show();

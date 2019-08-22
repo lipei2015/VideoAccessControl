@@ -46,6 +46,12 @@
     <dimen name="list_dialog_padding">30dp</dimen>
     <dimen name="list_dialog_item_height">50dp</dimen>
     <dimen name="list_dialog_item_margin_top">20px</dimen>
+    <dimen name="list_dialog_item_width">200dp</dimen>
+    <dimen name="list_dialog_item_size">20sp</dimen>
 
     <dimen name="dialog_item_text_size">25sp</dimen>
+    <dimen name="dialog_title_text_size">19sp</dimen>
+    <dimen name="dialog_input_text_size">18sp</dimen>
+    <dimen name="dialog_input_promet_text_size">16sp</dimen>
+    <dimen name="dialog_confirm_padding">20dp</dimen>
 </resources>
