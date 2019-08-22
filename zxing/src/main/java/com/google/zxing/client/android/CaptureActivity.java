@@ -23,14 +23,12 @@ import com.google.zxing.ResultMetadataType;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.clipboard.ClipboardInterface;
-import com.google.zxing.client.android.history.HistoryActivity;
 import com.google.zxing.client.android.history.HistoryItem;
 import com.google.zxing.client.android.history.HistoryManager;
 import com.google.zxing.client.android.result.ResultButtonListener;
 import com.google.zxing.client.android.result.ResultHandler;
 import com.google.zxing.client.android.result.ResultHandlerFactory;
 import com.google.zxing.client.android.result.supplement.SupplementalInfoRetriever;
-import com.google.zxing.client.android.share.ShareActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -50,9 +48,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -153,6 +148,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        // 不要显示标题栏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
