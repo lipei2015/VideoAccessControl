@@ -51,12 +51,12 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //    private SurfaceView mPreview;
     @BindView(R.id.preview) SurfaceView mPreview;
     private SurfaceHolder mHolder;
-    private int cameraId = 0;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private int widthPixels;
     private int heightPixels;
 
-    private PrometDialog confirmDialog;
+    private PrometDialog prometDialog;
     private WrtdevManager wrtdevManager = null;
     private final int CASE_TAKE_PICTURE = 0;
     private final int CASE_DEAL_PICTURE = 1;
@@ -115,7 +115,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         startTimer();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
     }
 
     private void initAidlService(){
@@ -252,7 +252,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 //                                    int opendoor = wrtdevManager.openDoor();    // 0为开门成功，-1为失败
                                 }
 
-                                // 进行开门上报
+                                //TODO 进行开门上报，这里还需要一个人脸肖像文件base64字符串
                                 RequestGateOpenRecordBean requestGateOpenRecordBean = new RequestGateOpenRecordBean();
                                 requestGateOpenRecordBean.setPid(deviceRecognitionResult.getFaceInfos().getPersonId());
                                 requestGateOpenRecordBean.setType("1");
@@ -262,12 +262,12 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                 // 人脸识别，3次失败后弹出提示框“对不起，您不是授权用户（5S）”倒计时隐藏
                                 count --;
                                 if(count == 0) {
-                                    if (confirmDialog == null) {
-                                        confirmDialog = new PrometDialog(FaceCheckActivity.this);
-                                        confirmDialog.setNoTitle(true);
-                                        confirmDialog.setMessage("对不起，您不是授权用户(5S)");
+                                    if (prometDialog == null) {
+                                        prometDialog = new PrometDialog(FaceCheckActivity.this);
+                                        prometDialog.setNoTitle(true);
+                                        prometDialog.setMessage("对不起，您不是授权用户(5S)");
                                     }
-                                    confirmDialog.show();
+                                    prometDialog.show();
 
                                     countDown = 5;
                                     cancelCountDownTimer();
@@ -280,12 +280,12 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                             count --;
                             Log.e("count",count+"---");
                             if(count == 0) {
-                                if (confirmDialog == null) {
-                                    confirmDialog = new PrometDialog(FaceCheckActivity.this);
-                                    confirmDialog.setNoTitle(true);
-                                    confirmDialog.setMessage("对不起，您不是授权用户(5S)");
+                                if (prometDialog == null) {
+                                    prometDialog = new PrometDialog(FaceCheckActivity.this);
+                                    prometDialog.setNoTitle(true);
+                                    prometDialog.setMessage("对不起，您不是授权用户(5S)");
                                 }
-                                confirmDialog.show();
+                                prometDialog.show();
                                 countDown = 5;
                                 cancelCountDownTimer();
                                 startCountDownTimer();
@@ -302,13 +302,13 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                     int time = msg.arg1;
                     if(time < 0){
                         cancelCountDownTimer();
-                        if(confirmDialog != null && confirmDialog.isShowing()){
-                            confirmDialog.cancel();
+                        if(prometDialog != null && prometDialog.isShowing()){
+                            prometDialog.cancel();
                             finish();
                         }
                     }else{
-                        confirmDialog.setMessage("对不起，您不是授权用户("+time+"S)");
-                        confirmDialog.show();
+                        prometDialog.setMessage("对不起，您不是授权用户("+time+"S)");
+                        prometDialog.show();
                     }
                     break;
             }

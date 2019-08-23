@@ -1,5 +1,6 @@
 package com.ybkj.videoaccess.mvp.view.activity;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -95,7 +96,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -215,6 +216,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
     }
 
+    @SuppressLint("WrongConstant")
     private void initWrtdev() {
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
 
@@ -227,6 +229,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        startTimer();
     }
 
+    private int showTime = 0;
     /**
      * 开始有无人像出现监听
      */
@@ -235,7 +238,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                int value = wrtdevManager.getMicroWaveState();
+                faceHandler.sendEmptyMessage(0);
+
+                /*int value = wrtdevManager.getMicroWaveState();
                 Message message = new Message();
                 message.what = value;
                 faceHandler.sendMessage(message);
@@ -243,13 +248,13 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 byte[] bytes = wrtdevManager.getIcCardNo();
                 if(bytes != null && bytes.length > 0){
                     for(byte bt:bytes){
-//                        Log.e("openDoor",bt+"++");
+                        //Log.e("openDoor",bt+"++");
                     }
                 }
-                Log.e("ICCarcNumber", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"   "+value);
+                Log.e("ICCarcNumber", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"   "+value);*/
             }
         };
-        timer.schedule(timerTask, 1000, 2000);//延时1s，每隔500毫秒执行一次run方法
+        timer.schedule(timerTask, 2000, 3000);//延时1s，每隔500毫秒执行一次run方法
     }
 
     /**
@@ -262,19 +267,29 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
     }
 
+//    int ddd = 2;
     Handler faceHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            LogUtil.i(msg.what+"++");
+//            LogUtil.i(msg.what+"++");
             switch (msg.what){
                 case 1:
                     // 有人出现
-                    cancelTimer();
-                    startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+                    showTime ++;
+                    // Log.e("startTimer", "  --- "+showTime);
+                    if(showTime >= 2) {
+                        cancelTimer();
+                        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+                        showTime = 0;
+                    }
                     break;
                 case 0:
                     // 无人出现
-
+                    showTime = 0;
+                    /*ddd --;
+                    if(ddd == 0){
+                        cancelTimer();
+                    }*/
                     break;
             }
             super.handleMessage(msg);
@@ -283,7 +298,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     public void onResume() {
-//        startTimer();
+        startTimer();
         super.onResume();
     }
 

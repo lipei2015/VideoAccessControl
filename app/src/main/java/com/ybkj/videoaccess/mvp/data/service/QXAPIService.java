@@ -10,6 +10,7 @@ import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
 import com.ybkj.videoaccess.mvp.data.bean.RequestResourcesBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestUserAuthReportBean;
 import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
 import com.ybkj.videoaccess.util.http.CommonResult;
 import com.ybkj.videoaccess.util.http.Result;
@@ -72,7 +73,7 @@ public interface QXAPIService {
     Observable<CommonResult<RegistCheckInfo>> downloadUserFace(@Body RequestDownloadUserFaceBean body);
 
     @POST(userAuthReport)
-    Observable<CommonResult<FullDataInfo>> userAuthReport(@Body RequestResourcesBean body);
+    Observable<CommonResult<StringMessageInfo>> userAuthReport(@Body RequestUserAuthReportBean body);
 
     /**
      * 开门记录上传

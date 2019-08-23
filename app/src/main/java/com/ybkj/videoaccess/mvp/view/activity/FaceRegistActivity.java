@@ -4,8 +4,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PointF;
 import android.hardware.Camera;
+import android.media.FaceDetector;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -17,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
@@ -27,16 +36,21 @@ import com.ybkj.videoaccess.mvp.control.FaceRegistControl;
 import com.ybkj.videoaccess.mvp.data.bean.DeviceRegistResult;
 import com.ybkj.videoaccess.mvp.data.bean.RegistCheckInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDownloadUserFaceBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestUserAuthReportBean;
+import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
 import com.ybkj.videoaccess.mvp.data.model.FaceRegistModel;
 import com.ybkj.videoaccess.mvp.presenter.FaceRegistPresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.PrometDialog;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.GsonUtils;
+import com.ybkj.videoaccess.util.ImageUtil;
+import com.ybkj.videoaccess.util.PictureUtil;
 import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.TextToSpeechUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Timer;
@@ -52,7 +66,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     private Camera mCamera;
     @BindView(R.id.preview) SurfaceView mPreview;
     private SurfaceHolder mHolder;
-    private int cameraId = 1;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+//    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private int widthPixels;
     private int heightPixels;
@@ -120,7 +135,6 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         bean.setMac(device_id);
         bean.setOptype("1");
         mPresenter.downloadUserFace(bean);
-//        startTimer();
 
         // 实例化远程调用设备SDK服务
 //        initAidlService();
@@ -129,7 +143,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     @Override
     public void showCheckRegistResult(RegistCheckInfo registCheckInfo) {
         userName = registCheckInfo.getName();
-        if(!registCheckInfo.isValidation_result()) {
+        if(registCheckInfo.isValidation_result()) {
             startTimer();
         }else{
             // 提示验证失败
@@ -143,6 +157,11 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
             cancelCountDownTimer();
             startCountDownTimer();
         }
+    }
+
+    @Override
+    public void showUserAuthReportResult(StringMessageInfo stringMessageInfo) {
+
     }
 
     Timer closeTimer;
@@ -224,6 +243,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                 fos.write(data);//将照片放入文件中
                 fos.close();//关闭文件
 
+                cancelTimer();
+
                 // 拍照之后继续显示预览界面
                 setStartPreview (mCamera, mHolder);
 
@@ -239,6 +260,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         }
     };
 
+    private int failCount = 0;  // 人脸注册失败次数
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -249,23 +271,61 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                     break;
                 case CASE_DEAL_PICTURE:
                     //TODO 调用设备SDK进行人像注册，若返回人像ID就表示成功，再调用开门记录上传接口，若成功则返回到上一个界面；
-                    //TODO 若识别发出语音提示"授权失败，请按 * 键重试或 # 键退出"
+                    //TODO 若注册失败发出语音提示"授权失败，请按 * 键重试或 # 键退出"
 
                     // 处理拍出来的照片
                     String path = msg.getData().getString("path");
-                    String requestResult = null;
+
+                    /*try {
+                        FileInputStream fis = new FileInputStream(path);//通过path把照片读到文件输入流中
+                        Bitmap bitmap = BitmapFactory.decodeStream(fis);//将输入流解码为bitmap
+                        Matrix matrix = new Matrix();//新建一个矩阵对象
+                        matrix.setRotate(270);//矩阵旋转操作让照片可以正对着你。但是还存在一个左右对称的问题
+
+                        //新建位图，第2个参数至第5个参数表示位图的大小，matrix中是旋转后的位图信息，并使bitmap变量指向新的位图对象
+                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                        image_view.setImageBitmap(bitmap);
+
+                        FaceDetector.Face[] faces = PictureUtil.faceCut(bitmap);
+                        if(faces != null && faces.length > 0){
+                            drawFacesArea(faces);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }*/
 
                     if(iFaceApi != null){
                         try {
-                            DeviceRegistResult deviceRegistResult = GsonUtils.getGson().fromJson(iFaceApi.reg(path,null,userName,0),
-                                    DeviceRegistResult.class);
-                            if(deviceRegistResult.getRetStr().equals("")){
+                            String requestResult = iFaceApi.reg(path,null,userName,0);
+                            Log.e("requestResult",requestResult);
+                            DeviceRegistResult deviceRegistResult = GsonUtils.getGson().fromJson(requestResult, DeviceRegistResult.class);
+                            if(deviceRegistResult.getRetStr().equals("ok")){
                                 //TODO 注册成功,将人脸数据连同人员标识上传到后台
+                                RequestUserAuthReportBean requestUserAuthReportBean = new RequestUserAuthReportBean();
+                                requestUserAuthReportBean.setMac(device_id);
+                                requestUserAuthReportBean.setPid(deviceRegistResult.getPersonId());
+                                requestUserAuthReportBean.setSample(ImageUtil.imageToBase64(path));
                             }else{
-                                // 注册失败，语音提示
+                                // 注册失败，语音提示"授权失败，请按 * 键重试或 # 键退出"
+                                failCount ++;
+                                if(failCount >= 3){
+                                    // 失败次数大于3时，
+                                    failCount = 0;
+                                }else{
+                                    startTimer();
+                                }
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
+                        }
+                    }else{
+                        Log.e("failCount",failCount+"");
+                        failCount ++;
+                        if(failCount >= 3){
+                            // 失败次数大于3时，
+                            failCount = 0;
+                        }else{
+                            startTimer();
                         }
                     }
                     break;
@@ -468,10 +528,12 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                 // 9
                 break;
             case 135:
-                // *
+                // * 重试注册
+                startTimer();
                 break;
             case 136:
-                // #
+                // # 退出当前注册界面
+                finish();
                 break;
         }
 

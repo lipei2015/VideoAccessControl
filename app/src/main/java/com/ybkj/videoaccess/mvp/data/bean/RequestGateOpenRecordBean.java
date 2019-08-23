@@ -7,7 +7,8 @@ public class RequestGateOpenRecordBean {
     private String pid;         // 人员唯一标识
     private String type;        // 开门类型：1.人脸、2.刷卡、3.手机、4.密码、5.访客密码、6.蓝牙
     private String timestamp;   // 开门时间yyyyMMddHH24mis
-    private String MAC;         // 门禁主机标识
+    private String mac;         // 门禁主机标识
+    private String sample;         // 人脸肖像样本
 
     public String getPid() {
         return pid;
@@ -33,11 +34,19 @@ public class RequestGateOpenRecordBean {
         this.timestamp = timestamp;
     }
 
-    public String getMAC() {
-        return MAC;
+    public String getMac() {
+        return mac;
     }
 
-    public void setMAC(String MAC) {
-        this.MAC = MAC;
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
+
+    public String getSample() {
+        return sample;
+    }
+
+    public void setSample(String sample) {
+        this.sample = sample;
     }
 }
