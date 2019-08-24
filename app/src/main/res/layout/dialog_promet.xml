@@ -26,4 +26,28 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="@dimen/dialog_title_text_size"/>
+    <LinearLayout android:id="@+id/layout_regist_fail"
+        android:layout_width="@dimen/list_dialog_item_width"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/tv_content"
+            style="@style/textStyle"
+            android:layout_width="@dimen/list_dialog_item_width"
+            android:paddingTop="@dimen/padding"
+            android:text="@string/dialog_regist_error_promet"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dialog_title_text_size"
+            android:lineSpacingExtra="@dimen/dialog_line_spacing_extra"/>
+        <TextView
+            android:id="@+id/tv_down_count"
+            style="@style/textStyle"
+            android:layout_width="@dimen/list_dialog_item_width"
+            android:paddingTop="@dimen/padding"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dialog_title_text_size"
+            android:layout_marginTop="@dimen/dialog_line_spacing_extra"/>
+    </LinearLayout>
 </LinearLayout>

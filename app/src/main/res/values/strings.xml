@@ -52,6 +52,9 @@
     <string name="pictureSelectFailure">图片选择失败</string>
     <string name="loginFailed">登录失败</string>
 
-
+    <string name="dialog_regist_error_promet">注册失败，原因可能有：\n
+    1.图片有超过1个人的脸；\n
+    2.图片人脸质量太差，无法正常注册；\n
+    3.该人脸已注册过。</string>
 
 </resources>

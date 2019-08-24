@@ -82,6 +82,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     private final int CASE_DEAL_PICTURE = 1;
     private final int CASE_COUNT_DOWN = 2;      // 提示框倒计时
     private PrometDialog confirmDialog;
+    private PrometDialog errorDialog;
 
     private PreferencesUtils preferencesUtils;
     private String device_id;
@@ -153,9 +154,9 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
             // 提示验证失败
             if (confirmDialog == null) {
                 confirmDialog = new PrometDialog(FaceRegistActivity.this);
-                confirmDialog.setNoTitle(true);
-                confirmDialog.setMessage("用户未经登记，不能进行登记采集(5S)");
             }
+            confirmDialog.setNoTitle(true);
+            confirmDialog.setMessage("用户未经登记，不能进行登记采集(5S)");
             confirmDialog.show();
             countDown = 5;
             cancelCountDownTimer();
@@ -231,15 +232,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
             Log.e("onServiceConnected", "aidl远程服务连接成功");
             //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
             iFaceApi = IFaceApi.Stub.asInterface(service);
-            /*try {
-                //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
-                String result = iFaceApi.recognition("skfjskfjsfkd","");
-                Log.e("result", "result:"+result);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }*/
         }
-
     };
 
     //定义照片保存并显示的方法
@@ -320,6 +313,28 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                                 requestUserAuthReportBean.setPid(deviceRegistResult.getPersonId());
                                 requestUserAuthReportBean.setSample(ImageUtil.imageToBase64(path));
                                 mPresenter.userAuthReport(requestUserAuthReportBean);
+                            }else if(deviceRegistResult.getRetStr().contains("failed_face") ||
+                                    deviceRegistResult.getRetStr().contains("reg error")){
+                                // 表示图片无法正常注册，可能的原因有：1.图片有超过1个人的脸；2.图片人脸质量太差，无法正常注册；3.该人脸已注册过。
+                                if (confirmDialog == null) {
+                                    confirmDialog = new PrometDialog(FaceRegistActivity.this, new PrometDialog.OnKeyDownListener() {
+                                        @Override
+                                        public void onRetry() {
+                                            // 重试
+                                            startTimer();
+                                        }
+
+                                        @Override
+                                        public void onExit() {
+                                            finish();
+                                        }
+                                    });
+                                }
+                                confirmDialog.setNoTitle(true);
+                                confirmDialog.setNoMessage(true);
+                                confirmDialog.setRegistErroDownCountString("请按 * 键重试或 # 键退出");
+                                confirmDialog.showRegistError();
+                                confirmDialog.show();
                             }else{
                                 // 注册失败，语音提示"授权失败，请按 * 键重试或 # 键退出"
                                 failCount ++;

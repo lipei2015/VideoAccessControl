@@ -121,7 +121,7 @@ public class UpgradeUtil {
             }
 
             PrometDialog confirmDialog;
-            confirmDialog = new PrometDialog(context, new PrometDialog.OnConfirm() {
+            confirmDialog = new PrometDialog(context/*, new PrometDialog.OnConfirm() {
                 @Override
                 public void onConfirm() {
                     showNotification();
@@ -129,7 +129,7 @@ public class UpgradeUtil {
                     message.obj = versionInfo.getUrl();
                     handler.sendMessage(message);
                 }
-            });
+            }*/);
             confirmDialog.setTitle(context.getString(R.string.upgrade));
             confirmDialog.setMessage(context.getString(R.string.upgradeContent));
             if (versionInfo.getUpgradeType() == 2) {

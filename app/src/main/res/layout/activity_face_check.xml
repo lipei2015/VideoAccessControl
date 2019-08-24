@@ -2,20 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/blue">
 
-    <Button
+    <TextView android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Captrue"
-        android:onClick="capture"
-        android:visibility="gone"/>
+        android:text="出租屋视频门禁系统"
+        android:textSize="@dimen/start_title_font_size"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/home_title_margin_top"
+        android:textStyle="bold"/>
+    <!--android:layout_margin="@dimen/face_check_surface_margin"
+            android:padding="@dimen/face_check_surface_margin"-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:gravity="center">
+        <SurfaceView
+            android:id="@+id/preview"
+            android:layout_width="@dimen/face_check_surface_width"
+            android:layout_height="@dimen/face_check_surface_height"
+            android:layout_margin="@dimen/face_check_surface_margin"/>
+    </LinearLayout>
 
-    <SurfaceView
-        android:id="@+id/preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
     <ImageView android:id="@+id/imageview"
         android:layout_width="400px"
         android:layout_height="400px" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="广州千炫信息科技有限公司"
+        android:textSize="@dimen/home_name_font_size"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/face_check_text_margin_bottom"/>
 </RelativeLayout>

@@ -155,15 +155,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             Log.e("onServiceConnected", "aidl远程服务连接成功");
             //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
             iFaceApi = IFaceApi.Stub.asInterface(service);
-            try {
+            /*try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
-                String result1 = iFaceApi.recognition_config(30,1);
-                Log.e("result1", "result:"+result1);
-//                String result = iFaceApi.recognition("skfjskfjsfkd","");
-//                Log.e("result", "result:"+result);
+//                String result1 = iFaceApi.recognition_config(30,1);
+//                Log.e("result1", "result:"+result1);
+
+//                String unregResult = iFaceApi.unreg("1");
+//                Log.e("unregResult", "unregResult:"+unregResult);
             } catch (RemoteException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
     };

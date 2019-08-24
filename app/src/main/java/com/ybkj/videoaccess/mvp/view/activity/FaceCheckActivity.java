@@ -248,13 +248,14 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                             Log.e("deviceRecognitionResult",deviceRecognitionResult.getRetStr());
 
                             if (deviceRecognitionResult != null && deviceRecognitionResult.getRetStr().equals("ok")
-                                    && deviceRecognitionResult.getFaceInfos() != null
+                                    && deviceRecognitionResult.getUserInfo() != null
                                     && !TextUtils.isEmpty(deviceRecognitionResult.getPersonId()) ) {
                                 // 人脸识别成功，先开门
                                 if (wrtdevManager != null) {
 //                                    int opendoor = wrtdevManager.openDoor();    // 0为开门成功，-1为失败
                                 }
                                 if(deviceRecognitionResult.getFaceInfos() != null && deviceRecognitionResult.getFaceInfos().size() > 0){
+                                    // 人像抠图
                                     DeviceFaceInfo deviceFaceInfo = deviceRecognitionResult.getFaceInfos().get(0);
                                     Bitmap bitmap = ImageUtil.cutBitmap(path,deviceFaceInfo.getX(),deviceFaceInfo.getY(),
                                             deviceFaceInfo.getWidth(),deviceFaceInfo.getHeight());

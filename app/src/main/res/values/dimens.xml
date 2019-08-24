@@ -54,4 +54,10 @@
     <dimen name="dialog_input_text_size">18sp</dimen>
     <dimen name="dialog_input_promet_text_size">16sp</dimen>
     <dimen name="dialog_confirm_padding">20dp</dimen>
+    <dimen name="dialog_line_spacing_extra">10dp</dimen>
+
+    <dimen name="face_check_text_margin_bottom">20dp</dimen>
+    <dimen name="face_check_surface_margin">10dp</dimen>
+    <dimen name="face_check_surface_height">300dp</dimen>
+    <dimen name="face_check_surface_width">250dp</dimen>
 </resources>
