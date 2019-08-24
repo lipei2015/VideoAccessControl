@@ -12,6 +12,12 @@ public interface FaceCheckControl {
          * @param isSuccess
          */
         void showGateOpenRecordResult(boolean isSuccess);
+
+        /**
+         * 上传开门记录失败
+         * @param requestGateOpenRecordBean
+         */
+        void gateOpenRecordFail(RequestGateOpenRecordBean requestGateOpenRecordBean);
     }
 
     abstract class IFaceCheckPresenter extends MvpBasePresenter<IFaceCheckModel, IFaceCheckView> {

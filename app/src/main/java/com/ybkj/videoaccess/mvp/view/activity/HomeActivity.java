@@ -96,7 +96,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -122,7 +122,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         });
 
         // 测试重启设备
-//        CommonUtil.RebootDevice(HomeActivity.this);
+        CommonUtil.RebootDevice(HomeActivity.this);
     }
 
     private void initAidlService(){
@@ -157,7 +157,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             iFaceApi = IFaceApi.Stub.asInterface(service);
             try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
-                String result1 = iFaceApi.recognition_config(10,1);
+                String result1 = iFaceApi.recognition_config(30,1);
                 Log.e("result1", "result:"+result1);
 //                String result = iFaceApi.recognition("skfjskfjsfkd","");
 //                Log.e("result", "result:"+result);
@@ -238,9 +238,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                faceHandler.sendEmptyMessage(0);
+//                faceHandler.sendEmptyMessage(0);
 
-                /*int value = wrtdevManager.getMicroWaveState();
+                int value = wrtdevManager.getMicroWaveState();
                 Message message = new Message();
                 message.what = value;
                 faceHandler.sendMessage(message);
@@ -251,10 +251,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                         //Log.e("openDoor",bt+"++");
                     }
                 }
-                Log.e("ICCarcNumber", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"   "+value);*/
+                Log.e("ICCarcNumber", Integer.parseInt(DataUtil.bytesToHexString(bytes),16)+"   "+value);
             }
         };
-        timer.schedule(timerTask, 2000, 3000);//延时1s，每隔500毫秒执行一次run方法
+        timer.schedule(timerTask, 2000, 1000);//延时1s，每隔500毫秒执行一次run方法
     }
 
     /**
@@ -276,7 +276,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 case 1:
                     // 有人出现
                     showTime ++;
-                    // Log.e("startTimer", "  --- "+showTime);
+                     Log.e("startTimer", "  --- "+showTime);
                     if(showTime >= 2) {
                         cancelTimer();
                         startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
@@ -285,6 +285,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     break;
                 case 0:
                     // 无人出现
+                    Log.e("startTimer", "  nobody "+showTime);
                     showTime = 0;
                     /*ddd --;
                     if(ddd == 0){
@@ -302,6 +303,18 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         super.onResume();
     }
 
+    @Override
+    public void onPause() {
+//        cancelTimer();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+//        cancelTimer();
+        super.onStop();
+    }
+
     private ListDialog listDialog;      // 选项列表框
     private InputDialog inputDialog;    // 密码输入框
 
@@ -313,6 +326,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        cancelTimer();
         if(listDialog == null){
             listDialog = new ListDialog(HomeActivity.this, new ListDialog.OnKeyDownListener() {
                 @Override

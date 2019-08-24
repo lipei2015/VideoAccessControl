@@ -44,6 +44,7 @@ public class FaceRegistPresenter extends FaceRegistControl.IFaceRegistPresenter 
             @Override
             public void onError(HttpErrorException errorException) {
                 LogUtil.i(errorException.getMessage()+"");
+                mView.userAuthReportFail(body);
             }
         })));
     }

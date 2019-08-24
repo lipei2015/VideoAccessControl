@@ -1,8 +1,11 @@
 package com.ybkj.videoaccess.mvp.view.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -10,11 +13,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
@@ -22,6 +27,7 @@ import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.FaceCheckControl;
+import com.ybkj.videoaccess.mvp.data.bean.DeviceFaceInfo;
 import com.ybkj.videoaccess.mvp.data.bean.DeviceRecognitionResult;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.model.FaceCheckModel;
@@ -50,6 +56,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     private Camera mCamera;
 //    private SurfaceView mPreview;
     @BindView(R.id.preview) SurfaceView mPreview;
+    @BindView(R.id.imageview) ImageView imageview;
     private SurfaceHolder mHolder;
     private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
@@ -69,7 +76,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 
     @Override
     protected int setLayoutId() {
-        return R.layout.custom;
+        return R.layout.activity_face_check;
     }
 
     @Override
@@ -87,6 +94,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         return new FaceCheckModel();
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void initView() {
         mHolder = mPreview.getHolder();
@@ -115,7 +123,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         startTimer();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
     }
 
     private void initAidlService(){
@@ -129,8 +137,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         intent.setPackage("com.wrtsz.intercom.master");
 
         //绑定服务,传入intent和ServiceConnection对象
-//        boolean iss = bindService(intent, connection, Context.BIND_AUTO_CREATE);
-//        Log.e("iss",iss+"---");
+        boolean iss = bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Log.e("iss",iss+"---");
     }
 
     //创建ServiceConnection的匿名类
@@ -148,15 +156,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
             Log.e("onServiceConnected", "aidl远程服务连接成功");
             //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
             iFaceApi = IFaceApi.Stub.asInterface(service);
-            /*try {
-                //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
-                String result = iFaceApi.recognition("skfjskfjsfkd","");
-//                Log.e("result", "result:"+result);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }*/
         }
-
     };
 
     @Override
@@ -243,18 +243,27 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                         // 进行远程调用设备人脸识别SDK
                         if(iFaceApi != null) {
                             requestResult = iFaceApi.recognition(ImageUtil.imageToBase64(path), null);
+                            Log.e("requestResult",requestResult);
                             DeviceRecognitionResult deviceRecognitionResult = GsonUtils.getGson().fromJson(requestResult, DeviceRecognitionResult.class);
                             Log.e("deviceRecognitionResult",deviceRecognitionResult.getRetStr());
 
-                            if (deviceRecognitionResult != null && deviceRecognitionResult.getRetStr().equals("ok")) {
+                            if (deviceRecognitionResult != null && deviceRecognitionResult.getRetStr().equals("ok")
+                                    && deviceRecognitionResult.getFaceInfos() != null
+                                    && !TextUtils.isEmpty(deviceRecognitionResult.getPersonId()) ) {
                                 // 人脸识别成功，先开门
                                 if (wrtdevManager != null) {
 //                                    int opendoor = wrtdevManager.openDoor();    // 0为开门成功，-1为失败
                                 }
+                                if(deviceRecognitionResult.getFaceInfos() != null && deviceRecognitionResult.getFaceInfos().size() > 0){
+                                    DeviceFaceInfo deviceFaceInfo = deviceRecognitionResult.getFaceInfos().get(0);
+                                    Bitmap bitmap = ImageUtil.cutBitmap(path,deviceFaceInfo.getX(),deviceFaceInfo.getY(),
+                                            deviceFaceInfo.getWidth(),deviceFaceInfo.getHeight());
+                                    imageview.setImageBitmap(bitmap);
+                                }
 
                                 //TODO 进行开门上报，这里还需要一个人脸肖像文件base64字符串
                                 RequestGateOpenRecordBean requestGateOpenRecordBean = new RequestGateOpenRecordBean();
-                                requestGateOpenRecordBean.setPid(deviceRecognitionResult.getFaceInfos().getPersonId());
+                                requestGateOpenRecordBean.setPid(deviceRecognitionResult.getPersonId());
                                 requestGateOpenRecordBean.setType("1");
                                 requestGateOpenRecordBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
                                 mPresenter.gateOpenRecord(requestGateOpenRecordBean);
@@ -456,5 +465,14 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         }else{
             // 上传失败，需记录，等有网络时再上传
         }
+    }
+
+    /**
+     * 上传开门记录失败，需记录下来，等有网络的时候再重新上传
+     * @param requestGateOpenRecordBean
+     */
+    @Override
+    public void gateOpenRecordFail(RequestGateOpenRecordBean requestGateOpenRecordBean) {
+        // TODO
     }
 }

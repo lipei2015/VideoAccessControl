@@ -1,5 +1,6 @@
 package com.ybkj.videoaccess.mvp.view.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -66,8 +67,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     private Camera mCamera;
     @BindView(R.id.preview) SurfaceView mPreview;
     private SurfaceHolder mHolder;
-//    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
-    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+//    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private int widthPixels;
     private int heightPixels;
@@ -107,6 +108,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         return new FaceRegistModel();
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void initView() {
         pid = getIntent().getStringExtra("pid");
@@ -130,14 +132,16 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         FileUtil.createDirectory(localPath);
 
         //TODO 先判断传过来的用户信息是否与本栋楼匹配，匹配才进行拍照人脸注册
-        RequestDownloadUserFaceBean bean = new RequestDownloadUserFaceBean();
+        /*RequestDownloadUserFaceBean bean = new RequestDownloadUserFaceBean();
         bean.setPid("123456");
         bean.setMac(device_id);
         bean.setOptype("1");
-        mPresenter.downloadUserFace(bean);
+        mPresenter.downloadUserFace(bean);*/
+
+        startTimer();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
     }
 
     @Override
@@ -159,8 +163,17 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         }
     }
 
+    /**
+     * 人脸注册绑定成功，关闭当前界面
+     * @param stringMessageInfo
+     */
     @Override
     public void showUserAuthReportResult(StringMessageInfo stringMessageInfo) {
+        finish();
+    }
+
+    @Override
+    public void userAuthReportFail(RequestUserAuthReportBean body) {
 
     }
 
@@ -218,13 +231,13 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
             Log.e("onServiceConnected", "aidl远程服务连接成功");
             //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
             iFaceApi = IFaceApi.Stub.asInterface(service);
-            try {
+            /*try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
                 String result = iFaceApi.recognition("skfjskfjsfkd","");
                 Log.e("result", "result:"+result);
             } catch (RemoteException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
     };
@@ -296,7 +309,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
 
                     if(iFaceApi != null){
                         try {
-                            String requestResult = iFaceApi.reg(path,null,userName,0);
+//                            String requestResult = iFaceApi.reg(path,null,userName,0);
+                            String requestResult = iFaceApi.reg(ImageUtil.imageToBase64(path),null,"李先生",0);
                             Log.e("requestResult",requestResult);
                             DeviceRegistResult deviceRegistResult = GsonUtils.getGson().fromJson(requestResult, DeviceRegistResult.class);
                             if(deviceRegistResult.getRetStr().equals("ok")){
@@ -305,6 +319,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                                 requestUserAuthReportBean.setMac(device_id);
                                 requestUserAuthReportBean.setPid(deviceRegistResult.getPersonId());
                                 requestUserAuthReportBean.setSample(ImageUtil.imageToBase64(path));
+                                mPresenter.userAuthReport(requestUserAuthReportBean);
                             }else{
                                 // 注册失败，语音提示"授权失败，请按 * 键重试或 # 键退出"
                                 failCount ++;

@@ -12,6 +12,7 @@ public interface FaceRegistControl {
     interface IFaceRegistView extends MvpBaseView {
         void showCheckRegistResult(RegistCheckInfo registCheckInfo);
         void showUserAuthReportResult(StringMessageInfo stringMessageInfo);
+        void userAuthReportFail(RequestUserAuthReportBean body);
     }
 
     abstract class IFaceRegistPresenter extends MvpBasePresenter<IFaceRegistModel,IFaceRegistView> {

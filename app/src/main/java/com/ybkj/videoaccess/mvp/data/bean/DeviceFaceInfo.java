@@ -1,11 +1,10 @@
 package com.ybkj.videoaccess.mvp.data.bean;
 
-public class DeviceFaceInfos {
+public class DeviceFaceInfo {
     private int X;
     private int Y;
     private int Width;
     private int Height;
-    private String PersonId;
 
     public int getX() {
         return X;
@@ -39,11 +38,4 @@ public class DeviceFaceInfos {
         Height = height;
     }
 
-    public String getPersonId() {
-        return PersonId;
-    }
-
-    public void setPersonId(String personId) {
-        PersonId = personId;
-    }
 }

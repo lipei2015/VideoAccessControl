@@ -29,6 +29,7 @@ public class FaceCheckPresenter extends FaceCheckControl.IFaceCheckPresenter {
             @Override
             public void onError(HttpErrorException errorException) {
                 LogUtil.i(errorException.getMessage()+"");
+                mView.gateOpenRecordFail(requestGateOpenRecordBean);
             }
         })));
     }
