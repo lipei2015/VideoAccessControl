@@ -60,4 +60,8 @@
     <dimen name="face_check_surface_margin">20px</dimen>
     <dimen name="face_check_surface_height">960px</dimen>
     <dimen name="face_check_surface_width">600px</dimen>
+
+    <dimen name="face_regist_promet_margin_top">15px</dimen>
+    <dimen name="face_regist_surface_width">600px</dimen>
+    <dimen name="face_regist_surface_height">640px</dimen>
 </resources>

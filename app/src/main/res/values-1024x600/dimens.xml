@@ -31,7 +31,7 @@
     <dimen name="start_text_margin_bottom">30px</dimen>
 
     <!-- 主界面 -->
-    <dimen name="home_title_margin_top">60px</dimen>
+    <dimen name="home_title_margin_top">50px</dimen>
     <dimen name="home_name_font_size">23sp</dimen>
     <dimen name="home_vedio_height">560px</dimen>
     <dimen name="home_vp_height">240px</dimen>
@@ -56,4 +56,10 @@
     <dimen name="dialog_input_text_size">24sp</dimen>
     <dimen name="dialog_input_promet_text_size">21sp</dimen>
     <dimen name="dialog_confirm_padding">40px</dimen>
+
+    <dimen name="face_check_text_margin_bottom">35px</dimen>
+    <dimen name="face_check_surface_margin">15px</dimen>
+    <dimen name="face_check_surface_height">768px</dimen>
+    <dimen name="face_check_surface_width">450px</dimen>
+    <dimen name="face_regist_promet_margin_top">15px</dimen>
 </resources>

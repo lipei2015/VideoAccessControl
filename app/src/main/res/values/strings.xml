@@ -56,5 +56,6 @@
     1.图片有超过1个人的脸；\n
     2.图片人脸质量太差，无法正常注册；\n
     3.该人脸已注册过。</string>
+    <string name="companyName">广州千炫信息科技有限公司</string>
 
 </resources>

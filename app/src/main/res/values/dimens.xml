@@ -60,4 +60,8 @@
     <dimen name="face_check_surface_margin">10dp</dimen>
     <dimen name="face_check_surface_height">300dp</dimen>
     <dimen name="face_check_surface_width">250dp</dimen>
+
+    <dimen name="face_regist_promet_margin_top">11px</dimen>
+    <dimen name="face_regist_surface_width">250dp</dimen>
+    <dimen name="face_regist_surface_height">250dp</dimen>
 </resources>

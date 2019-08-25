@@ -49,6 +49,7 @@ import com.ybkj.videoaccess.util.PictureUtil;
 import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.TextToSpeechUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
+import com.ybkj.videoaccess.weight.ResizeAbleSurfaceView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,7 +66,7 @@ import butterknife.BindView;
 public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRegistModel> implements FaceRegistControl.IFaceRegistView,SurfaceHolder.Callback {
     private boolean safeToTakePicture = false;
     private Camera mCamera;
-    @BindView(R.id.preview) SurfaceView mPreview;
+    @BindView(R.id.preview) ResizeAbleSurfaceView mPreview;
     private SurfaceHolder mHolder;
     private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 //    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
@@ -117,6 +118,11 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
 
         mHolder = mPreview.getHolder();
         mHolder.addCallback(this);
+
+        // 重新设置Surface宽高，防止比例跟Camera不一致而变形
+        int width = (int) getResources().getDimension(R.dimen.face_regist_surface_width);
+        int height = (int) getResources().getDimension(R.dimen.face_regist_surface_height);
+        mPreview.resize(width,height);
 
 //        textToSpeechUtil = new TextToSpeechUtil(this);
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
@@ -387,6 +393,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
 
     private void startTimer() {
         cancelTimer();
+
         takePictureTimer = new Timer();
         takePictureTimer.schedule(new TimerTask() {
 
