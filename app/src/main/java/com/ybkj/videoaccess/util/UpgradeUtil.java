@@ -51,9 +51,7 @@ public class UpgradeUtil {
 
     public UpgradeUtil(Context context) {
         this.context = context;
-
         gson = new GsonBuilder().serializeNulls().create();
-
         if (!FileUtil.sdCardIsAvailable()) {
             // SD卡不可用
         }
@@ -116,12 +114,16 @@ public class UpgradeUtil {
                 ConstantSys.PREFERENCE_VERSION_INFO), VersionInfo.class);
 
         if (versionInfo != null && checkVersion(versionInfo.getVersion_id())) {
-            if (upgradeListener != null) {
+            Message message = new Message();
+            message.obj = versionInfo.getUrl();
+            handler.sendMessage(message);
+
+            /*if (upgradeListener != null) {
                 upgradeListener.onUpdate();
             }
 
             PrometDialog confirmDialog;
-            confirmDialog = new PrometDialog(context/*, new PrometDialog.OnConfirm() {
+            confirmDialog = new PrometDialog(context*//*, new PrometDialog.OnConfirm() {
                 @Override
                 public void onConfirm() {
                     showNotification();
@@ -129,19 +131,18 @@ public class UpgradeUtil {
                     message.obj = versionInfo.getUrl();
                     handler.sendMessage(message);
                 }
-            }*/);
+            }*//*);
             confirmDialog.setTitle(context.getString(R.string.upgrade));
             confirmDialog.setMessage(context.getString(R.string.upgradeContent));
             if (versionInfo.getUpgradeType() == 2) {
                 // 强更
-//                confirmDialog.setLeftVisiable(false);
                 confirmDialog.setCancelable(false);
                 confirmDialog.setClosedEnable(false);
             } else if (versionInfo.getUpgradeType() == 1) {
                 // 有更新，可更新，可不更新
                 confirmDialog.setCancelable(true);
             }
-            confirmDialog.show();
+            confirmDialog.show();*/
         } else {
             // 无更新
             if (upgradeListener != null) {

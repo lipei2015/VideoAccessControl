@@ -6,7 +6,7 @@ android {
         applicationId "com.ybkj.videoaccess"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 20190801
+        versionCode 20190826
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

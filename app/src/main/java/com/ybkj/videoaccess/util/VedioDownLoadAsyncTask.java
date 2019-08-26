@@ -53,10 +53,11 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
         if (value <= 100) {
             if (value == 100) {
                 currentPosition ++;
+                Log.e("onProgressUpdate", "download finish "+currentPosition);
                 if(vedioUrls.size()>currentPosition){
                     downloadByDownloadManager(mContext, vedioUrls.get(currentPosition), currentPosition+1);
                 }else{
-//                    Toast.makeText(mContext, "下载完成", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "下载完成", Toast.LENGTH_SHORT).show();
                     Log.e("onProgressUpdate", "download finish ---------");
                     if(iOnVedioDownLoadFinish != null){
                         iOnVedioDownLoadFinish.onFinished();

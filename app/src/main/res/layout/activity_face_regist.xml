@@ -29,7 +29,7 @@
         android:textSize="@dimen/home_name_font_size"
         android:textColor="@color/white"
         android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/home_title_margin_top"
+        android:layout_marginTop="@dimen/face_regist_promet_margin_top"
         android:textStyle="bold"
         android:layout_below="@id/tvRegistText"/>
     <LinearLayout
@@ -42,7 +42,8 @@
             android:id="@+id/preview"
             android:layout_width="@dimen/face_regist_surface_width"
             android:layout_height="@dimen/face_regist_surface_height"
-            android:layout_margin="@dimen/face_check_surface_margin"/>
+            android:layout_margin="@dimen/face_check_surface_margin"
+            />
     </LinearLayout>
 
     <TextView

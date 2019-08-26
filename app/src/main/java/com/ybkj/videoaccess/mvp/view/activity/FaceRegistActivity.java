@@ -55,6 +55,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -68,8 +69,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     private Camera mCamera;
     @BindView(R.id.preview) ResizeAbleSurfaceView mPreview;
     private SurfaceHolder mHolder;
-//    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
-    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+//    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private int widthPixels;
     private int heightPixels;
@@ -89,6 +90,9 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     private String device_id;
     private String pid;
     private String userName;
+
+    private int sWidth;
+    private int sHeight;
 
     @Override
     protected int setLayoutId() {
@@ -120,9 +124,9 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         mHolder.addCallback(this);
 
         // 重新设置Surface宽高，防止比例跟Camera不一致而变形
-        int width = (int) getResources().getDimension(R.dimen.face_regist_surface_width);
-        int height = (int) getResources().getDimension(R.dimen.face_regist_surface_height);
-        mPreview.resize(width,height);
+        sWidth = (int) getResources().getDimension(R.dimen.face_regist_surface_width);
+        sHeight = (int) getResources().getDimension(R.dimen.face_regist_surface_height);
+        mPreview.resize(sWidth,sHeight);
 
 //        textToSpeechUtil = new TextToSpeechUtil(this);
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
@@ -393,7 +397,6 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
 
     private void startTimer() {
         cancelTimer();
-
         takePictureTimer = new Timer();
         takePictureTimer.schedule(new TimerTask() {
 
@@ -414,7 +417,9 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     public void capture(View view) {
         Camera.Parameters parameters = mCamera.getParameters();
         parameters.setPictureFormat(ImageFormat.JPEG);//设置照片格式
-        parameters.setPreviewSize(widthPixels, heightPixels);
+//        parameters.setPreviewSize(widthPixels, heightPixels);
+//        parameters.setPreviewSize(sWidth, sHeight);
+//        parameters.setPictureSize(sWidth, sHeight);
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         //摄像头聚焦
         mCamera.autoFocus(new Camera.AutoFocusCallback() {
@@ -435,6 +440,11 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         super.onResume();
         if (mCamera == null) {//如果此时摄像头值仍为空
             mCamera = getCamera();//则通过getCamera()方法开启摄像头
+//            Camera.Parameters parameters = mCamera.getParameters();
+//            parameters.setPictureSize(sWidth,sHeight);
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(sWidth, sHeight);
+            parameters.setPictureSize(sWidth, sHeight);
             if (mHolder != null) {
                 setStartPreview(mCamera, mHolder);//开启预览界面
             }

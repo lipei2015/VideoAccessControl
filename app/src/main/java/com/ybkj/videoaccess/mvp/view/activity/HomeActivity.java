@@ -107,7 +107,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -135,14 +135,13 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         initVideoInfo();
 
         // 测试重启设备
-//        CommonUtil.RebootDevice(HomeActivity.this);
+        CommonUtil.RebootDevice(HomeActivity.this);
     }
 
     private void initVideoInfo() {
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         int widthPixels = outMetrics.widthPixels;
-        int heightPixels = outMetrics.heightPixels;
 
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) videoView.getLayoutParams();
         params.height = 1920 * widthPixels / 1080;//1080 x width;
@@ -150,7 +149,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         File directoryFile = new File(ConstantSys.HOME_VEDIO_PATH);
         if(directoryFile.exists()){
             videoFiles = directoryFile.listFiles();
-            if(videoFiles != null){
+            if(videoFiles != null && videoFiles.length > 0){
                 currentPlayPosition = 0;
                 videoView.setVideoPath(videoFiles[0].getAbsolutePath());
                 videoView.setBackgroundResource(0);
@@ -166,7 +165,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 }
             }
         });
-        videoView.start();
+//        videoView.start();
     }
 
     private void initAidlService(){
@@ -344,9 +343,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     @Override
     public void onResume() {
 //        startTimer();
-        /*if(videoView.()){
-            videoView.r();
-        }*/
+        if(videoView.canPause()){
+//            videoView.start();
+        }
         super.onResume();
     }
 

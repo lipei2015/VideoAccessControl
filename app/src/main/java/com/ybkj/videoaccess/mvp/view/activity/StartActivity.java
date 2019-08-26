@@ -137,7 +137,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
             }
         });
-        //vedioDownLoadAsyncTask.execute(500);
+//        vedioDownLoadAsyncTask.execute(500);
     }
 
     @Override
