@@ -7,10 +7,13 @@ import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestResourcesBean;
 import com.ybkj.videoaccess.mvp.data.inf.IStartModel;
+import com.ybkj.videoaccess.util.http.HttpErrorException;
 
 public interface StartControl {
     interface IStartView extends MvpBaseView{
+        void showResources(FullDataInfo dataInfo);
         void showFullDataLoad(FullDataInfo dataInfo);
+        void showFullDataFail(HttpErrorException errorException);
     }
 
     abstract class IStartPresenter extends MvpBasePresenter<IStartModel,IStartView>{

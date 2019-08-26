@@ -15,7 +15,7 @@
     <LinearLayout android:layout_marginTop="@dimen/home_title_margin_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_vedio_height">
-        <VideoView
+        <VideoView android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_vedio_height"
             android:background="@mipmap/p3"/>

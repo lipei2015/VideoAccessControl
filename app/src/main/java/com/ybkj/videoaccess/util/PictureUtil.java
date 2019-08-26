@@ -13,6 +13,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ExifInterface;
+import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -240,5 +241,17 @@ public class PictureUtil {
             //bitmap.recycle();
         }
         return newBitmap;
+    }
+
+    public static FaceDetector.Face[] faceCut(Bitmap bitmap){
+//        FaceDetector faceDetector = new FaceDetector(200, 200, 1);
+        FaceDetector faceDetector = new FaceDetector(bitmap.getWidth(), bitmap.getHeight(), 1);
+        FaceDetector.Face[] faces = new FaceDetector.Face[4];
+        int faceNum = faceDetector.findFaces(bitmap,faces);
+
+        if(faceNum > 0){
+            return faces;
+        }
+        return null;
     }
 }

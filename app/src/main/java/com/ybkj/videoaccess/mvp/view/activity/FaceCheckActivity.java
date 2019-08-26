@@ -112,14 +112,6 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         FileUtil.createDirectory(localPath);
 
         //点击预览界面聚焦
-        /*mPreview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCamera.autoFocus(null);
-            }
-        });*/
-//        mCamera.autoFocus(null);
-
         startTimer();
 
         // 实例化远程调用设备SDK服务

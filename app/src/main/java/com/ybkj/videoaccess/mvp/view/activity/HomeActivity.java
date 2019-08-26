@@ -7,12 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -22,13 +26,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
+import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.HomeControl;
 import com.ybkj.videoaccess.mvp.data.bean.RemoteResultBean;
@@ -46,6 +53,7 @@ import com.ybkj.videoaccess.websocket.JWebSocketClient;
 import com.ybkj.videoaccess.websocket.JWebSocketClientService;
 import com.ybkj.videoaccess.weight.VedioHorizontalScorllView;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,9 +68,12 @@ import butterknife.BindView;
  */
 public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> implements HomeControl.IHomeView {
     @BindView(R.id.horizontalScorllView) VedioHorizontalScorllView horizontalScorllView;
+    @BindView(R.id.videoView) VideoView videoView;
     private WrtdevManager wrtdevManager = null;
     private Timer timer;
     private TimerTask timerTask;
+    private File[] videoFiles;
+    private int currentPlayPosition = -1;
 
     // WebSocket服务
     private JWebSocketClient client;
@@ -96,7 +107,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -121,8 +132,41 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             }
         });
 
+        initVideoInfo();
+
         // 测试重启设备
-        CommonUtil.RebootDevice(HomeActivity.this);
+//        CommonUtil.RebootDevice(HomeActivity.this);
+    }
+
+    private void initVideoInfo() {
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        int widthPixels = outMetrics.widthPixels;
+        int heightPixels = outMetrics.heightPixels;
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) videoView.getLayoutParams();
+        params.height = 1920 * widthPixels / 1080;//1080 x width;
+        videoView.setLayoutParams(params);
+        File directoryFile = new File(ConstantSys.HOME_VEDIO_PATH);
+        if(directoryFile.exists()){
+            videoFiles = directoryFile.listFiles();
+            if(videoFiles != null){
+                currentPlayPosition = 0;
+                videoView.setVideoPath(videoFiles[0].getAbsolutePath());
+                videoView.setBackgroundResource(0);
+            }
+        }
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                currentPlayPosition ++;
+                if(videoFiles.length > currentPlayPosition) {
+                    videoView.setVideoPath(videoFiles[currentPlayPosition].getAbsolutePath());
+                    videoView.start();
+                }
+            }
+        });
+        videoView.start();
     }
 
     private void initAidlService(){
@@ -268,7 +312,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
     }
 
-//    int ddd = 2;
     Handler faceHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -300,19 +343,28 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     public void onResume() {
-        startTimer();
+//        startTimer();
+        /*if(videoView.()){
+            videoView.r();
+        }*/
         super.onResume();
     }
 
     @Override
     public void onPause() {
 //        cancelTimer();
+        if(videoView.isPlaying()){
+            videoView.pause();
+        }
         super.onPause();
     }
 
     @Override
     protected void onStop() {
 //        cancelTimer();
+        if(videoView.isPlaying()){
+            videoView.pause();
+        }
         super.onStop();
     }
 

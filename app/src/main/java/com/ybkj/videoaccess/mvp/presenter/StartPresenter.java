@@ -2,6 +2,7 @@ package com.ybkj.videoaccess.mvp.presenter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.ybkj.videoaccess.mvp.control.StartControl;
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
@@ -34,6 +35,7 @@ public class StartPresenter extends StartControl.IStartPresenter {
             @Override
             public void onError(HttpErrorException errorException) {
                 LogUtil.i(errorException.getMessage()+"");
+                mView.showFullDataFail(errorException);
             }
         })));
     }
@@ -47,7 +49,7 @@ public class StartPresenter extends StartControl.IStartPresenter {
                 FullDataInfo result = (FullDataInfo) o;
                 LogUtil.i(result.getTOKEN()+"");
 
-                mView.showFullDataLoad(result);
+                mView.showResources(result);
             }
 
             @Override
