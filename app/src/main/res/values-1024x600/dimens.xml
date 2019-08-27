@@ -56,10 +56,14 @@
     <dimen name="dialog_input_text_size">24sp</dimen>
     <dimen name="dialog_input_promet_text_size">21sp</dimen>
     <dimen name="dialog_confirm_padding">40px</dimen>
+    <dimen name="dialog_success_img_height">70px</dimen>
 
     <dimen name="face_check_text_margin_bottom">35px</dimen>
     <dimen name="face_check_surface_margin">15px</dimen>
     <dimen name="face_check_surface_height">768px</dimen>
     <dimen name="face_check_surface_width">450px</dimen>
     <dimen name="face_regist_promet_margin_top">15px</dimen>
+
+    <dimen name="zxing_text_margin_top">20px</dimen>
+    <dimen name="zxing_secend_text_size">26sp</dimen>
 </resources>

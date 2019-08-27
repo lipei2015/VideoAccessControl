@@ -37,7 +37,7 @@ public class ImageUtil {
      */
     public static void loadImg(Context context, ImageView ImgView, String imgUrl) {
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.mipmap.loading_img);
+                .placeholder(R.mipmap.ic_launcher);
 
         Glide.with(context).load(imgUrl)
                 .apply(requestOptions)
@@ -53,7 +53,7 @@ public class ImageUtil {
      */
     public static void loadImgNoCache(Context context, ImageView ImgView, String imgUrl) {
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.mipmap.loading_img)
+                .placeholder(R.mipmap.ic_launcher)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .dontAnimate();
@@ -70,7 +70,7 @@ public class ImageUtil {
      */
     public static void loadHeadImg(Context context, ImageView ImgView, String imgUrl) {
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.mipmap.personal_touxiang_circle)
+                .placeholder(R.mipmap.ic_launcher)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .transform(new CircleTransform(context))

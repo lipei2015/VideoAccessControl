@@ -36,8 +36,8 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
     @Override
     protected String doInBackground(Integer... integers) {
         // 文件名字从 1 开始
-        currentPosition = 1;
-        downloadByDownloadManager(mContext, vedioUrls.get(0),currentPosition);
+        currentPosition = 0;
+        downloadByDownloadManager(mContext, vedioUrls.get(0),currentPosition+1);
         return String.valueOf(integers[0].intValue());
     }
 
@@ -62,6 +62,7 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
                     if(iOnVedioDownLoadFinish != null){
                         iOnVedioDownLoadFinish.onFinished();
                     }
+                    remove(mContext);
                 }
             }
         }

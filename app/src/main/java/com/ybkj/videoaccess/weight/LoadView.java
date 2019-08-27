@@ -134,7 +134,7 @@ public class LoadView extends FrameLayout implements OnClickListener {
         if (status == ERROR) {
             img.clearAnimation();
             img.setVisibility(View.GONE);
-            tryAgin.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.wushuju, 0, 0);
+            tryAgin.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_launcher, 0, 0);
             tryAgin.setText("加载失败，点击重新加载");
             tryAgin.setEnabled(true);
             tryAgin.setVisibility(View.VISIBLE);
@@ -151,7 +151,7 @@ public class LoadView extends FrameLayout implements OnClickListener {
             img.clearAnimation();
             img.setVisibility(View.GONE);
             tryAgin.setCompoundDrawablesWithIntrinsicBounds(0,
-                    R.mipmap.wushuju, 0, 0);
+                    R.mipmap.ic_launcher, 0, 0);
             tryAgin.setText(noDataInfo);
             tryAgin.setVisibility(View.VISIBLE);
             tryAgin.setEnabled(false);
@@ -169,7 +169,7 @@ public class LoadView extends FrameLayout implements OnClickListener {
         else if (status == EMPTY_NO_NETWORK) {
             img.clearAnimation();
             img.setVisibility(View.GONE);
-            tryAgin.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.wushuju, 0, 0);
+            tryAgin.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_launcher, 0, 0);
             tryAgin.setVisibility(View.VISIBLE);
             tryAgin.setText("网络设置出错，点击重新加载");
             tryAgin.setEnabled(true);

@@ -132,16 +132,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             }
         });
 
-        initVideoInfo();
+//        initVideoInfo();
 
         // 测试重启设备
 //        CommonUtil.RebootDevice(HomeActivity.this);
-
-        /*Intent i = new Intent(Intent.ACTION_REBOOT);
-        i.putExtra("nowait", 1);
-        i.putExtra("interval", 1);
-        i.putExtra("window", 0);
-        sendBroadcast(i);*/
     }
 
     private void initVideoInfo() {
@@ -158,7 +152,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             if(videoFiles != null && videoFiles.length > 0){
                 currentPlayPosition = 0;
                 videoView.setVideoPath(videoFiles[0].getAbsolutePath());
-//                videoView.setVideoURI(Uri.parse(videoFiles[0].getAbsolutePath()));
 
                 videoView.setBackgroundResource(0);
                 videoView.start();
@@ -170,7 +163,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 currentPlayPosition ++;
                 if(videoFiles.length > currentPlayPosition) {
                     videoView.setVideoPath(videoFiles[currentPlayPosition].getAbsolutePath());
-//                    videoView.setVideoURI(Uri.parse(videoFiles[currentPlayPosition].getAbsolutePath()));
                     videoView.start();
                 }
             }
@@ -427,7 +419,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 4:
                             // 4 卡片关联
-
+                            CommonUtil.recoverFactory(HomeActivity.this);
                             break;
                         case 5:
                             // #关闭

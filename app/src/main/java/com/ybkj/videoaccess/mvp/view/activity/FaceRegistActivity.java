@@ -292,24 +292,6 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                     // 处理拍出来的照片
                     String path = msg.getData().getString("path");
 
-                    /*try {
-                        FileInputStream fis = new FileInputStream(path);//通过path把照片读到文件输入流中
-                        Bitmap bitmap = BitmapFactory.decodeStream(fis);//将输入流解码为bitmap
-                        Matrix matrix = new Matrix();//新建一个矩阵对象
-                        matrix.setRotate(270);//矩阵旋转操作让照片可以正对着你。但是还存在一个左右对称的问题
-
-                        //新建位图，第2个参数至第5个参数表示位图的大小，matrix中是旋转后的位图信息，并使bitmap变量指向新的位图对象
-                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                        image_view.setImageBitmap(bitmap);
-
-                        FaceDetector.Face[] faces = PictureUtil.faceCut(bitmap);
-                        if(faces != null && faces.length > 0){
-                            drawFacesArea(faces);
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }*/
-
                     if(iFaceApi != null){
                         try {
 //                            String requestResult = iFaceApi.reg(path,null,userName,0);
@@ -326,25 +308,32 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                             }else if(deviceRegistResult.getRetStr().contains("failed_face") ||
                                     deviceRegistResult.getRetStr().contains("reg error")){
                                 // 表示图片无法正常注册，可能的原因有：1.图片有超过1个人的脸；2.图片人脸质量太差，无法正常注册；3.该人脸已注册过。
-                                if (confirmDialog == null) {
-                                    confirmDialog = new PrometDialog(FaceRegistActivity.this, new PrometDialog.OnKeyDownListener() {
-                                        @Override
-                                        public void onRetry() {
-                                            // 重试
-                                            startTimer();
-                                        }
+                                failCount ++;
+                                if(failCount >= 3){
+                                    // 失败次数大于3时，
+                                    failCount = 0;
+                                    if (confirmDialog == null) {
+                                        confirmDialog = new PrometDialog(FaceRegistActivity.this, new PrometDialog.OnKeyDownListener() {
+                                            @Override
+                                            public void onRetry() {
+                                                // 重试
+                                                startTimer();
+                                            }
 
-                                        @Override
-                                        public void onExit() {
-                                            finish();
-                                        }
-                                    });
+                                            @Override
+                                            public void onExit() {
+                                                finish();
+                                            }
+                                        });
+                                    }
+                                    confirmDialog.setNoTitle(true);
+                                    confirmDialog.setNoMessage(true);
+                                    confirmDialog.setRegistErroDownCountString("请按 * 键重试或 # 键退出");
+                                    confirmDialog.showRegistError();
+                                    confirmDialog.show();
+                                }else{
+                                    startTimer();
                                 }
-                                confirmDialog.setNoTitle(true);
-                                confirmDialog.setNoMessage(true);
-                                confirmDialog.setRegistErroDownCountString("请按 * 键重试或 # 键退出");
-                                confirmDialog.showRegistError();
-                                confirmDialog.show();
                             }else{
                                 // 注册失败，语音提示"授权失败，请按 * 键重试或 # 键退出"
                                 failCount ++;

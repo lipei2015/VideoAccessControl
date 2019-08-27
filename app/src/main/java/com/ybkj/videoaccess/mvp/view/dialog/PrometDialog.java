@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ybkj.videoaccess.R;
@@ -20,6 +21,7 @@ import com.ybkj.videoaccess.mvp.base.BaseDialog;
 public class PrometDialog extends BaseDialog {
     private TextView title;
     private TextView message;
+    private ImageView imgSuccess;
 
     // 人脸注册失败提示
     private LinearLayout layout_regist_fail;
@@ -53,6 +55,7 @@ public class PrometDialog extends BaseDialog {
         layout_regist_fail = (LinearLayout) v.findViewById(R.id.layout_regist_fail);
         tv_down_count = (TextView) v.findViewById(R.id.tv_down_count);
         tv_content = (TextView) v.findViewById(R.id.tv_content);
+        imgSuccess = (ImageView) v.findViewById(R.id.imgSuccess);
         setContentView(v);
 
         Window window = getWindow();
@@ -71,6 +74,16 @@ public class PrometDialog extends BaseDialog {
      */
     public PrometDialog setTitle(String titleValue) {
         title.setText(titleValue);
+        return this;
+    }
+
+    /**
+     *
+     * @param visable
+     * @return
+     */
+    public PrometDialog setSuccessIconVisable(boolean visable) {
+        imgSuccess.setVisibility(visable ? View.GONE : View.VISIBLE);
         return this;
     }
 

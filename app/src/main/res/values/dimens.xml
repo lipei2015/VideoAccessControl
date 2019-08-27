@@ -55,6 +55,7 @@
     <dimen name="dialog_input_promet_text_size">16sp</dimen>
     <dimen name="dialog_confirm_padding">20dp</dimen>
     <dimen name="dialog_line_spacing_extra">10dp</dimen>
+    <dimen name="dialog_success_img_height">60dp</dimen>
 
     <dimen name="face_check_text_margin_bottom">20dp</dimen>
     <dimen name="face_check_surface_margin">10dp</dimen>
@@ -64,4 +65,7 @@
     <dimen name="face_regist_promet_margin_top">11px</dimen>
     <dimen name="face_regist_surface_width">250dp</dimen>
     <dimen name="face_regist_surface_height">250dp</dimen>
+
+    <dimen name="zxing_text_margin_top">20px</dimen>
+    <dimen name="zxing_secend_text_size">26sp</dimen>
 </resources>
