@@ -29,10 +29,17 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'ybkj'
-            keyPassword 'ybkj_android'
-            storeFile file('YbkjStore.jks')
-            storePassword 'ybkj_android'
+            storeFile file("systemsign.jks")
+            storePassword '123456'
+            keyAlias 'systemsign'
+            keyPassword '123456'
+        }
+
+        debug {
+            storeFile file("systemsign.jks")
+            storePassword '123456'
+            keyAlias 'systemsign'
+            keyPassword '123456'
         }
     }
 

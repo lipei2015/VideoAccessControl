@@ -2,32 +2,24 @@ package com.ybkj.videoaccess.mvp.view.activity;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.google.zxing.client.android.util.QRCodeUtil;
-import com.wrtsz.api.IWrtdevManager;
-import com.wrtsz.api.WrtdevManager;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.app.DeviceApi;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.StartControl;
-import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.InitInfoBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestResourcesBean;
 import com.ybkj.videoaccess.mvp.data.model.StartModel;
 import com.ybkj.videoaccess.mvp.presenter.StartPresenter;
-import com.ybkj.videoaccess.util.CommonUtil;
+import com.ybkj.videoaccess.util.AudioMngHelper;
 import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.MyDeviceInfo;
@@ -35,13 +27,10 @@ import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.TextToSpeechUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.util.VedioDownLoadAsyncTask;
-import com.ybkj.videoaccess.util.ViewUtil;
 import com.ybkj.videoaccess.util.http.HttpErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -79,7 +68,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
     @Override
     protected void initView() {
         preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
-//        textToSpeechUtil = new TextToSpeechUtil(this);
+        textToSpeechUtil = new TextToSpeechUtil(this);
 
         device_id = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
         if(TextUtils.isEmpty(device_id)){
@@ -123,7 +112,13 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
         // 先检测本地有无下载的数据，有的话直接进入主界面展示，没有的话直接每隔2秒拉取数据数据，
         // 没有数据说明没有绑定成功，拉取到了数据就说明绑定成功，开始下载数据并且进入主页播放日常视频
 
-//        textToSpeechUtil.notifyNewMessage("hello");
+        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
+        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
+        audioMngHelper.setVoice100(60);
+
+//        textToSpeechUtil.notifyNewMessage("test");
+        textToSpeechUtil.notifyNewMessage("test");
+//        textToSpeechUtil.notifyNewMessage("你好");
 
         FileUtil.createDirectory(ConstantSys.HOME_VEDIO_PATH);
         List<String> urlList = new ArrayList<>();

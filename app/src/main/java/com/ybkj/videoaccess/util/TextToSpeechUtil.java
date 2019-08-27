@@ -26,6 +26,7 @@ public class TextToSpeechUtil implements TextToSpeech.OnInitListener{
     public void onInit(int status) {
         Log.i("TextToSpeechDemo",String.valueOf(status));
         if(status==TextToSpeech.SUCCESS){
+//            int result = this.mTextToSpeech.setLanguage(Locale.CHINA);//设置识别语音为中文
             int result = this.mTextToSpeech.setLanguage(Locale.CHINA);//设置识别语音为中文
             synchronized (this){
                 this.mIsReady=true;//设置标识符为true

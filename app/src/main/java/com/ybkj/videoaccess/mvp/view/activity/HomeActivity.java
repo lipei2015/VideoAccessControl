@@ -107,7 +107,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -135,7 +135,13 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         initVideoInfo();
 
         // 测试重启设备
-        CommonUtil.RebootDevice(HomeActivity.this);
+//        CommonUtil.RebootDevice(HomeActivity.this);
+
+        /*Intent i = new Intent(Intent.ACTION_REBOOT);
+        i.putExtra("nowait", 1);
+        i.putExtra("interval", 1);
+        i.putExtra("window", 0);
+        sendBroadcast(i);*/
     }
 
     private void initVideoInfo() {
@@ -152,7 +158,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             if(videoFiles != null && videoFiles.length > 0){
                 currentPlayPosition = 0;
                 videoView.setVideoPath(videoFiles[0].getAbsolutePath());
+//                videoView.setVideoURI(Uri.parse(videoFiles[0].getAbsolutePath()));
+
                 videoView.setBackgroundResource(0);
+                videoView.start();
             }
         }
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -161,6 +170,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 currentPlayPosition ++;
                 if(videoFiles.length > currentPlayPosition) {
                     videoView.setVideoPath(videoFiles[currentPlayPosition].getAbsolutePath());
+//                    videoView.setVideoURI(Uri.parse(videoFiles[currentPlayPosition].getAbsolutePath()));
                     videoView.start();
                 }
             }
@@ -344,7 +354,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     public void onResume() {
 //        startTimer();
         if(videoView.canPause()){
-//            videoView.start();
+            videoView.start();
         }
         super.onResume();
     }
