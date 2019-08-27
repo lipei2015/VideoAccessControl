@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A custom adapter designed to fetch bookmarks from a cursor. Before Honeycomb we used
+ * A activity_face_check adapter designed to fetch bookmarks from a cursor. Before Honeycomb we used
  * SimpleCursorAdapter, but it assumes the existence of an _id column, and the bookmark schema was
  * rewritten for HC without one. This caused the app to crash, hence this new class, which is
  * forwards and backwards compatible.

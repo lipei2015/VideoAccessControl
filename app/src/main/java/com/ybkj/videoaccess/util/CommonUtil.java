@@ -2,6 +2,7 @@ package com.ybkj.videoaccess.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -111,6 +112,15 @@ public class CommonUtil {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void recoverFactory(Context context){
+        Intent intent = new Intent("android.intent.action.MASTER_CLEAR");
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        intent.putExtra("android.intent.extra.REASON", "FactoryMode");
+        intent.putExtra("android.intent.action.REBOOT", true); //可选shutdown
+        intent.putExtra("android.intent.extra.WIPE_EXTERNAL_STORAGE", true); //是否擦除SdCard
+        context.sendBroadcast(intent);
     }
 
     /**

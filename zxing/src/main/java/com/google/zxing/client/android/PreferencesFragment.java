@@ -112,7 +112,7 @@ public final class PreferencesFragment
       if (valueString.isEmpty()) {
         return true;
       }
-      // Before validating, remove custom placeholders, which will not
+      // Before validating, remove activity_face_check placeholders, which will not
       // be considered valid parts of the URL in some locations:
       // Blank %t and %s:
       valueString = valueString.replaceAll("%[st]", "");
