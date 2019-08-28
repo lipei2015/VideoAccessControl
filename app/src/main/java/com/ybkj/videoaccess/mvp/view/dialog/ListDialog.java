@@ -113,6 +113,9 @@ public class ListDialog extends BaseDialog {
             case 136:
                 // # 关闭
                 dismiss();
+                if(onKeyDownListener != null){
+                    onKeyDownListener.onKeyDown(5);
+                }
                 break;
         }
         return super.onKeyDown(keyCode, event);

@@ -98,8 +98,8 @@ public class EasyPermissions {
      *                       {@link android.support.v13.app.FragmentCompat.OnRequestPermissionsResultCallback}
      * @param rationale      a message explaining why the application needs this set of permissions, will
      *                       be displayed if the user rejects the request the first time.
-     * @param positiveButton custom text for positive button
-     * @param negativeButton custom text for negative button
+     * @param positiveButton activity_face_check text for positive button
+     * @param negativeButton activity_face_check text for negative button
      * @param requestCode    request code to track this request, must be < 256.
      * @param perms          a set of permissions to be requested.
      */

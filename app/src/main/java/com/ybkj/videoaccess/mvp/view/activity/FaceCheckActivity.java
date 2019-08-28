@@ -38,6 +38,7 @@ import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.GsonUtils;
 import com.ybkj.videoaccess.util.ImageUtil;
 import com.ybkj.videoaccess.util.TextToSpeechUtil;
+import com.ybkj.videoaccess.util.ToastUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -73,6 +74,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     private IFaceApi iFaceApi;
     private TextToSpeechUtil textToSpeechUtil;
     private String localPath;
+
+    private PrometDialog openPrometDialog;
 
     @Override
     protected int setLayoutId() {
@@ -244,7 +247,17 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                     && !TextUtils.isEmpty(deviceRecognitionResult.getPersonId()) ) {
                                 // 人脸识别成功，先开门
                                 if (wrtdevManager != null) {
-//                                    int opendoor = wrtdevManager.openDoor();    // 0为开门成功，-1为失败
+                                    int opendoor = wrtdevManager.openDoor();    // 0为开门成功，-1为失败
+                                    if(opendoor == 0){
+                                        // 开门成功
+                                        if(openPrometDialog == null){
+                                            openPrometDialog = new PrometDialog(FaceCheckActivity.this);
+                                            openPrometDialog.setSuccessIconVisable(true);
+                                            openPrometDialog.setMessage("门已开");
+                                        }
+                                        openPrometDialog.show();
+//                                        ToastUtil.showMsg("门已开");
+                                    }
                                 }
                                 if(deviceRecognitionResult.getFaceInfos() != null && deviceRecognitionResult.getFaceInfos().size() > 0){
                                     // 人像抠图

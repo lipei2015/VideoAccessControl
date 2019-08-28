@@ -143,11 +143,11 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         FileUtil.createDirectory(localPath);
 
         //TODO 先判断传过来的用户信息是否与本栋楼匹配，匹配才进行拍照人脸注册
-        /*RequestDownloadUserFaceBean bean = new RequestDownloadUserFaceBean();
+        RequestDownloadUserFaceBean bean = new RequestDownloadUserFaceBean();
         bean.setPid("123456");
         bean.setMac(device_id);
         bean.setOptype("1");
-        mPresenter.downloadUserFace(bean);*/
+        mPresenter.downloadUserFace(bean);
 
         startTimer();
 

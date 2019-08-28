@@ -22,7 +22,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 /**
- * Provided default implementation of GestureDetector.OnDoubleTapListener, to be overriden with custom behavior, if needed
+ * Provided default implementation of GestureDetector.OnDoubleTapListener, to be overriden with activity_face_check behavior, if needed
  * <p>&nbsp;</p>
  * To be used via {@link cn.finalteam.galleryfinal.widget.zoonview.PhotoViewAttacher#setOnDoubleTapListener(GestureDetector.OnDoubleTapListener)}
  */

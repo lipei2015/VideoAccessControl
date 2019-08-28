@@ -129,7 +129,8 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
             @Override
             public void onFinished() {
                 // 下载完成，开始播放媒体文件
-
+                startActivity(new Intent(StartActivity.this, HomeActivity.class));
+                new Handler().postDelayed(() -> onFinishActivity(), 1000);
             }
         });
 //        vedioDownLoadAsyncTask.execute(500);

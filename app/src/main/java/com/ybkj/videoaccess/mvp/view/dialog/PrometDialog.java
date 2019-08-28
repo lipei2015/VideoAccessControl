@@ -136,12 +136,16 @@ public class PrometDialog extends BaseDialog {
         switch (keyCode){
             case 135:
                 // * 重试
-                onKeyDownListener.onRetry();
+                if(onKeyDownListener != null) {
+                    onKeyDownListener.onRetry();
+                }
                 dismiss();
                 break;
             case 136:
                 // # 关闭
-                onKeyDownListener.onExit();
+                if(onKeyDownListener != null) {
+                    onKeyDownListener.onExit();
+                }
                 dismiss();
                 break;
         }

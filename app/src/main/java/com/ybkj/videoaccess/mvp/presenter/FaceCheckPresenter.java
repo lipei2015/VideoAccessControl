@@ -22,13 +22,13 @@ public class FaceCheckPresenter extends FaceCheckControl.IFaceCheckPresenter {
             public void onSuccess(Object o) {
                 // 数据返回成功检测
                 StringMessageInfo result = (StringMessageInfo) o;
-//                LogUtil.i(result.getData().getMessage()+"");
+                Log.e("gateOpenRecord",result.getMessage()+"");
                 mView.showGateOpenRecordResult(true);
             }
 
             @Override
             public void onError(HttpErrorException errorException) {
-                LogUtil.i(errorException.getMessage()+"");
+                Log.e("gateOpenRecord","onError"+errorException.getMessage()+"");
                 mView.gateOpenRecordFail(requestGateOpenRecordBean);
             }
         })));

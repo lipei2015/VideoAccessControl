@@ -127,7 +127,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -256,16 +256,17 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             Log.e("onServiceConnected", "aidl远程服务连接成功");
             //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
             iFaceApi = IFaceApi.Stub.asInterface(service);
-            /*try {
+
+            try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
-//                String result1 = iFaceApi.recognition_config(30,1);
-//                Log.e("result1", "result:"+result1);
+                String result1 = iFaceApi.unreg("1");
+                Log.e("result1", "result:"+result1);
 
 //                String unregResult = iFaceApi.unreg("1");
 //                Log.e("unregResult", "unregResult:"+unregResult);
             } catch (RemoteException e) {
                 e.printStackTrace();
-            }*/
+            }
         }
 
     };
@@ -336,6 +337,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      * 开始有无人像出现监听
      */
     private void startTimer(){
+        cancelTimer();
         timer = new Timer();
         timerTask = new TimerTask() {
             @Override
@@ -400,7 +402,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     public void onResume() {
-//        startTimer();
+        startTimer();
         if(videoView.canPause()){
             videoView.start();
         }
@@ -479,6 +481,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 5:
                             // #关闭
+                            startTimer();
                             break;
                     }
                 }
