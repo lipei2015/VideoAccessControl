@@ -20,6 +20,11 @@ public class DataUtil {
     public static String dateFormatYMDHMSMSString = "yyyyMMddHHmmss";
 
     /**
+     * 获取时分秒
+     */
+    public static String dateFormatHHMMString = "HHmm";
+
+    /**
      * 时间日期格式化到年月日.
      */
     public static String dateFormatYMD = "yyyy-MM-dd";
@@ -44,6 +49,20 @@ public class DataUtil {
         try {
             Date data = new Date(currentTime);
             return new SimpleDateFormat(dateFormatYMDHMSMSString).format(data);
+        } catch (Exception e) {
+            return "未知时间";
+        }
+    }
+
+    /**
+     * 获取时分时间
+     * @param currentTime
+     * @return
+     */
+    public static String getHMtring(long currentTime) {
+        try {
+            Date data = new Date(currentTime);
+            return new SimpleDateFormat(dateFormatHHMMString).format(data);
         } catch (Exception e) {
             return "未知时间";
         }

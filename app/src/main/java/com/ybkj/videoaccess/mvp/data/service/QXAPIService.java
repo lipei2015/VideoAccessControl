@@ -1,12 +1,14 @@
 package com.ybkj.videoaccess.mvp.data.service;
 
 import com.ybkj.videoaccess.mvp.data.bean.DataInfo;
+import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
 import com.ybkj.videoaccess.mvp.data.bean.FullDataInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RegistCheckInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDevDeployBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDownloadUserFaceBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestMediaDownloadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
 import com.ybkj.videoaccess.mvp.data.bean.RequestResourcesBean;
@@ -14,6 +16,8 @@ import com.ybkj.videoaccess.mvp.data.bean.RequestUserAuthReportBean;
 import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
 import com.ybkj.videoaccess.util.http.CommonResult;
 import com.ybkj.videoaccess.util.http.Result;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -23,6 +27,7 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 import static com.ybkj.videoaccess.app.ConstantApi.GET_CONFIG;
+import static com.ybkj.videoaccess.app.ConstantApi.MediaDownload;
 import static com.ybkj.videoaccess.app.ConstantApi.Remot_Open_Debug;
 import static com.ybkj.videoaccess.app.ConstantApi.devDeploy;
 import static com.ybkj.videoaccess.app.ConstantApi.downloadUserFace;
@@ -92,6 +97,15 @@ public interface QXAPIService {
     @Headers("urlname:qxapi")
     @POST(pwdValidation)
     Observable<CommonResult<StringMessageInfo>> pwdValidation(@Body RequestPwdValidationbean body);
+
+
+    /**
+     * 14.媒体文件下载接口，该接口需要根据媒体规则，每日凌晨去服务器端检查新的媒体文件并获取到文件清单并下载。
+     * @param body
+     * @return
+     */
+    @POST(MediaDownload)
+    Observable<CommonResult<List<MediaInfo>>> mediaDownload(@Body RequestMediaDownloadBean body);
 
     /**
      * 获取配置信息

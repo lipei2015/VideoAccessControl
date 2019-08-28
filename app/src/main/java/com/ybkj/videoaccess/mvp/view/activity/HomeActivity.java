@@ -38,7 +38,9 @@ import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.HomeControl;
+import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RemoteResultBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestMediaDownloadBean;
 import com.ybkj.videoaccess.mvp.data.bean.VedioInfo;
 import com.ybkj.videoaccess.mvp.data.model.HomeModel;
 import com.ybkj.videoaccess.mvp.presenter.HomePresenter;
@@ -48,6 +50,7 @@ import com.ybkj.videoaccess.util.AudioMngHelper;
 import com.ybkj.videoaccess.util.CommonUtil;
 import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.LogUtil;
+import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.websocket.JWebSocketClient;
 import com.ybkj.videoaccess.websocket.JWebSocketClientService;
@@ -81,6 +84,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     private JWebSocketClientService jWebSClientService;
     private RemoteMessageReceiver remoteMessageReceiver;
 
+    private PreferencesUtils preferencesUtils;
+
+    // 全天不停止时间处理器
+    private Timer aliveTimer;
+    private TimerTask aliveTimerTask;
+
     //定义aidl接口变量
     private IFaceApi iFaceApi;
     public final static int SCANNING_REQUEST_CODE = 1;
@@ -91,12 +100,23 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     }
 
     @Override
+    protected HomeModel createModel() {
+        return new HomeModel();
+    }
+
+    @Override
+    protected HomePresenter createPresenter() {
+        return new HomePresenter();
+    }
+
+    @Override
     protected String setTitle() {
         return null;
     }
 
     @Override
     protected void initView() {
+        preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
         initWrtdev();
 
         //启动远程监听服务
@@ -136,6 +156,42 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
         // 测试重启设备
 //        CommonUtil.RebootDevice(HomeActivity.this);
+
+        RequestMediaDownloadBean requestMediaDownloadBean = new RequestMediaDownloadBean();
+        requestMediaDownloadBean.setMac(preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null));
+        requestMediaDownloadBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
+        mPresenter.mediaDownload(requestMediaDownloadBean);
+
+        // 开启全天时间处理器
+        startAliveTimer();
+    }
+
+    private long dealTime = 0;
+    /**
+     * 开启全天时间处理器
+     */
+    private void startAliveTimer() {
+        aliveTimer = new Timer();
+        aliveTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                long now = System.currentTimeMillis();
+                // 距离上次去请求媒体数据要大于2小时
+                if(now - dealTime > 2 * 60 * 60 * 100) {
+                    int value = Integer.parseInt(DataUtil.getHMtring(now));
+                    Log.e("startAliveTimer", "当前时间：" + value);
+                    // <100 就是要当前时间在凌晨12点和1点之间才执行操作
+                    if (value <= 100) {
+                        RequestMediaDownloadBean requestMediaDownloadBean = new RequestMediaDownloadBean();
+                        requestMediaDownloadBean.setMac(preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null));
+                        requestMediaDownloadBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
+                        mPresenter.mediaDownload(requestMediaDownloadBean);
+                    }
+                }
+            }
+        };
+        // 每10分钟判断一次是否是凌晨 12点到 1 点之间
+        aliveTimer.schedule(aliveTimerTask, 0, 10 * 60 * 1000);//延时1s，每隔500毫秒执行一次run方法
     }
 
     private void initVideoInfo() {
@@ -171,8 +227,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     }
 
     private void initAidlService(){
-        // 通过Intent指定服务端的服务名称和所在包，与远程Service进行绑定
-        //参数与服务器端的action要一致,即"服务器包名.aidl接口文件名"
+        // 通过Intent指定服务端的服务名称和所在包，与远程Service进行绑定,参数与服务器端的action要一致,即"服务器包名.aidl接口文件名"
         //Intent intent = new Intent("com.wrtsz.intercom.master.IFaceApi");
         Intent intent = new Intent("com.wrtsz.intercom.master.WRT_FACE_SERVICE");
 
@@ -185,10 +240,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         Log.e("iss",iss+"---");
     }
 
-    //创建ServiceConnection的匿名类
+    /**
+     * 创建ServiceConnection的匿名类
+     */
     private ServiceConnection connection = new ServiceConnection() {
-        //重写onServiceConnected()方法和onServiceDisconnected()方法
-        //在Activity与Service建立关联和解除关联的时候调用
+        //重写onServiceConnected()方法和onServiceDisconnected()方法,在Activity与Service建立关联和解除关联的时候调用
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Log.e("onServiceDisconnected", "aidl远程服务断开成功");
@@ -465,6 +521,15 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      */
     @Override
     public void showPwdValidation(String result) {
+
+    }
+
+    /**
+     * 获取到媒体资源文件信息
+     * @param infoList
+     */
+    @Override
+    public void showMediaDownload(List<MediaInfo> infoList) {
 
     }
 

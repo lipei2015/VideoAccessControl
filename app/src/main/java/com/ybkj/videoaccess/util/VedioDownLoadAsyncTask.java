@@ -36,8 +36,15 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
     @Override
     protected String doInBackground(Integer... integers) {
         // 文件名字从 1 开始
-        currentPosition = 0;
-        downloadByDownloadManager(mContext, vedioUrls.get(0),currentPosition+1);
+//        downloadByDownloadManager(mContext, vedioUrls.get(0),currentPosition+1);
+        for(int index=0;index<vedioUrls.size();index++){
+            currentPosition = index;
+            downloadByDownloadManager(mContext, vedioUrls.get(index),index+1);
+            Log.e("onProgressUpdate", "download finish "+(index+1));
+        }
+//        Toast.makeText(mContext, "下载完成", Toast.LENGTH_SHORT).show();
+        Log.e("doInBackground","下载完成");
+        remove(mContext);
         return String.valueOf(integers[0].intValue());
     }
 
@@ -52,18 +59,8 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
         int value = values[0];
         if (value <= 100) {
             if (value == 100) {
-                currentPosition ++;
-                Log.e("onProgressUpdate", "download finish "+currentPosition);
-                if(vedioUrls.size()>currentPosition){
-                    downloadByDownloadManager(mContext, vedioUrls.get(currentPosition), currentPosition+1);
-                }else{
-                    Toast.makeText(mContext, "下载完成", Toast.LENGTH_SHORT).show();
-                    Log.e("onProgressUpdate", "download finish ---------");
-                    if(iOnVedioDownLoadFinish != null){
-                        iOnVedioDownLoadFinish.onFinished();
-                    }
-                    remove(mContext);
-                }
+                // 一个文件下载完成
+
             }
         }
     }
