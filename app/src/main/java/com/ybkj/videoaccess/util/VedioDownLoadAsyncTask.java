@@ -122,7 +122,7 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
                     break;
                 } else {
                     try {
-                        Thread.sleep(4000);
+                        Thread.sleep(10000);
                     } catch (InterruptedException e) {
                         StringWriter stringWriter = new StringWriter();
                         e.printStackTrace(new PrintWriter(stringWriter, true));
