@@ -8,6 +8,7 @@ import com.ybkj.videoaccess.mvp.data.bean.RequestDevDeployBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestDownloadUserFaceBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestFullDataLoadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestICardReportBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestMediaDownloadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestRemoteOpen;
@@ -27,6 +28,7 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 import static com.ybkj.videoaccess.app.ConstantApi.GET_CONFIG;
+import static com.ybkj.videoaccess.app.ConstantApi.ICardReport;
 import static com.ybkj.videoaccess.app.ConstantApi.MediaDownload;
 import static com.ybkj.videoaccess.app.ConstantApi.Remot_Open_Debug;
 import static com.ybkj.videoaccess.app.ConstantApi.devDeploy;
@@ -77,8 +79,21 @@ public interface QXAPIService {
     @POST(downloadUserFace)
     Observable<CommonResult<RegistCheckInfo>> downloadUserFace(@Body RequestDownloadUserFaceBean body);
 
+    /**
+     * 人相授权信息上报数据
+     * @param body
+     * @return
+     */
     @POST(userAuthReport)
     Observable<CommonResult<StringMessageInfo>> userAuthReport(@Body RequestUserAuthReportBean body);
+
+    /**
+     * IC卡信息上报数据
+     * @param body
+     * @return
+     */
+    @POST(ICardReport)
+    Observable<CommonResult<StringMessageInfo>> iCardReport(@Body RequestICardReportBean body);
 
     /**
      * 开门记录上传
