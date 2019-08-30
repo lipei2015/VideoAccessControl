@@ -32,12 +32,13 @@ public class HomePresenter extends HomeControl.IHomePresenter{
                 StringMessageInfo result = (StringMessageInfo) o;
                 LogUtil.i(result.getMessage()+"");
 
-                mView.showPwdValidation(result.getMessage());
+                mView.showPwdValidation(true,result.getMessage());
             }
 
             @Override
             public void onError(HttpErrorException errorException) {
                 LogUtil.i(errorException.getMessage()+"");
+                mView.showPwdValidation(false,errorException.getMessage());
             }
         })));
     }
@@ -51,7 +52,7 @@ public class HomePresenter extends HomeControl.IHomePresenter{
                 StringMessageInfo result = (StringMessageInfo) o;
                 LogUtil.i(result.getMessage()+"");
 
-                mView.showPwdValidation(result.getMessage());
+//                mView.showPwdValidation(result.getMessage());
             }
 
             @Override

@@ -15,9 +15,8 @@ import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseDialog;
 
 /**
- * 确认收货
  * <p>
- * Created by HH on 2016/7/22.
+ * Created by lp
  */
 public class InputDialog extends BaseDialog {
     private TextView title;
@@ -147,7 +146,6 @@ public class InputDialog extends BaseDialog {
     }
 
     public interface OnKeyDownListener {
-        void onKeyDown(int keyCode);
         void onSubmit(String pwd);
     }
 }

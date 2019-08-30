@@ -10,9 +10,8 @@ import java.util.List;
 import butterknife.OnClick;
 
 /**
- * 图像来源选择弹出框
  * <p>
- * Created by HH on 2016/7/7.
+ * Created by lp
  */
 public class SelectImgDialog extends BaseAnimDialog {
     private SelectImgHelper.Builder builder;

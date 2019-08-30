@@ -13,7 +13,7 @@ import com.ybkj.videoaccess.util.http.HttpUtil;
  * 网络请求等待框
  * 进行网络请求的时候弹出该框，提示用户等待
  *
- * @author HH
+ * @author lp
  */
 public class LoadingDialog extends BaseDialog {
     private View v;

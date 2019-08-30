@@ -10,15 +10,16 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseDialog;
 
 /**
  * 确认收货
  * <p>
- * Created by HH on 2016/7/22.
+ * Created by lp 2019年8月30日15:31:02
  */
-public class PrometDialog extends BaseDialog {
+public class BindCardDialog extends BaseDialog {
     private TextView title;
     private TextView message;
     private ImageView imgSuccess;
@@ -32,13 +33,13 @@ public class PrometDialog extends BaseDialog {
     private OnKeyDownListener onKeyDownListener;
     private boolean needClosed = true; // 点击确定是否隐藏弹窗
 
-    public PrometDialog(Context context) {
+    public BindCardDialog(Context context) {
         super(context);
         findView(context);
         setCancelable(true);
     }
 
-    public PrometDialog(Context context, OnKeyDownListener onKeyDownListener) {
+    public BindCardDialog(Context context, OnKeyDownListener onKeyDownListener) {
         super(context);
         this.onKeyDownListener = onKeyDownListener;
         findView(context);
@@ -72,7 +73,7 @@ public class PrometDialog extends BaseDialog {
     /**
      * 设置提示标题
      */
-    public PrometDialog setTitle(String titleValue) {
+    public BindCardDialog setTitle(String titleValue) {
         title.setText(titleValue);
         return this;
     }
@@ -82,7 +83,7 @@ public class PrometDialog extends BaseDialog {
      * @param visable
      * @return
      */
-    public PrometDialog setSuccessIconVisable(boolean visable) {
+    public BindCardDialog setSuccessIconVisable(boolean visable) {
         imgSuccess.setVisibility(visable ? View.VISIBLE : View.GONE);
         return this;
     }
@@ -90,7 +91,7 @@ public class PrometDialog extends BaseDialog {
     /**
      * 设置无标题
      */
-    public PrometDialog setNoTitle(boolean hasTitle) {
+    public BindCardDialog setNoTitle(boolean hasTitle) {
         title.setVisibility(hasTitle ? View.GONE : View.VISIBLE);
         return this;
     }
@@ -98,7 +99,7 @@ public class PrometDialog extends BaseDialog {
     /**
      * 设置温馨信息
      */
-    public PrometDialog setMessage(String messageValue) {
+    public BindCardDialog setMessage(String messageValue) {
         message.setText(messageValue);
         return this;
     }
@@ -108,12 +109,12 @@ public class PrometDialog extends BaseDialog {
      * @param hasMessage
      * @return
      */
-    public PrometDialog setNoMessage(boolean hasMessage) {
+    public BindCardDialog setNoMessage(boolean hasMessage) {
         message.setVisibility(hasMessage ? View.GONE : View.VISIBLE);
         return this;
     }
 
-    public PrometDialog showRegistError(){
+    public BindCardDialog showRegistError(){
         layout_regist_fail.setVisibility(View.VISIBLE);
         return this;
     }

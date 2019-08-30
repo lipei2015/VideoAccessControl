@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
@@ -32,6 +33,7 @@ import android.widget.VideoView;
 
 import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity;
+import com.google.zxing.client.android.util.QRRecognizeHelper;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
@@ -41,11 +43,13 @@ import com.ybkj.videoaccess.mvp.control.HomeControl;
 import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RemoteResultBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestMediaDownloadBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
 import com.ybkj.videoaccess.mvp.data.bean.VedioInfo;
 import com.ybkj.videoaccess.mvp.data.model.HomeModel;
 import com.ybkj.videoaccess.mvp.presenter.HomePresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.InputDialog;
 import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
+import com.ybkj.videoaccess.mvp.view.dialog.PrometDialog;
 import com.ybkj.videoaccess.util.AudioMngHelper;
 import com.ybkj.videoaccess.util.CommonUtil;
 import com.ybkj.videoaccess.util.DataUtil;
@@ -85,6 +89,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     private RemoteMessageReceiver remoteMessageReceiver;
 
     private PreferencesUtils preferencesUtils;
+    private String deviceId;
 
     // 全天不停止时间处理器
     private Timer aliveTimer;
@@ -117,7 +122,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     @Override
     protected void initView() {
         preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
-        initWrtdev();
+        deviceId = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
+//        initWrtdev();
 
         //启动远程监听服务
 //        startJWebSClientService();
@@ -127,7 +133,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -158,12 +164,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        CommonUtil.RebootDevice(HomeActivity.this);
 
         RequestMediaDownloadBean requestMediaDownloadBean = new RequestMediaDownloadBean();
-        requestMediaDownloadBean.setMac(preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null));
+        requestMediaDownloadBean.setMac(deviceId);
         requestMediaDownloadBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
         mPresenter.mediaDownload(requestMediaDownloadBean);
 
         // 开启全天时间处理器
         startAliveTimer();
+
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/截屏/123456789.png";//文件路径
+        String result = QRRecognizeHelper.getReult(BitmapFactory.decodeFile(path));
+        Log.e("QRRecognizeHelper",result+"");
     }
 
     private long dealTime = 0;
@@ -402,7 +412,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     public void onResume() {
-        startTimer();
+//        startTimer();
         if(videoView.canPause()){
             videoView.start();
         }
@@ -455,15 +465,15 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             if(inputDialog == null){
                                 inputDialog = new InputDialog(HomeActivity.this, new InputDialog.OnKeyDownListener() {
                                     @Override
-                                    public void onKeyDown(int keyCode) {
-
-                                    }
-
-                                    @Override
                                     public void onSubmit(String pwd) {
                                         // 门禁主机APP保存当前楼栋的住户和密码规则（非明文），
                                         // 在用户输入密码的时候进行验证，验证通过之后调用进门记录接口生成开门记录
-
+                                        RequestPwdValidationbean bean = new RequestPwdValidationbean();
+                                        bean.setMac(deviceId);
+                                        bean.setPwd(pwd);
+                                        bean.setType("4");
+                                        bean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
+                                        mPresenter.pwdValidation(bean);
                                     }
                                 });
                                 inputDialog.show();
@@ -477,10 +487,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 4:
                             // 4 卡片关联
-                            CommonUtil.recoverFactory(HomeActivity.this);
+
                             break;
                         case 5:
                             // #关闭
+
+                            // 关闭了列表框，要重新开始监听人像和IC卡刷卡
                             startTimer();
                             break;
                     }
@@ -501,9 +513,27 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
 
         if(keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent(this, CaptureActivity.class);
+            /*Intent intent = new Intent(this, CaptureActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(intent, SCANNING_REQUEST_CODE);
+            startActivityForResult(intent, SCANNING_REQUEST_CODE);*/
+            if(inputDialog == null){
+                inputDialog = new InputDialog(HomeActivity.this, new InputDialog.OnKeyDownListener() {
+                    @Override
+                    public void onSubmit(String pwd) {
+                        // 门禁主机APP保存当前楼栋的住户和密码规则（非明文），
+                        // 在用户输入密码的时候进行验证，验证通过之后调用进门记录接口生成开门记录
+                        RequestPwdValidationbean bean = new RequestPwdValidationbean();
+                        bean.setMac(deviceId);
+                        bean.setPwd(pwd);
+                        bean.setType("4");
+                        bean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
+                        mPresenter.pwdValidation(bean);
+                    }
+                });
+                inputDialog.show();
+            }else{
+                inputDialog.show();
+            }
             return false;
         }
         return super.onKeyDown(keyCode, event);
@@ -523,8 +553,21 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      * @param result
      */
     @Override
-    public void showPwdValidation(String result) {
-
+    public void showPwdValidation(boolean isSuccess,String result) {
+        // 密码正确，开门
+        if(isSuccess) {
+            if (wrtdevManager != null) {
+                int opendoor = wrtdevManager.openDoor();    // 0为开门成功，-1为失败
+                if (opendoor == 0) {
+                    // 开门成功
+                    inputDialog.showPwdError();
+                } else {
+                    // TODO 开门失败
+                }
+            }
+        }else{
+            inputDialog.showPwdError();
+        }
     }
 
     /**

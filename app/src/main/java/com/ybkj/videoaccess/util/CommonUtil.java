@@ -114,6 +114,10 @@ public class CommonUtil {
         }
     }
 
+    /**
+     * 恢复出厂设置
+     * @param context
+     */
     public static void recoverFactory(Context context){
         Intent intent = new Intent("android.intent.action.MASTER_CLEAR");
         intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);

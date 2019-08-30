@@ -17,6 +17,9 @@ import com.ybkj.videoaccess.mvp.base.BaseDialog;
 import com.ybkj.videoaccess.mvp.view.activity.HomeActivity;
 import com.ybkj.videoaccess.util.ToastUtil;
 
+/**
+ * lp
+ */
 public class ListDialog extends BaseDialog {
     private Button button_1;
     private Button button_2;

@@ -19,7 +19,7 @@ public interface HomeControl {
 
     interface IHomeView extends MvpBaseView {
         void showGateOpenRecordResult(String result);
-        void showPwdValidation(String result);
+        void showPwdValidation(boolean isSuccess,String result);
         void showMediaDownload(List<MediaInfo> infoList);
     }
 }

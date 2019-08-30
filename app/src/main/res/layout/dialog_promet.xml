@@ -9,13 +9,14 @@
     android:orientation="vertical">
 
     <TextView
-    android:id="@+id/dialogTitle"
-    style="@style/textStyle"
-    android:layout_width="@dimen/list_dialog_item_width"
-    android:gravity="center"
-    android:paddingTop="25dp"
-    android:text="@string/prompt"
-    android:textSize="18sp" />
+        android:id="@+id/dialogTitle"
+        style="@style/textStyle"
+        android:layout_width="@dimen/list_dialog_item_width"
+        android:gravity="center"
+        android:paddingTop="25dp"
+        android:text="@string/prompt"
+        android:textSize="18sp"
+        android:visibility="gone"/>
     <LinearLayout
         android:layout_width="@dimen/list_dialog_item_width"
         android:layout_height="@dimen/dialog_success_img_height"

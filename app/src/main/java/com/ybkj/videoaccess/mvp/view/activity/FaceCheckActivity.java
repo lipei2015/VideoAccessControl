@@ -16,6 +16,7 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -115,10 +116,10 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         FileUtil.createDirectory(localPath);
 
         //点击预览界面聚焦
-        startTimer();
+//        startTimer();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
     }
 
     private void initAidlService(){
@@ -221,6 +222,21 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         }, 1000,1000);
     }
 
+
+    /*@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            if(openPrometDialog == null){
+                openPrometDialog = new PrometDialog(FaceCheckActivity.this);
+                openPrometDialog.setSuccessIconVisable(true);
+                openPrometDialog.setMessage("门已开");
+            }
+            openPrometDialog.show();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }*/
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -237,7 +253,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                     try {
                         // 进行远程调用设备人脸识别SDK
                         if(iFaceApi != null) {
-                            requestResult = iFaceApi.recognition(ImageUtil.imageToBase64(path), null);
+                            String faceSample = ImageUtil.imageToBase64(path);
+                            requestResult = iFaceApi.recognition(faceSample, null);
                             Log.e("requestResult",requestResult);
                             DeviceRecognitionResult deviceRecognitionResult = GsonUtils.getGson().fromJson(requestResult, DeviceRecognitionResult.class);
                             Log.e("deviceRecognitionResult",deviceRecognitionResult.getRetStr());
@@ -249,14 +266,21 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                 if (wrtdevManager != null) {
                                     int opendoor = wrtdevManager.openDoor();    // 0为开门成功，-1为失败
                                     if(opendoor == 0){
-                                        // 开门成功
+                                        // 开门失败
                                         if(openPrometDialog == null){
                                             openPrometDialog = new PrometDialog(FaceCheckActivity.this);
-                                            openPrometDialog.setSuccessIconVisable(true);
-                                            openPrometDialog.setMessage("门已开");
                                         }
+                                        openPrometDialog.setSuccessIconVisable(true);
+                                        openPrometDialog.setMessage("门已开");
                                         openPrometDialog.show();
-//                                        ToastUtil.showMsg("门已开");
+                                    }else{
+                                        if(openPrometDialog == null){
+                                            openPrometDialog = new PrometDialog(FaceCheckActivity.this);
+                                        }
+                                        openPrometDialog.setSuccessIconVisable(false);
+                                        openPrometDialog.showRegistError();
+                                        openPrometDialog.setMessage("门锁异常，开门失败");
+                                        openPrometDialog.show();
                                     }
                                 }
                                 if(deviceRecognitionResult.getFaceInfos() != null && deviceRecognitionResult.getFaceInfos().size() > 0){
@@ -267,11 +291,12 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                     imageview.setImageBitmap(bitmap);
                                 }
 
-                                //TODO 进行开门上报，这里还需要一个人脸肖像文件base64字符串
+                                // 进行开门上报
                                 RequestGateOpenRecordBean requestGateOpenRecordBean = new RequestGateOpenRecordBean();
                                 requestGateOpenRecordBean.setPid(deviceRecognitionResult.getPersonId());
                                 requestGateOpenRecordBean.setType("1");
                                 requestGateOpenRecordBean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
+                                requestGateOpenRecordBean.setSample(faceSample);
                                 mPresenter.gateOpenRecord(requestGateOpenRecordBean);
                             } else {
                                 // 人脸识别，3次失败后弹出提示框“对不起，您不是授权用户（5S）”倒计时隐藏
