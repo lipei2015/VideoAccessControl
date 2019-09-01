@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -53,6 +54,8 @@ import com.ybkj.videoaccess.mvp.view.dialog.PrometDialog;
 import com.ybkj.videoaccess.util.AudioMngHelper;
 import com.ybkj.videoaccess.util.CommonUtil;
 import com.ybkj.videoaccess.util.DataUtil;
+import com.ybkj.videoaccess.util.FileUtil;
+import com.ybkj.videoaccess.util.HomeSurfaceViewUtil;
 import com.ybkj.videoaccess.util.LogUtil;
 import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.ToastUtil;
@@ -76,6 +79,7 @@ import butterknife.BindView;
 public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> implements HomeControl.IHomeView {
     @BindView(R.id.horizontalScorllView) VedioHorizontalScorllView horizontalScorllView;
     @BindView(R.id.videoView) VideoView videoView;
+    @BindView(R.id.surfaceView) SurfaceView surfaceView;
     private WrtdevManager wrtdevManager = null;
     private Timer timer;
     private TimerTask timerTask;
@@ -90,6 +94,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     private PreferencesUtils preferencesUtils;
     private String deviceId;
+    private HomeSurfaceViewUtil homeSurfaceViewUtil;
 
     // 全天不停止时间处理器
     private Timer aliveTimer;
@@ -123,6 +128,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     protected void initView() {
         preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
         deviceId = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
+
+        // 创建存放二维码照片的文件夹
+        FileUtil.createDirectory(ConstantSys.QRCODE_PATH);
+
 //        initWrtdev();
 
         //启动远程监听服务
@@ -171,9 +180,15 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 开启全天时间处理器
         startAliveTimer();
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/截屏/123456789.png";//文件路径
+        /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/截屏/123456789.png";//文件路径
         String result = QRRecognizeHelper.getReult(BitmapFactory.decodeFile(path));
-        Log.e("QRRecognizeHelper",result+"");
+        Log.e("QRRecognizeHelper",result+"");*/
+
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        int widthPixels = outMetrics.widthPixels;
+        int heightPixels = outMetrics.heightPixels;
+        homeSurfaceViewUtil = new HomeSurfaceViewUtil(surfaceView,widthPixels,heightPixels);
     }
 
     private long dealTime = 0;
@@ -416,6 +431,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         if(videoView.canPause()){
             videoView.start();
         }
+        homeSurfaceViewUtil.initCamare();
         super.onResume();
     }
 
@@ -425,6 +441,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         if(videoView.isPlaying()){
             videoView.pause();
         }
+        homeSurfaceViewUtil.releaseCamera();
         super.onPause();
     }
 
@@ -434,6 +451,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         if(videoView.isPlaying()){
             videoView.pause();
         }
+        homeSurfaceViewUtil.releaseCamera();
         super.onStop();
     }
 
@@ -487,7 +505,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 4:
                             // 4 卡片关联
-
+                            homeSurfaceViewUtil.takePhoto();
                             break;
                         case 5:
                             // #关闭
@@ -516,7 +534,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             /*Intent intent = new Intent(this, CaptureActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, SCANNING_REQUEST_CODE);*/
-            if(inputDialog == null){
+            /*if(inputDialog == null){
                 inputDialog = new InputDialog(HomeActivity.this, new InputDialog.OnKeyDownListener() {
                     @Override
                     public void onSubmit(String pwd) {
@@ -533,7 +551,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 inputDialog.show();
             }else{
                 inputDialog.show();
-            }
+            }*/
+            homeSurfaceViewUtil.takePhoto();
             return false;
         }
         return super.onKeyDown(keyCode, event);

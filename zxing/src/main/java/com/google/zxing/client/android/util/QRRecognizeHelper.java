@@ -19,6 +19,7 @@ import java.util.Hashtable;
 
 /**
  * 从图片中识别二维码信息工具类
+ * lp 2019年8月30日16:47:59
  */
 public class QRRecognizeHelper {
     public static String getReult(Bitmap mBitmap) {

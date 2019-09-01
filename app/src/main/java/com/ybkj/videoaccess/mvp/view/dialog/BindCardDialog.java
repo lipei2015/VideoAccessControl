@@ -15,7 +15,7 @@ import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseDialog;
 
 /**
- * 确认收货
+ * IC卡开卡dialog
  * <p>
  * Created by lp 2019年8月30日15:31:02
  */
@@ -50,7 +50,7 @@ public class BindCardDialog extends BaseDialog {
      * 初始化
      */
     private void findView(Context context) {
-        v = View.inflate(context, R.layout.dialog_promet, null);
+        v = View.inflate(context, R.layout.bind_card_dialog, null);
         title = (TextView) v.findViewById(R.id.dialogTitle);
         message = (TextView) v.findViewById(R.id.dialogMessage);
         layout_regist_fail = (LinearLayout) v.findViewById(R.id.layout_regist_fail);

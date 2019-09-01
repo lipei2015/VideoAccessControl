@@ -42,6 +42,7 @@ import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
 import com.ybkj.videoaccess.mvp.data.model.FaceRegistModel;
 import com.ybkj.videoaccess.mvp.presenter.FaceRegistPresenter;
 import com.ybkj.videoaccess.mvp.view.dialog.PrometDialog;
+import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.GsonUtils;
 import com.ybkj.videoaccess.util.ImageUtil;
@@ -251,7 +252,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         public void onPictureTaken(byte[] data, Camera camera) {
 //            safeToTakePicture = true;
             long now = System.currentTimeMillis();
-            String path = localPath+now+".png";
+            String path = localPath+ DataUtil.getYMDHMSString(now)+".png";
             File tempfile = new File(path);//新建一个文件对象tempfile，并保存在某路径中
 
             try {

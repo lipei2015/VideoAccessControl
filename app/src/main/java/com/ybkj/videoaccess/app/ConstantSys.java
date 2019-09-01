@@ -47,6 +47,7 @@ public class ConstantSys {
      **/
     public static final String CHECK_PATH = "/sdcard/faceCheckPic/";
     public static final String REGIST_PATH = "/sdcard/faceRegistPic/";
+    public static final String QRCODE_PATH = "/sdcard/qrcodeRegistPic/";
     public static final String HOME_VEDIO_PATH2 = "/sdcard/homeVedio/";
     public static final String HOME_VEDIO_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/homeVedio/";
     public static final String MAIN_PATH = "/sdcard/faceinfo/";

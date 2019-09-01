@@ -165,9 +165,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     private Camera.PictureCallback mpictureCallback = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-//            safeToTakePicture = true;
             long now = System.currentTimeMillis();
-            String path = localPath+now+".png";
+            String path = localPath+DataUtil.getYMDHMSString(now)+".png";
             File tempfile = new File(path);//新建一个文件对象tempfile，并保存在某路径中
 
             try {
@@ -371,7 +370,6 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 
             @Override
             public void run() {
-//                Log.e("time", "daochu");
                 if(safeToTakePicture) {
                     handler.sendEmptyMessage(CASE_TAKE_PICTURE);
                 }
@@ -429,9 +427,9 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     private Camera getCamera() {
         Camera camera;//声明局部变量camera
         try {
+            //根据cameraId的设置打开前置摄像头
             camera = Camera.open(cameraId);
-        }//根据cameraId的设置打开前置摄像头
-        catch (Exception e) {
+        } catch (Exception e) {
             camera = null;
             e.printStackTrace();
         }

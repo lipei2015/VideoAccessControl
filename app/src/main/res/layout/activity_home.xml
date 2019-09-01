@@ -20,11 +20,11 @@
             android:layout_height="@dimen/home_vedio_height"
             android:background="@mipmap/p3"/>
     </LinearLayout>
-    <!--<android.support.v4.view.ViewPager android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/home_vp_height">
-
-    </android.support.v4.view.ViewPager>-->
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:visibility="visible"/>
     <com.ybkj.videoaccess.weight.VedioHorizontalScorllView
         android:id="@+id/horizontalScorllView"
         android:layout_width="match_parent"
