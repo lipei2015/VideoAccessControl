@@ -39,6 +39,7 @@ import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.app.ConstantSys;
+import com.ybkj.videoaccess.eventbus.EventUserInfoQRCode;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.HomeControl;
 import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
@@ -62,6 +63,10 @@ import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.websocket.JWebSocketClient;
 import com.ybkj.videoaccess.websocket.JWebSocketClientService;
 import com.ybkj.videoaccess.weight.VedioHorizontalScorllView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -102,7 +107,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     //定义aidl接口变量
     private IFaceApi iFaceApi;
-    public final static int SCANNING_REQUEST_CODE = 1;
+    public final static int FACE_REGIST = 1;  // 人脸注册绑定
+    public final static int IC_CARD_CREATE_SCAN = 2;  // IC卡开卡扫码
 
     @Override
     protected int setLayoutId() {
@@ -126,6 +132,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
         deviceId = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
 
@@ -347,11 +354,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     @SuppressLint("WrongConstant")
     private void initWrtdev() {
         wrtdevManager = (WrtdevManager) getSystemService("wrtsz");
-
-//        Log.e("openDoor",wrtdevManager.openDoor()+"++");
-//        Log.e("openLed1",wrtdevManager.openLed(1)+"++");
-//        Log.e("openLed0",wrtdevManager.openLed(0)+"++");
-
 //        Log.e("getMagnetometerStatus",wrtdevManager.getMagnetometerStatus()+"++");
 
 //        startTimer();
@@ -476,7 +478,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             // 人脸注册
                             Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivityForResult(intent, SCANNING_REQUEST_CODE);
+                            intent.putExtra(CaptureActivity.SCAN_TYPE,CaptureActivity.SCAN_TYPE_FACE_REGIST);
+                            startActivityForResult(intent, FACE_REGIST);
                             break;
                         case 2:
                             // 2 输入开门密码
@@ -505,7 +508,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 4:
                             // 4 卡片关联
-                            homeSurfaceViewUtil.takePhoto();
+//                            homeSurfaceViewUtil.takePhoto();
                             break;
                         case 5:
                             // #关闭
@@ -516,15 +519,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     }
                 }
             });
-            /*Window window = listDialog.getWindow();
-            if (listDialog != null && window != null) {
-                WindowManager.LayoutParams attr = window.getAttributes();
-                if (attr != null) {
-                    attr.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    attr.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    attr.gravity = Gravity.CENTER;//设置dialog 在布局中的位置
-                }
-            }*/
             listDialog.show();
         }else{
             listDialog.show();
@@ -553,9 +547,22 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 inputDialog.show();
             }*/
             homeSurfaceViewUtil.takePhoto();
+            /*Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(CaptureActivity.SCAN_TYPE,CaptureActivity.SCAN_TYPE_IC_CARD_CREATE);
+            startActivityForResult(intent, IC_CARD_CREATE_SCAN);*/
             return false;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 接收到扫描出来的二维码数据
+     * @param infoQRCode
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiveUserInfoQRCode(EventUserInfoQRCode infoQRCode){
+
     }
 
     /**

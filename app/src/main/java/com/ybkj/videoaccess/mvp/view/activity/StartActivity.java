@@ -117,7 +117,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
         audioMngHelper.setVoice100(60);
 
 //        textToSpeechUtil.notifyNewMessage("test");
-        textToSpeechUtil.notifyNewMessage("test");
+//        textToSpeechUtil.notifyNewMessage("test");
 //        textToSpeechUtil.notifyNewMessage("你好");
 
         FileUtil.createDirectory(ConstantSys.HOME_VEDIO_PATH);

@@ -13,6 +13,9 @@ import android.view.View;
 
 import com.google.zxing.client.android.util.QRRecognizeHelper;
 import com.ybkj.videoaccess.app.ConstantSys;
+import com.ybkj.videoaccess.eventbus.EventUserInfoQRCode;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -84,9 +87,9 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
                 case CASE_DEAL_PICTURE:
                     String path = msg.getData().getString("path");
                     String result = QRRecognizeHelper.getReult(BitmapFactory.decodeFile(path));
-                    Log.e("HomeSurfaceViewUtil",result+"");
+                    Log.e("HomeSurfaceViewUtil",result+"  " + widthPixels + "  "+heightPixels);
 
-
+                    EventBus.getDefault().post(new EventUserInfoQRCode(result));
                     break;
             }
             super.handleMessage(msg);
@@ -157,8 +160,12 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
     public void capture(View view) {
         Camera.Parameters parameters = mCamera.getParameters();
         parameters.setPictureFormat(ImageFormat.JPEG);//设置照片格式
+        parameters.setJpegQuality(100);
         parameters.setPreviewSize(widthPixels, heightPixels);
+        parameters.setPictureSize(heightPixels, widthPixels);
+//        parameters.setPictureSize(widthPixels, heightPixels);
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+//        mCamera.setParameters(parameters);
         //摄像头聚焦
         mCamera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
@@ -181,8 +188,10 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        mCamera.stopPreview();//如果预览界面改变，则首先停止预览界面
-        setStartPreview(mCamera, surfaceHolder);//调整再重新打开预览界面
+        if (mCamera != null){
+            mCamera.stopPreview();//如果预览界面改变，则首先停止预览界面
+            setStartPreview(mCamera, surfaceHolder);//调整再重新打开预览界面
+        }
     }
 
     @Override

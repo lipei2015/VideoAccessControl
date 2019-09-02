@@ -144,6 +144,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     CameraManager getCameraManager() {
         return cameraManager;
     }
+    private int scan_type;
+
+    public static final String SCAN_TYPE = "scan_type";  // 扫描类型
+    public static final int SCAN_TYPE_FACE_REGIST = 1;  // 人脸注册绑定
+    public static final int SCAN_TYPE_IC_CARD_CREATE = 2;  // IC卡开卡扫描二维码
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -160,6 +165,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         beepManager = new BeepManager(this);
         ambientLightManager = new AmbientLightManager(this);
 
+        scan_type = getIntent().getIntExtra(SCAN_TYPE,0);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
