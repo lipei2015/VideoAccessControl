@@ -116,10 +116,10 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
         FileUtil.createDirectory(localPath);
 
         //点击预览界面聚焦
-//        startTimer();
+        startTimer();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
     }
 
     private void initAidlService(){

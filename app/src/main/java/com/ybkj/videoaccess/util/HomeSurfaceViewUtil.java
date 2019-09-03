@@ -6,6 +6,7 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,8 +29,8 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
     private SurfaceHolder surfaceHolder;
     private Camera mCamera;
     private boolean safeToTakePicture = false;
-//    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
-    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+    private int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
+//    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;//声明cameraId属性，设备中0为前置摄像头；一般手机0为后置摄像头，1为前置摄像头
 
     private final int CASE_TAKE_PICTURE = 0;
     private final int CASE_DEAL_PICTURE = 1;
@@ -89,7 +90,11 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
                     String result = QRRecognizeHelper.getReult(BitmapFactory.decodeFile(path));
                     Log.e("HomeSurfaceViewUtil",result+"  " + widthPixels + "  "+heightPixels);
 
-                    EventBus.getDefault().post(new EventUserInfoQRCode(result));
+                    if(!TextUtils.isEmpty(result)) {
+                        EventBus.getDefault().post(new EventUserInfoQRCode(result));
+                    }else if(needTackPhoto){
+                        startTimer();
+                    }
                     break;
             }
             super.handleMessage(msg);
@@ -143,10 +148,17 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
         }, 2000);
     }
 
+    private boolean needTackPhoto = false;
+
+    public void stopTakePhoto(){
+        needTackPhoto = false;
+    }
+
     /**
      * 拍照
      */
     public void takePhoto(){
+        needTackPhoto = true;
         startTimer();
         /*if(safeToTakePicture) {
             capture(surfaceView);

@@ -24,6 +24,7 @@ public class PrometDialog extends BaseDialog {
     private ImageView imgSuccess;
 
     // 人脸注册失败提示
+    private LinearLayout layout_info;
     private LinearLayout layout_regist_fail;
     private TextView tv_down_count;
     private TextView tv_content;
@@ -53,6 +54,7 @@ public class PrometDialog extends BaseDialog {
         title = (TextView) v.findViewById(R.id.dialogTitle);
         message = (TextView) v.findViewById(R.id.dialogMessage);
         layout_regist_fail = (LinearLayout) v.findViewById(R.id.layout_regist_fail);
+        layout_info = (LinearLayout) v.findViewById(R.id.layout_info);
         tv_down_count = (TextView) v.findViewById(R.id.tv_down_count);
         tv_content = (TextView) v.findViewById(R.id.tv_content);
         imgSuccess = (ImageView) v.findViewById(R.id.imgSuccess);
@@ -87,6 +89,11 @@ public class PrometDialog extends BaseDialog {
         return this;
     }
 
+    public PrometDialog setSuccessIcon(int id) {
+        imgSuccess.setBackgroundResource(id);
+        return this;
+    }
+
     /**
      * 设置无标题
      */
@@ -99,7 +106,13 @@ public class PrometDialog extends BaseDialog {
      * 设置温馨信息
      */
     public PrometDialog setMessage(String messageValue) {
+        layout_info.setVisibility(View.VISIBLE);
         message.setText(messageValue);
+        return this;
+    }
+
+    public PrometDialog setMessageTextColor(int color) {
+        message.setTextColor(color);
         return this;
     }
 
@@ -132,10 +145,10 @@ public class PrometDialog extends BaseDialog {
         switch (keyCode){
             case 135:
                 // * 重试
+                dismiss();
                 if(onKeyDownListener != null) {
                     onKeyDownListener.onRetry();
                 }
-                dismiss();
                 break;
             case 136:
                 // # 关闭

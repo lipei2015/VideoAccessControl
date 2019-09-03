@@ -41,9 +41,9 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
     private String device_id;
     private TextToSpeechUtil textToSpeechUtil;
 
-    private String testUrl = "http://183.60.197.33/1/a/x/y/r/axyrublxcnkeqdqimzzyxocbgxmbib/he.yinyuetai.com/71830158E2A129EA307CA1B60CBF05B7.mp4?sc=31c36256843745f0";
-    private String testUrl1 = "http://183.60.197.27/6/j/j/t/i/jjtiganfehnikugpyvecyewmdumviu/he.yinyuetai.com/B7210147D0478AC0919CD0CB9A280F66.flv?sc=08d9998aa6d68bb3";
-    private String testUrl2 = "http://183.60.197.27/10/p/b/p/r/pbpridcbhxlbgdodoyonvnzfnuntqh/he.yinyuetai.com/59A101473CA90C6749DF132B7B2E03C4.flv?sc=65da6317017fb840";
+    private String testUrl = "http://223.82.247.121/sh.yinyuetai.com/uploads/videos/common/74B4015B716A4A2BEC4D61B0ABB366BB.mp4";
+    private String testUrl1 = "http://223.82.247.122/hd.yinyuetai.com/uploads/videos/common/2FE0016B08002492A8638CFAC9AABF2E.mp4?sc=c28ee11f084edf50";
+    private String testUrl2 = "http://223.82.247.122/hd.yinyuetai.com/uploads/videos/common/ECEC016B8895E4A044C6B72FCF773B25.mp4?sc=a7d5f7c038c05eb8";
 
     @Override
     protected int setLayoutId() {

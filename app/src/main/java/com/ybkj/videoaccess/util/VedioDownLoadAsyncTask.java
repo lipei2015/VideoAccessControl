@@ -44,6 +44,8 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
         }
 //        Toast.makeText(mContext, "下载完成", Toast.LENGTH_SHORT).show();
         Log.e("doInBackground","下载完成");
+
+        publishProgress(1000);
         remove(mContext);
         return String.valueOf(integers[0].intValue());
     }
@@ -61,6 +63,10 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
             if (value == 100) {
                 // 一个文件下载完成
 
+            }
+        }else {
+            if(iOnVedioDownLoadFinish != null){
+                iOnVedioDownLoadFinish.onFinished();
             }
         }
     }
@@ -122,7 +128,7 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
                     break;
                 } else {
                     try {
-                        Thread.sleep(10000);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         StringWriter stringWriter = new StringWriter();
                         e.printStackTrace(new PrintWriter(stringWriter, true));

@@ -77,6 +77,16 @@ public class BindCardDialog extends BaseDialog {
         return this;
     }
 
+    public BindCardDialog hidePromet2() {
+        tv_promet2.setVisibility(View.GONE);
+        return this;
+    }
+
+    public BindCardDialog hidePromet3() {
+        tv_promet3.setVisibility(View.GONE);
+        return this;
+    }
+
     public BindCardDialog setPromet2(String value) {
         tv_promet2.setText(value);
         tv_promet2.setVisibility(View.VISIBLE);

@@ -48,7 +48,7 @@
     <dimen name="list_dialog_padding">70px</dimen>
     <dimen name="list_dialog_item_height">70px</dimen>
     <dimen name="list_dialog_item_margin_top">20px</dimen>
-    <dimen name="list_dialog_item_width">300px</dimen>
+    <dimen name="list_dialog_item_width">400px</dimen>
     <dimen name="list_dialog_item_size">25sp</dimen>
 
     <dimen name="dialog_item_text_size">25sp</dimen>
@@ -68,7 +68,7 @@
     <dimen name="zxing_secend_text_size">26sp</dimen>
 
     <dimen name="bind_card_dialog_item_width">250px</dimen>
-    <dimen name="bind_card_dialog_item_height">60px</dimen>
+    <dimen name="bind_card_dialog_item_height">40px</dimen>
     <dimen name="dialog_qrcode_width">120px</dimen>
     <dimen name="bind_card_dialog_layout_padding">30px</dimen>
     <dimen name="bind_card_dialog_layout_padding_top">80px</dimen>

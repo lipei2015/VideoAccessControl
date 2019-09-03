@@ -106,8 +106,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     // 全天不停止时间处理器
     private Timer aliveTimer;
     private TimerTask aliveTimerTask;
+
+    // 开卡
     private EventUserInfoQRCode infoQRCode;     // 扫描用户二维码时候扫描的信息
     private int icCardCreateState = 0;          // 开卡状态：0 非开卡状态；1 开卡状态且监听用户刷卡；2 开卡状态且已获取到卡号在上传信息
+    private boolean needFaceCheck = false;      // 是否需要开始检测有无人脸
+    private boolean needListenIcCard = false;      // 是否需要开始检测IC卡数据
 
     //定义aidl接口变量
     private IFaceApi iFaceApi;
@@ -118,6 +122,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     private final int NO_FACE = 1;
     private final int CASE_COUNT_DOWN = 2;      // 提示框倒计时
     private final int CREATE_CARD_READING = 3;      // 开卡正在读卡
+    private final int CLOSE_BIND_CARD_RESULT_DIALOG = 4;      // 关闭开卡结果提示框
 
     @Override
     protected int setLayoutId() {
@@ -148,7 +153,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 创建存放二维码照片的文件夹
         FileUtil.createDirectory(ConstantSys.QRCODE_PATH);
 
-//        initWrtdev();
+        initWrtdev();
 
         //启动远程监听服务
 //        startJWebSClientService();
@@ -158,7 +163,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -196,9 +201,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 开启全天时间处理器
         startAliveTimer();
 
-        /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/截屏/123456789.png";//文件路径
-        String result = QRRecognizeHelper.getReult(BitmapFactory.decodeFile(path));
-        Log.e("QRRecognizeHelper",result+"");*/
+        startTimer();
 
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
@@ -380,34 +383,44 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             public void run() {
 //                faceHandler.sendEmptyMessage(0);
 
-                int value = wrtdevManager.getMicroWaveState();
-                Message message = new Message();
-                message.what = value;
-                handler.sendMessage(message);
+                if(needFaceCheck) {
+                    int value = wrtdevManager.getMicroWaveState();
+                    Message message = new Message();
+                    message.what = value;
+                    handler.sendMessage(message);
+                }
 
-                byte[] bytes = wrtdevManager.getIcCardNo();
-                if(bytes != null && bytes.length > 0 && icCardCreateState == 1){
-                    for(byte bt:bytes){
-                        //Log.e("openDoor",bt+"++");
+                if(needListenIcCard) {
+                    byte[] bytes = wrtdevManager.getIcCardNo();
+                    int icno = Integer.parseInt(DataUtil.bytesToHexString(bytes), 16);
+                    if (bytes != null && icno > 0) {
+                        if(icCardCreateState == 1) {
+                            // 开卡监听刷卡
+                            for (byte bt : bytes) {
+                                //Log.e("openDoor",bt+"++");
+                            }
+                            handler.sendEmptyMessage(CREATE_CARD_READING);
+
+                            if (bindCardDialog != null && bindCardDialog.isShowing()) {
+                                // 当前处于开卡过程
+                                RequestICardReportBean bean = new RequestICardReportBean();
+                                bean.setIcno(String.valueOf(icno));
+                                bean.setMac(deviceId);
+                                bean.setPid(infoQRCode.getCodeResult());
+                                mPresenter.iCardReport(bean);
+
+                                icCardCreateState = 2;  // 开卡状态修改为正在上报开卡信息状态
+                            }
+                        }else if(icCardCreateState == 0){
+                            // 平时监听刷卡
+
+                        }
+                        Log.e("ICCarcNumber", icno + "   ");
                     }
-                    handler.sendEmptyMessage(CREATE_CARD_READING);
-
-                    int icno = Integer.parseInt(DataUtil.bytesToHexString(bytes),16);
-                    if(bindCardDialog != null && bindCardDialog.isShowing()){
-                        // 当前处于开卡过程
-                        RequestICardReportBean bean = new RequestICardReportBean();
-                        bean.setIcno(String.valueOf(icno));
-                        bean.setMac(deviceId);
-                        bean.setPid(infoQRCode.getCodeResult());
-                        mPresenter.iCardReport(bean);
-
-                        icCardCreateState = 2;  // 开卡状态修改为正在上报开卡信息状态
-                    }
-                    Log.e("ICCarcNumber", icno+"   "+value);
                 }
             }
         };
-        timer.schedule(timerTask, 2000, 1000);//延时1s，每隔500毫秒执行一次run方法
+        timer.schedule(timerTask, 2000, 1500);//延时1s，每隔500毫秒执行一次run方法
     }
 
     /**
@@ -430,7 +443,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     showTime ++;
                      Log.e("startTimer", "  --- "+showTime);
                     if(showTime >= 2) {
-                        cancelTimer();
+                        needFaceCheck = false;
                         startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
                         showTime = 0;
                     }
@@ -452,6 +465,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             bindCardDialog.cancel();
                         }
                     }else{
+                        if(time < 4){
+                            // 倒计时小于3的时候就不再扫描用户二维码了
+                            homeSurfaceViewUtil.stopTakePhoto();
+                        }
                         bindCardDialog.setPromet1("请出示住户验证码（"+time+"S）");
                         bindCardDialog.show();
                     }
@@ -460,8 +477,13 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     // 更新开卡状态
                     bindCardDialog.setPromet2TextColor(getResources().getColor(R.color.black));
                     bindCardDialog.setPromet3TextColor(getResources().getColor(R.color.green));
-                    bindCardDialog.setPromet3("正在读卡请稍后");
+                    bindCardDialog.setPromet3("3.正在读卡请稍后");
                     bindCardDialog.show();
+                    break;
+                case CLOSE_BIND_CARD_RESULT_DIALOG:
+                    if(prometDialog != null) {
+                        prometDialog.dismiss();
+                    }
                     break;
             }
             super.handleMessage(msg);
@@ -471,6 +493,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     @Override
     public void onResume() {
 //        startTimer();
+        needFaceCheck = true;
         if(videoView.canPause()){
             videoView.start();
         }
@@ -480,7 +503,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     public void onPause() {
-//        cancelTimer();
+        needFaceCheck = false;
         if(videoView.isPlaying()){
             videoView.pause();
         }
@@ -490,7 +513,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     protected void onStop() {
-//        cancelTimer();
+        needFaceCheck = false;
         if(videoView.isPlaying()){
             videoView.pause();
         }
@@ -510,6 +533,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        needFaceCheck = false;
+        needFaceCheck = false;
         if(listDialog == null){
             listDialog = new ListDialog(HomeActivity.this, new ListDialog.OnKeyDownListener() {
                 @Override
@@ -521,8 +546,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra(CaptureActivity.SCAN_TYPE,CaptureActivity.SCAN_TYPE_FACE_REGIST);
                             startActivityForResult(intent, FACE_REGIST);
-
-                            cancelTimer();
                             break;
                         case 2:
                             // 2 输入开门密码
@@ -540,33 +563,38 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                                         mPresenter.pwdValidation(bean);
                                     }
                                 });
-                                inputDialog.show();
-
-                                cancelTimer();
-                            }else{
-                                inputDialog.show();
                             }
+                            inputDialog.show();
+
+                            needFaceCheck = false;
                             CommonUtil.hiddenSoftInput(HomeActivity.this);
                             break;
                         case 3:
                             // 3 呼叫业主
+
+                            needFaceCheck = false;
                             break;
                         case 4:
                             // 4 卡片关联
 //                            homeSurfaceViewUtil.takePhoto();
                             if(bindCardDialog == null){
                                 bindCardDialog = new BindCardDialog(HomeActivity.this);
-                                bindCardDialog.setPromet1("请出示住户验证码（15S）");
                             }
+                            homeSurfaceViewUtil.takePhoto();
+                            bindCardDialog.setPromet1("请出示住户验证码（15S）");
+                            bindCardDialog.show();
+
                             countDown = 15;
                             cancelCountDownTimer();
-                            bindCardDialog.show();
+                            startCountDownTimer();
                             break;
                         case 5:
                             // #关闭
 
                             // 关闭了列表框，要重新开始监听人像和IC卡刷卡
-                            startTimer();
+//                            startTimer();
+                            needFaceCheck = true;
+                            needFaceCheck = true;
                             break;
                     }
                 }
@@ -577,25 +605,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
 
         if(keyCode == KeyEvent.KEYCODE_BACK) {
-            if(bindCardDialog == null){
-                bindCardDialog = new BindCardDialog(HomeActivity.this, new BindCardDialog.OnKeyDownListener() {
-                    @Override
-                    public void onRetry() {
 
-                    }
-
-                    @Override
-                    public void onExit() {
-
-                    }
-                });
-            }
-            bindCardDialog.setPromet1("请出示住户验证码（15S）");
-            bindCardDialog.show();
-
-            countDown = 15;
-            cancelCountDownTimer();
-            startCountDownTimer();
             return false;
         }
         return super.onKeyDown(keyCode, event);
@@ -632,11 +642,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     public void receiveUserInfoQRCode(EventUserInfoQRCode infoQRCode){
         this.infoQRCode = infoQRCode;
         if(countDown >= 0){
+            cancelCountDownTimer();
             icCardCreateState = 1;  // 修改状态为开卡状态中且监听用户刷卡
 
             bindCardDialog.setPromet1("1.请出示住户验证码");
             bindCardDialog.setPromet2("2.请将卡片放到读卡器");
             bindCardDialog.setPromet2TextColor(getResources().getColor(R.color.green));
+
+            needListenIcCard = true;
         }
     }
 
@@ -683,17 +696,47 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     private PrometDialog prometDialog;
     @Override
     public void showICardReportResult(boolean isSuccess, String result) {
+        bindCardDialog.dismiss();
+
         icCardCreateState = 0;  // 开卡状态恢复成非监听状态
         if(prometDialog == null){
-            prometDialog = new PrometDialog(HomeActivity.this);
+            prometDialog = new PrometDialog(HomeActivity.this, new PrometDialog.OnKeyDownListener() {
+                @Override
+                public void onRetry() {
+                    bindCardDialog.hidePromet2();
+                    bindCardDialog.hidePromet3();
+                    bindCardDialog.setPromet1("请出示住户验证码（15S）");
+                    bindCardDialog.show();
+                    homeSurfaceViewUtil.takePhoto();
+
+                    countDown = 15;
+                    cancelCountDownTimer();
+                    startCountDownTimer();
+                }
+
+                @Override
+                public void onExit() { }
+            });
         }
-        if(isSuccess){
+        prometDialog.setSuccessIconVisable(true);
+        if(!isSuccess){
             // 开卡成功，弹出提示框
+            prometDialog.setSuccessIcon(R.mipmap.success);
             prometDialog.setMessage("发卡成功");
+            prometDialog.setMessageTextColor(getResources().getColor(R.color.black));
             prometDialog.setSuccessIconVisable(true);
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    /***要执行的操作*/
+                    handler.sendEmptyMessage(CLOSE_BIND_CARD_RESULT_DIALOG);
+                }
+            }, 2500);//3秒后执行Runnable中的run方法
         }else{
+            prometDialog.setSuccessIcon(R.mipmap.fail);
+            prometDialog.setMessageTextColor(getResources().getColor(R.color.red));
             prometDialog.setMessage("发卡失败，请按 * 键重试或 # 退出");
-            prometDialog.showRegistError();
         }
         prometDialog.show();
     }

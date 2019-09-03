@@ -17,10 +17,10 @@
         android:text="@string/prompt"
         android:textSize="18sp"
         android:visibility="gone"/>
-    <LinearLayout
+    <LinearLayout android:id="@+id/layout_info"
         android:layout_width="@dimen/list_dialog_item_width"
         android:layout_height="@dimen/dialog_success_img_height"
-        android:orientation="horizontal">
+        android:orientation="horizontal" android:visibility="gone">
         <ImageView android:id="@+id/imgSuccess"
             android:layout_width="@dimen/dialog_success_img_height"
             android:layout_height="@dimen/dialog_success_img_height"
