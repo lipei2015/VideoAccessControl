@@ -3,16 +3,38 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/shape_white"
-    android:gravity="center"
+    android:gravity="center_vertical"
     android:paddingLeft="40px"
     android:paddingRight="40px">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <ImageView android:id="@+id/img_icon"
+        android:layout_width="@dimen/dialog_qrcode_width"
+        android:layout_height="@dimen/dialog_qrcode_width"
+        android:background="@mipmap/qrcode_logo"/>
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/bind_card_dialog_layout_padding"
+        android:paddingRight="@dimen/bind_card_dialog_layout_padding"
+        android:paddingTop="@dimen/bind_card_dialog_layout_padding_top"
+        android:paddingBottom="@dimen/bind_card_dialog_layout_padding_top">
+        <TextView android:id="@+id/tv_promet1"
+            android:layout_width="@dimen/bind_card_dialog_item_width"
+            android:layout_height="@dimen/bind_card_dialog_item_height"
+            android:textSize="@dimen/bind_card_dialog_item_text_size"
+            android:textColor="@color/black"
+            android:gravity="left"/>
+        <TextView android:id="@+id/tv_promet2"
+            android:layout_width="@dimen/bind_card_dialog_item_width"
+            android:layout_height="@dimen/bind_card_dialog_item_height"
+            android:visibility="gone"
+            android:textSize="@dimen/bind_card_dialog_item_text_size"
+            android:textColor="@color/black"/>
+        <TextView android:id="@+id/tv_promet3"
+            android:layout_width="@dimen/bind_card_dialog_item_width"
+            android:layout_height="@dimen/bind_card_dialog_item_height"
+            android:visibility="gone"
+            android:textSize="@dimen/bind_card_dialog_item_text_size"
+            android:textColor="@color/black"/>
     </LinearLayout>
 </LinearLayout>

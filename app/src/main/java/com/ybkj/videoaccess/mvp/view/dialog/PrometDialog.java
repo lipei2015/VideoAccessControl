@@ -14,9 +14,9 @@ import com.ybkj.videoaccess.R;
 import com.ybkj.videoaccess.mvp.base.BaseDialog;
 
 /**
- * 确认收货
+ * 操作结果提示
  * <p>
- * Created by HH on 2016/7/22.
+ * Created by lp 2019年8月3日15:26:44
  */
 public class PrometDialog extends BaseDialog {
     private TextView title;
@@ -120,10 +120,6 @@ public class PrometDialog extends BaseDialog {
 
     public void setRegistErroDownCountString(String str){
         tv_down_count.setText(str);
-    }
-
-    public void setClosedEnable(boolean needClosed){
-        this.needClosed = needClosed;
     }
 
     public interface OnKeyDownListener {

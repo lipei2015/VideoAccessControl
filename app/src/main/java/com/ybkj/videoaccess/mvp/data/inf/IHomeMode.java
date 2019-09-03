@@ -3,6 +3,7 @@ package com.ybkj.videoaccess.mvp.data.inf;
 import com.ybkj.videoaccess.mvp.base.mvpBase.MvpBaseModel;
 import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestICardReportBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestMediaDownloadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
 import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
@@ -17,4 +18,6 @@ public interface IHomeMode extends MvpBaseModel {
     Observable<StringMessageInfo> gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean);
 
     Observable<List<MediaInfo>> mediaDownload(RequestMediaDownloadBean requestMediaDownloadBean);
+
+    Observable<StringMessageInfo> iCardReport(RequestICardReportBean body);
 }

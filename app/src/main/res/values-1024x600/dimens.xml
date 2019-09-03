@@ -66,4 +66,11 @@
 
     <dimen name="zxing_text_margin_top">20px</dimen>
     <dimen name="zxing_secend_text_size">26sp</dimen>
+
+    <dimen name="bind_card_dialog_item_width">250px</dimen>
+    <dimen name="bind_card_dialog_item_height">60px</dimen>
+    <dimen name="dialog_qrcode_width">120px</dimen>
+    <dimen name="bind_card_dialog_layout_padding">30px</dimen>
+    <dimen name="bind_card_dialog_layout_padding_top">80px</dimen>
+    <dimen name="bind_card_dialog_item_text_size">24sp</dimen>
 </resources>

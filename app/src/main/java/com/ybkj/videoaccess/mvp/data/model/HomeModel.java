@@ -2,6 +2,7 @@ package com.ybkj.videoaccess.mvp.data.model;
 
 import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestICardReportBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestMediaDownloadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
 import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
@@ -36,6 +37,14 @@ public class HomeModel implements IHomeMode {
     public Observable<List<MediaInfo>> mediaDownload(RequestMediaDownloadBean requestMediaDownloadBean) {
         return HttpUtil.getInstance().getRetrofit().create(QXAPIService.class)
                 .mediaDownload(requestMediaDownloadBean)
+                .map(new HttpUtil.HttpResultFuncCommon<>())
+                .compose(RxUtil.rxSchedulerHelper());
+    }
+
+    @Override
+    public Observable<StringMessageInfo> iCardReport(RequestICardReportBean body) {
+        return HttpUtil.getInstance().getRetrofit().create(QXAPIService.class)
+                .iCardReport(body)
                 .map(new HttpUtil.HttpResultFuncCommon<>())
                 .compose(RxUtil.rxSchedulerHelper());
     }

@@ -20,9 +20,10 @@ import com.ybkj.videoaccess.mvp.base.BaseDialog;
  * Created by lp 2019年8月30日15:31:02
  */
 public class BindCardDialog extends BaseDialog {
-    private TextView title;
-    private TextView message;
-    private ImageView imgSuccess;
+    private TextView tv_promet1;
+    private TextView tv_promet2;
+    private TextView tv_promet3;
+    private ImageView img_icon;
 
     // 人脸注册失败提示
     private LinearLayout layout_regist_fail;
@@ -51,12 +52,10 @@ public class BindCardDialog extends BaseDialog {
      */
     private void findView(Context context) {
         v = View.inflate(context, R.layout.bind_card_dialog, null);
-        title = (TextView) v.findViewById(R.id.dialogTitle);
-        message = (TextView) v.findViewById(R.id.dialogMessage);
-        layout_regist_fail = (LinearLayout) v.findViewById(R.id.layout_regist_fail);
-        tv_down_count = (TextView) v.findViewById(R.id.tv_down_count);
-        tv_content = (TextView) v.findViewById(R.id.tv_content);
-        imgSuccess = (ImageView) v.findViewById(R.id.imgSuccess);
+        tv_promet1 = (TextView) v.findViewById(R.id.tv_promet1);
+        tv_promet2 = (TextView) v.findViewById(R.id.tv_promet2);
+        tv_promet3 = (TextView) v.findViewById(R.id.tv_promet3);
+        img_icon = (ImageView) v.findViewById(R.id.img_icon);
         setContentView(v);
 
         Window window = getWindow();
@@ -73,58 +72,31 @@ public class BindCardDialog extends BaseDialog {
     /**
      * 设置提示标题
      */
-    public BindCardDialog setTitle(String titleValue) {
-        title.setText(titleValue);
+    public BindCardDialog setPromet1(String value) {
+        tv_promet1.setText(value);
         return this;
     }
 
-    /**
-     *
-     * @param visable
-     * @return
-     */
-    public BindCardDialog setSuccessIconVisable(boolean visable) {
-        imgSuccess.setVisibility(visable ? View.VISIBLE : View.GONE);
+    public BindCardDialog setPromet2(String value) {
+        tv_promet2.setText(value);
+        tv_promet2.setVisibility(View.VISIBLE);
         return this;
     }
 
-    /**
-     * 设置无标题
-     */
-    public BindCardDialog setNoTitle(boolean hasTitle) {
-        title.setVisibility(hasTitle ? View.GONE : View.VISIBLE);
+    public BindCardDialog setPromet2TextColor(int color) {
+        tv_promet2.setTextColor(color);
         return this;
     }
 
-    /**
-     * 设置温馨信息
-     */
-    public BindCardDialog setMessage(String messageValue) {
-        message.setText(messageValue);
+    public BindCardDialog setPromet3TextColor(int color) {
+        tv_promet3.setTextColor(color);
         return this;
     }
 
-    /**
-     * 设置提示内容是否可见
-     * @param hasMessage
-     * @return
-     */
-    public BindCardDialog setNoMessage(boolean hasMessage) {
-        message.setVisibility(hasMessage ? View.GONE : View.VISIBLE);
+    public BindCardDialog setPromet3(String value) {
+        tv_promet3.setText(value);
+        tv_promet3.setVisibility(View.VISIBLE);
         return this;
-    }
-
-    public BindCardDialog showRegistError(){
-        layout_regist_fail.setVisibility(View.VISIBLE);
-        return this;
-    }
-
-    public void setRegistErroDownCountString(String str){
-        tv_down_count.setText(str);
-    }
-
-    public void setClosedEnable(boolean needClosed){
-        this.needClosed = needClosed;
     }
 
     public interface OnKeyDownListener {

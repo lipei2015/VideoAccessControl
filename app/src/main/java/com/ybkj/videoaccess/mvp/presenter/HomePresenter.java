@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.ybkj.videoaccess.mvp.control.HomeControl;
 import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestICardReportBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestMediaDownloadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
 import com.ybkj.videoaccess.mvp.data.bean.StringMessageInfo;
@@ -77,6 +78,26 @@ public class HomePresenter extends HomeControl.IHomePresenter{
             @Override
             public void onError(HttpErrorException errorException) {
                 LogUtil.i(errorException.getMessage()+"");
+            }
+        })));
+    }
+
+    @Override
+    public void iCardReport(RequestICardReportBean body) {
+        addSubscription(mModel.iCardReport(body).subscribe(new HttpSubscriber<>(new SubscriberResultListener() {
+            @Override
+            public void onSuccess(Object o) {
+                // 数据返回成功检测
+                StringMessageInfo result = (StringMessageInfo) o;
+                LogUtil.i(result.getMessage()+"");
+
+                mView.showICardReportResult(true,result.getMessage());
+            }
+
+            @Override
+            public void onError(HttpErrorException errorException) {
+                LogUtil.i(errorException.getMessage()+"");
+                mView.showICardReportResult(false,errorException.getMessage());
             }
         })));
     }
