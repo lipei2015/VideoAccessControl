@@ -24,7 +24,6 @@ import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.MyDeviceInfo;
 import com.ybkj.videoaccess.util.PreferencesUtils;
-import com.ybkj.videoaccess.util.TextToSpeechUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.util.VedioDownLoadAsyncTask;
 import com.ybkj.videoaccess.util.http.HttpErrorException;
@@ -39,7 +38,6 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
     private PreferencesUtils preferencesUtils;
     private String device_id;
-    private TextToSpeechUtil textToSpeechUtil;
 
     private String testUrl = "http://223.82.247.121/sh.yinyuetai.com/uploads/videos/common/74B4015B716A4A2BEC4D61B0ABB366BB.mp4";
     private String testUrl1 = "http://223.82.247.122/hd.yinyuetai.com/uploads/videos/common/2FE0016B08002492A8638CFAC9AABF2E.mp4?sc=c28ee11f084edf50";
@@ -68,7 +66,6 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
     @Override
     protected void initView() {
         preferencesUtils = PreferencesUtils.getInstance(ConstantSys.PREFERENCE_USER_NAME);
-        textToSpeechUtil = new TextToSpeechUtil(this);
 
         device_id = preferencesUtils.getString(ConstantSys.PREFERENCE_DEVICE_ID,null);
         if(TextUtils.isEmpty(device_id)){
@@ -115,10 +112,6 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
         AudioMngHelper audioMngHelper = new AudioMngHelper(this);
         audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
         audioMngHelper.setVoice100(60);
-
-//        textToSpeechUtil.notifyNewMessage("test");
-//        textToSpeechUtil.notifyNewMessage("test");
-//        textToSpeechUtil.notifyNewMessage("你好");
 
         FileUtil.createDirectory(ConstantSys.HOME_VEDIO_PATH);
         List<String> urlList = new ArrayList<>();

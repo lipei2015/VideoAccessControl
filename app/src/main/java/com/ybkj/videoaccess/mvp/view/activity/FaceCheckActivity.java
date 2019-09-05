@@ -16,12 +16,12 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.zxing.client.android.util.VoiceUtils;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
@@ -38,8 +38,6 @@ import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.GsonUtils;
 import com.ybkj.videoaccess.util.ImageUtil;
-import com.ybkj.videoaccess.util.TextToSpeechUtil;
-import com.ybkj.videoaccess.util.ToastUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -272,6 +270,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                         openPrometDialog.setSuccessIconVisable(true);
                                         openPrometDialog.setMessage("门已开");
                                         openPrometDialog.show();
+
+                                        VoiceUtils.getInstance().playVoice(FaceCheckActivity.this,R.raw.door_opened);
                                     }else{
                                         if(openPrometDialog == null){
                                             openPrometDialog = new PrometDialog(FaceCheckActivity.this);
@@ -311,6 +311,8 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                     countDown = 5;
                                     cancelCountDownTimer();
                                     startCountDownTimer();
+
+                                    VoiceUtils.getInstance().playVoice(FaceCheckActivity.this,R.raw.face_check_not_auth);
                                 }else{
                                     startTimer();
                                 }
@@ -328,6 +330,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                                 countDown = 5;
                                 cancelCountDownTimer();
                                 startCountDownTimer();
+                                VoiceUtils.getInstance().playVoice(FaceCheckActivity.this,R.raw.face_check_not_auth);
                             }else{
                                 startTimer();
                             }

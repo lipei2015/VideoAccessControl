@@ -29,6 +29,7 @@ import com.google.zxing.client.android.result.ResultButtonListener;
 import com.google.zxing.client.android.result.ResultHandler;
 import com.google.zxing.client.android.result.ResultHandlerFactory;
 import com.google.zxing.client.android.result.supplement.SupplementalInfoRetriever;
+import com.google.zxing.client.android.util.VoiceUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -167,6 +168,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         scan_type = getIntent().getIntExtra(SCAN_TYPE,0);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        VoiceUtils.getInstance().playVoice(CaptureActivity.this,R.raw.face_regist_welcome);
     }
 
     @Override

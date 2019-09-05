@@ -35,6 +35,7 @@ import android.widget.VideoView;
 import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.util.QRRecognizeHelper;
+import com.google.zxing.client.android.util.VoiceUtils;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
@@ -153,7 +154,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 创建存放二维码照片的文件夹
         FileUtil.createDirectory(ConstantSys.QRCODE_PATH);
 
-        initWrtdev();
+//        initWrtdev();
 
         //启动远程监听服务
 //        startJWebSClientService();
@@ -163,7 +164,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -383,12 +384,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             public void run() {
 //                faceHandler.sendEmptyMessage(0);
 
-                if(needFaceCheck) {
+                /*if(needFaceCheck) {
                     int value = wrtdevManager.getMicroWaveState();
                     Message message = new Message();
                     message.what = value;
                     handler.sendMessage(message);
-                }
+                }*/
 
                 if(needListenIcCard) {
                     byte[] bytes = wrtdevManager.getIcCardNo();
@@ -605,7 +606,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
 
         if(keyCode == KeyEvent.KEYCODE_BACK) {
-
+            Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(CaptureActivity.SCAN_TYPE,CaptureActivity.SCAN_TYPE_FACE_REGIST);
+            startActivityForResult(intent, FACE_REGIST);
             return false;
         }
         return super.onKeyDown(keyCode, event);
@@ -719,10 +723,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             });
         }
         prometDialog.setSuccessIconVisable(true);
-        if(!isSuccess){
+        if(isSuccess){
             // 开卡成功，弹出提示框
             prometDialog.setSuccessIcon(R.mipmap.success);
-            prometDialog.setMessage("发卡成功");
+            prometDialog.setMessage("卡片关联成功");
             prometDialog.setMessageTextColor(getResources().getColor(R.color.black));
             prometDialog.setSuccessIconVisable(true);
 
@@ -733,10 +737,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     handler.sendEmptyMessage(CLOSE_BIND_CARD_RESULT_DIALOG);
                 }
             }, 2500);//3秒后执行Runnable中的run方法
+
+            VoiceUtils.getInstance().playVoice(HomeActivity.this,R.raw.create_ic_card_success);
         }else{
             prometDialog.setSuccessIcon(R.mipmap.fail);
             prometDialog.setMessageTextColor(getResources().getColor(R.color.red));
             prometDialog.setMessage("发卡失败，请按 * 键重试或 # 退出");
+
+            VoiceUtils.getInstance().playVoice(HomeActivity.this,R.raw.create_ic_card_success);
         }
         prometDialog.show();
     }

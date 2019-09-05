@@ -5,16 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ImageFormat;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PointF;
 import android.hardware.Camera;
-import android.media.FaceDetector;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -24,10 +16,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.widget.ImageView;
 
+import com.google.zxing.client.android.util.VoiceUtils;
 import com.wrtsz.api.WrtdevManager;
 import com.wrtsz.intercom.master.IFaceApi;
 import com.ybkj.videoaccess.R;
@@ -46,17 +37,13 @@ import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
 import com.ybkj.videoaccess.util.GsonUtils;
 import com.ybkj.videoaccess.util.ImageUtil;
-import com.ybkj.videoaccess.util.PictureUtil;
 import com.ybkj.videoaccess.util.PreferencesUtils;
-import com.ybkj.videoaccess.util.TextToSpeechUtil;
 import com.ybkj.videoaccess.util.ToastUtil;
 import com.ybkj.videoaccess.weight.ResizeAbleSurfaceView;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -172,6 +159,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
             countDown = 5;
             cancelCountDownTimer();
             startCountDownTimer();
+
+            VoiceUtils.getInstance().playVoice(FaceRegistActivity.this,R.raw.face_regist_not_checkin);
         }
     }
 
@@ -306,6 +295,8 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                                 requestUserAuthReportBean.setPid(deviceRegistResult.getPersonId());
                                 requestUserAuthReportBean.setSample(ImageUtil.imageToBase64(path));
                                 mPresenter.userAuthReport(requestUserAuthReportBean);
+
+                                VoiceUtils.getInstance().playVoice(FaceRegistActivity.this,R.raw.face_regist_success);
                             }else if(deviceRegistResult.getRetStr().contains("failed_face") ||
                                     deviceRegistResult.getRetStr().contains("reg error")){
                                 // 表示图片无法正常注册，可能的原因有：1.图片有超过1个人的脸；2.图片人脸质量太差，无法正常注册；3.该人脸已注册过。
@@ -332,6 +323,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                                     confirmDialog.setRegistErroDownCountString("请按 * 键重试或 # 键退出");
                                     confirmDialog.showRegistError();
                                     confirmDialog.show();
+                                    VoiceUtils.getInstance().playVoice(FaceRegistActivity.this,R.raw.face_regist_fail);
                                 }else{
                                     startTimer();
                                 }
