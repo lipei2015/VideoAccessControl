@@ -65,7 +65,6 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
 
     private IFaceApi iFaceApi;
     private WrtdevManager wrtdevManager = null;
-    private TextToSpeechUtil textToSpeechUtil;
     private String localPath;
 
     private final int CASE_TAKE_PICTURE = 0;

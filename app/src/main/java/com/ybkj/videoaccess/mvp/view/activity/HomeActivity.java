@@ -45,6 +45,7 @@ import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.HomeControl;
 import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RemoteResultBean;
+import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestICardReportBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestMediaDownloadBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestPwdValidationbean;
@@ -124,6 +125,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     private final int CASE_COUNT_DOWN = 2;      // 提示框倒计时
     private final int CREATE_CARD_READING = 3;      // 开卡正在读卡
     private final int CLOSE_BIND_CARD_RESULT_DIALOG = 4;      // 关闭开卡结果提示框
+    private final int IC_CARD_OPEN_DOOR = 5;      // 刷卡开门成功
+    private final int CLOSE_IC_CARD_OPEN_DOOR = 6;      // 关闭刷卡开门成功提示框
+
+    private PrometDialog openDoorPrometDialog;      // 刷卡开门成功提示框
 
     @Override
     protected int setLayoutId() {
@@ -154,7 +159,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 创建存放二维码照片的文件夹
         FileUtil.createDirectory(ConstantSys.QRCODE_PATH);
 
-//        initWrtdev();
+        initWrtdev();
 
         //启动远程监听服务
 //        startJWebSClientService();
@@ -164,7 +169,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -304,8 +309,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
             try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
-                String result1 = iFaceApi.unreg("1");
-                Log.e("result1", "result:"+result1);
+                iFaceApi.recognition_config(70,1);
 
 //                String unregResult = iFaceApi.unreg("1");
 //                Log.e("unregResult", "unregResult:"+unregResult);
@@ -384,12 +388,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             public void run() {
 //                faceHandler.sendEmptyMessage(0);
 
-                /*if(needFaceCheck) {
+                if(needFaceCheck) {
                     int value = wrtdevManager.getMicroWaveState();
                     Message message = new Message();
                     message.what = value;
                     handler.sendMessage(message);
-                }*/
+                }
 
                 if(needListenIcCard) {
                     byte[] bytes = wrtdevManager.getIcCardNo();
@@ -414,7 +418,21 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             }
                         }else if(icCardCreateState == 0){
                             // 平时监听刷卡
+                            int openResult = wrtdevManager.openDoor();
+                            if(openResult == 0) {
+                                // 开门成功
+                                handler.sendEmptyMessage(IC_CARD_OPEN_DOOR);
+                            }else{
 
+                            }
+                            //TODO 刷卡通过后上报开门记录，这里还需要一个人像字段设置
+                            RequestGateOpenRecordBean bean = new RequestGateOpenRecordBean();
+                            bean.setPid(deviceId);
+                            bean.setMac(deviceId);
+                            bean.setType("2");
+                            bean.setTimestamp(DataUtil.getYMDHMSString(System.currentTimeMillis()));
+                            bean.setSample("");
+                            mPresenter.gateOpenRecord(bean);
                         }
                         Log.e("ICCarcNumber", icno + "   ");
                     }
@@ -486,6 +504,27 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                         prometDialog.dismiss();
                     }
                     break;
+                case IC_CARD_OPEN_DOOR:
+                    if(openDoorPrometDialog == null){
+                        openDoorPrometDialog = new PrometDialog(HomeActivity.this);
+                        openDoorPrometDialog.setSuccessIconVisable(true);
+                        openDoorPrometDialog.setMessage("业主刷卡通过，门已开");
+                    }
+                    openDoorPrometDialog.show();
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            /***要执行的操作*/
+                            handler.sendEmptyMessage(CLOSE_IC_CARD_OPEN_DOOR);
+                        }
+                    }, 2000);//3秒后执行Runnable中的run方法
+                    break;
+                case CLOSE_IC_CARD_OPEN_DOOR:
+                    if(openDoorPrometDialog != null){
+                        openDoorPrometDialog.dismiss();
+                    }
+                    break;
             }
             super.handleMessage(msg);
         }
@@ -495,6 +534,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     public void onResume() {
 //        startTimer();
         needFaceCheck = true;
+        needListenIcCard = true;
         if(videoView.canPause()){
             videoView.start();
         }
@@ -606,10 +646,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
 
         if(keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
+            /*Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(CaptureActivity.SCAN_TYPE,CaptureActivity.SCAN_TYPE_FACE_REGIST);
-            startActivityForResult(intent, FACE_REGIST);
+            startActivityForResult(intent, FACE_REGIST);*/
             return false;
         }
         return super.onKeyDown(keyCode, event);
@@ -659,11 +699,15 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     /**
      * 上传开门记录结果
-     * @param result
+     * @param isSuccess
      */
     @Override
-    public void showGateOpenRecordResult(String result) {
-//        mPresenter.gateOpenRecord(null);
+    public void showGateOpenRecordResult(boolean isSuccess,RequestGateOpenRecordBean requestGateOpenRecordBean) {
+        if(isSuccess){
+
+        }else{
+            //TODO 上报失败，下次等网络通畅再上报
+        }
     }
 
     /**
@@ -744,7 +788,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             prometDialog.setMessageTextColor(getResources().getColor(R.color.red));
             prometDialog.setMessage("发卡失败，请按 * 键重试或 # 退出");
 
-            VoiceUtils.getInstance().playVoice(HomeActivity.this,R.raw.create_ic_card_success);
+            VoiceUtils.getInstance().playVoice(HomeActivity.this,R.raw.create_ic_card_fail);
         }
         prometDialog.show();
     }

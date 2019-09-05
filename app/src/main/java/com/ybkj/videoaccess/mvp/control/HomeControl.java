@@ -17,10 +17,11 @@ public interface HomeControl {
         public abstract void gateOpenRecord(RequestGateOpenRecordBean requestGateOpenRecordBean);
         public abstract void mediaDownload(RequestMediaDownloadBean requestMediaDownloadBean);
         public abstract void iCardReport(RequestICardReportBean body);
+
     }
 
     interface IHomeView extends MvpBaseView {
-        void showGateOpenRecordResult(String result);
+        void showGateOpenRecordResult(boolean isSuccess,RequestGateOpenRecordBean requestGateOpenRecordBean);
         void showPwdValidation(boolean isSuccess,String result);
         void showMediaDownload(List<MediaInfo> infoList);
         void showICardReportResult(boolean isSuccess,String result);

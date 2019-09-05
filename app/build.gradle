@@ -45,7 +45,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false //打包混淆修改为true
+            minifyEnabled true //打包混淆修改为true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {

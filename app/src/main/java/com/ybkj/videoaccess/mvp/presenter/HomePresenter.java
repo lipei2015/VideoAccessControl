@@ -53,12 +53,13 @@ public class HomePresenter extends HomeControl.IHomePresenter{
                 StringMessageInfo result = (StringMessageInfo) o;
                 LogUtil.i(result.getMessage()+"");
 
-//                mView.showPwdValidation(result.getMessage());
+                mView.showGateOpenRecordResult(true,null);
             }
 
             @Override
             public void onError(HttpErrorException errorException) {
                 LogUtil.i(errorException.getMessage()+"");
+                mView.showGateOpenRecordResult(false,requestGateOpenRecordBean);
             }
         })));
     }

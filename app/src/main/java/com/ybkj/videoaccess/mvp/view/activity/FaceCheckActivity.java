@@ -68,10 +68,10 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     private final int CASE_TAKE_PICTURE = 0;
     private final int CASE_DEAL_PICTURE = 1;
     private final int CASE_COUNT_DOWN = 2;      // 提示框倒计时
+    private final int FINISH_ACTIVITY = 3;      // 关闭当前提示框和界面
 
     //定义aidl接口变量
     private IFaceApi iFaceApi;
-    private TextToSpeechUtil textToSpeechUtil;
     private String localPath;
 
     private PrometDialog openPrometDialog;
@@ -353,6 +353,9 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                         prometDialog.show();
                     }
                     break;
+                case FINISH_ACTIVITY:
+                    finish();
+                    break;
             }
             super.handleMessage(msg);
         }
@@ -493,9 +496,9 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     public void showGateOpenRecordResult(boolean isSuccess) {
         if(isSuccess){
             // 上传成功，关闭当前界面
-            finish();
+            finishThis();
         }else{
-            // 上传失败，需记录，等有网络时再上传
+            //
         }
     }
 
@@ -505,6 +508,17 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
      */
     @Override
     public void gateOpenRecordFail(RequestGateOpenRecordBean requestGateOpenRecordBean) {
-        // TODO
+        // TODO 上传失败，需记录，等有网络时再上传
+        finishThis();
+    }
+
+    private void finishThis(){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                /***要执行的操作*/
+                handler.sendEmptyMessage(FINISH_ACTIVITY);
+            }
+        }, 1000);//3秒后执行Runnable中的run方法
     }
 }

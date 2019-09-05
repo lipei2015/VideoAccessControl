@@ -76,7 +76,8 @@ public class VedioDownLoadAsyncTask extends AsyncTask<Integer,Integer,String> {
         DownloadManager.Request downloadRequest = new DownloadManager.Request(Uri.parse(vedioUrl));
         // 通过setAllowedNetworkTypes方法可以设置允许在何种网络下下载
 //        downloadRequest.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-        downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+//        downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         // 文件后缀
 //        String fileFormat = PublicMethodUtils.regGetFileFormat(downloadUrlStr);
