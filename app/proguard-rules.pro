@@ -57,6 +57,7 @@
 -keep class com.ybkj.videoaccess.util.security.** { *; }
 -keep class com.ybkj.videoaccess.util.rxbus.** { *; }
 -keep class com.ybkj.videoaccess.mvp.data.bean.** { *; }
+-keep class com.ybkj.videoaccess.websocket.** { *; }
 
 -keep class com.ybkj.videoaccess.mvp.data.** { *; }
 -keep class com.ybkj.videoaccess.mvp.view.fragment.** { *; }
