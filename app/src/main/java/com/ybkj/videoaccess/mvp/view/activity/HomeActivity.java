@@ -56,6 +56,7 @@ import com.ybkj.videoaccess.mvp.view.dialog.BindCardDialog;
 import com.ybkj.videoaccess.mvp.view.dialog.InputDialog;
 import com.ybkj.videoaccess.mvp.view.dialog.ListDialog;
 import com.ybkj.videoaccess.mvp.view.dialog.PrometDialog;
+import com.ybkj.videoaccess.mvp.view.dialog.VolumeSettingDialog;
 import com.ybkj.videoaccess.util.AudioMngHelper;
 import com.ybkj.videoaccess.util.CommonUtil;
 import com.ybkj.videoaccess.util.DataUtil;
@@ -120,8 +121,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     public final static int FACE_REGIST = 1;  // 人脸注册绑定
     public final static int IC_CARD_CREATE_SCAN = 2;  // IC卡开卡扫码
 
-    private final int FACE_APPEAR = 0;
-    private final int NO_FACE = 1;
+    private final int FACE_APPEAR = 1;      // 微波检测到有人
+    private final int NO_FACE = 0;          // 微波检测到无人
     private final int CASE_COUNT_DOWN = 2;      // 提示框倒计时
     private final int CREATE_CARD_READING = 3;      // 开卡正在读卡
     private final int CLOSE_BIND_CARD_RESULT_DIALOG = 4;      // 关闭开卡结果提示框
@@ -159,7 +160,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 创建存放二维码照片的文件夹
         FileUtil.createDirectory(ConstantSys.QRCODE_PATH);
 
-        initWrtdev();
+//        initWrtdev();
 
         //启动远程监听服务
 //        startJWebSClientService();
@@ -169,7 +170,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -207,7 +208,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 开启全天时间处理器
         startAliveTimer();
 
-        startTimer();
+//        startTimer();
 
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
@@ -565,6 +566,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     private ListDialog listDialog;      // 选项列表框
     private InputDialog inputDialog;    // 密码输入框
     private BindCardDialog bindCardDialog;    // 开卡提示框
+    private VolumeSettingDialog volumeSettingDialog;    // 屏幕亮度设置提示框
 
     /**
      * 监听数字输入
@@ -630,6 +632,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             startCountDownTimer();
                             break;
                         case 5:
+                            // 5.音量设置
+                            break;
+                        case 6:
+                            // 6.屏幕亮度设置
+                            break;
+                        case 7:
                             // #关闭
 
                             // 关闭了列表框，要重新开始监听人像和IC卡刷卡
@@ -650,6 +658,30 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(CaptureActivity.SCAN_TYPE,CaptureActivity.SCAN_TYPE_FACE_REGIST);
             startActivityForResult(intent, FACE_REGIST);*/
+
+            /*if(volumeSettingDialog == null){
+                volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
+                    @Override
+                    public void onSubmit(String pwd) {
+
+                    }
+                });
+            }
+            volumeSettingDialog.setType(VolumeSettingDialog.TYPE_BRIGHT_SET);
+            volumeSettingDialog.setTitle("屏幕亮度设置");
+            volumeSettingDialog.show();*/
+
+            if(volumeSettingDialog == null){
+                volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
+                    @Override
+                    public void onSubmit(String pwd) {
+
+                    }
+                });
+            }
+            volumeSettingDialog.setType(VolumeSettingDialog.TYPE_VOLUME_SET);
+            volumeSettingDialog.setTitle("音量设置");
+            volumeSettingDialog.show();
             return false;
         }
         return super.onKeyDown(keyCode, event);

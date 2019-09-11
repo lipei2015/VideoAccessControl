@@ -75,4 +75,9 @@
     <dimen name="bind_card_dialog_layout_padding">30dp</dimen>
     <dimen name="bind_card_dialog_layout_padding_top">60dp</dimen>
     <dimen name="bind_card_dialog_item_text_size">16sp</dimen>
+
+    <dimen name="dialog_progress_width">340dp</dimen>
+    <dimen name="dialog_progress_height">30dp</dimen>
+    <dimen name="x15">15dp</dimen>
+    <dimen name="x50">30dp</dimen>
 </resources>

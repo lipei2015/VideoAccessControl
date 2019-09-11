@@ -111,7 +111,7 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
 
         AudioMngHelper audioMngHelper = new AudioMngHelper(this);
         audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
-        audioMngHelper.setVoice100(60);
+//        audioMngHelper.setVoice100(60);
 
         FileUtil.createDirectory(ConstantSys.HOME_VEDIO_PATH);
         List<String> urlList = new ArrayList<>();

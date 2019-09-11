@@ -55,6 +55,26 @@
         android:layout_height="@dimen/list_dialog_item_height"
         android:layout_marginTop="@dimen/list_dialog_item_margin_top"
         android:background="@drawable/button_common_selector"
+        android:text="5 音量设置"
+        android:textColor="@color/white"
+        android:textSize="@dimen/list_dialog_item_size" />
+
+    <Button
+        android:id="@+id/button_6"
+        android:layout_width="@dimen/list_dialog_item_width"
+        android:layout_height="@dimen/list_dialog_item_height"
+        android:layout_marginTop="@dimen/list_dialog_item_margin_top"
+        android:background="@drawable/button_common_selector"
+        android:text="6 屏幕亮度设置"
+        android:textColor="@color/white"
+        android:textSize="@dimen/list_dialog_item_size" />
+
+    <Button
+        android:id="@+id/button_7"
+        android:layout_width="@dimen/list_dialog_item_width"
+        android:layout_height="@dimen/list_dialog_item_height"
+        android:layout_marginTop="@dimen/list_dialog_item_margin_top"
+        android:background="@drawable/button_common_selector"
         android:text="# 关闭"
         android:textColor="@color/white"
         android:textSize="@dimen/list_dialog_item_size" />

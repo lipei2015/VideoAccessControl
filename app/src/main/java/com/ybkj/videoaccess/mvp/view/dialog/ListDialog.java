@@ -26,6 +26,8 @@ public class ListDialog extends BaseDialog {
     private Button button_3;
     private Button button_4;
     private Button button_5;
+    private Button button_6;
+    private Button button_7;
     private View v;
     private OnKeyDownListener onKeyDownListener;
 
@@ -46,6 +48,8 @@ public class ListDialog extends BaseDialog {
         button_3 = (Button) v.findViewById(R.id.button_3);
         button_4 = (Button) v.findViewById(R.id.button_4);
         button_5 = (Button) v.findViewById(R.id.button_5);
+        button_6 = (Button) v.findViewById(R.id.button_6);
+        button_7 = (Button) v.findViewById(R.id.button_7);
         setContentView(v);
 
         Window window = getWindow();
