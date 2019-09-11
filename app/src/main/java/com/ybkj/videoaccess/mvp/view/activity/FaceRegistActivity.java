@@ -465,7 +465,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
     private void setStartPreview(Camera camera, SurfaceHolder holder) {
         try {
             camera.setPreviewDisplay(holder);
-            camera.setDisplayOrientation(90);//如果没有这行你看到的预览界面就会是水平的
+//            camera.setDisplayOrientation(90);//如果没有这行你看到的预览界面就会是水平的
             camera.startPreview();
             safeToTakePicture = true;
 

@@ -69,10 +69,10 @@ public class CustomProgress extends View {
             TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CustomProgress);
             backgroundColor = array.getColor(R.styleable.CustomProgress_backgroud_color, getResources().getColor(R.color.yellow));  // getResources().getColor(R.color.yellow)
 //            backgroundColor = array.getColor(R.styleable.CustomProgress_backgroud_color, Color.WHITE);  // getResources().getColor(R.color.yellow)
-//            currentColor = array.getColor(R.styleable.CustomProgress_current_color, Color.CYAN);
-            currentColor = array.getColor(R.styleable.CustomProgress_current_color, getResources().getColor(R.color.blue));
-//            progressColor = array.getColor(R.styleable.CustomProgress_progress_color, Color.CYAN);
-            progressColor = array.getColor(R.styleable.CustomProgress_progress_color, getResources().getColor(R.color.blue));
+            currentColor = array.getColor(R.styleable.CustomProgress_current_color, Color.CYAN);
+//            currentColor = array.getColor(R.styleable.CustomProgress_current_color, getResources().getColor(R.color.blue));
+            progressColor = array.getColor(R.styleable.CustomProgress_progress_color, Color.CYAN);
+//            progressColor = array.getColor(R.styleable.CustomProgress_progress_color, getResources().getColor(R.color.blue));
             array.recycle();
         }
     }

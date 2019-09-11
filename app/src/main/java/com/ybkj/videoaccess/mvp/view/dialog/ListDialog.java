@@ -100,9 +100,11 @@ public class ListDialog extends BaseDialog {
                 break;
             case 12:
                 // 5
+                onKeyDownListener.onKeyDown(5);
                 break;
             case 13:
                 // 6
+                onKeyDownListener.onKeyDown(6);
                 break;
             case 14:
                 // 7
@@ -121,7 +123,7 @@ public class ListDialog extends BaseDialog {
                 // # 关闭
                 dismiss();
                 if(onKeyDownListener != null){
-                    onKeyDownListener.onKeyDown(5);
+                    onKeyDownListener.onKeyDown(7);
                 }
                 break;
         }

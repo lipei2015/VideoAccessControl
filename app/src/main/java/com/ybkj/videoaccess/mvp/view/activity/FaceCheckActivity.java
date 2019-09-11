@@ -338,6 +338,23 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
+                        count --;
+                        if(count == 0) {
+                            if (prometDialog == null) {
+                                prometDialog = new PrometDialog(FaceCheckActivity.this);
+                                prometDialog.setNoTitle(true);
+                                prometDialog.setMessage("对不起，您不是授权用户(5S)");
+                            }
+                            prometDialog.show();
+
+                            countDown = 5;
+                            cancelCountDownTimer();
+                            startCountDownTimer();
+
+                            VoiceUtils.getInstance().playVoice(FaceCheckActivity.this,R.raw.face_check_not_auth);
+                        }else{
+                            startTimer();
+                        }
                     }
                     break;
                 case CASE_COUNT_DOWN:
@@ -450,7 +467,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
     private void setStartPreview(Camera camera, SurfaceHolder holder) {
         try {
             camera.setPreviewDisplay(holder);
-            camera.setDisplayOrientation(90);//如果没有这行你看到的预览界面就会是水平的
+//            camera.setDisplayOrientation(90);//如果没有这行你看到的预览界面就会是水平的
             camera.startPreview();
             safeToTakePicture = true;
 

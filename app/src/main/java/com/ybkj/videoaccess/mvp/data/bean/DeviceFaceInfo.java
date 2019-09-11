@@ -5,6 +5,7 @@ public class DeviceFaceInfo {
     private int Y;
     private int Width;
     private int Height;
+    private int FaceQualityScore;
 
     public int getX() {
         return X;
@@ -38,4 +39,11 @@ public class DeviceFaceInfo {
         Height = height;
     }
 
+    public int getFaceQualityScore() {
+        return FaceQualityScore;
+    }
+
+    public void setFaceQualityScore(int faceQualityScore) {
+        FaceQualityScore = faceQualityScore;
+    }
 }

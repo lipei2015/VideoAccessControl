@@ -156,7 +156,13 @@ public class VolumeSettingDialog extends BaseDialog {
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-                    BrightnessTools.setBrightness(activity, currentPercent * 255 / 100);
+                    BrightnessTools.setBrightness(activity, currentPercent);
+                    /*int v = BrightnessTools.getScreenBrightness(activity);
+                    if(v + 26 > 255){
+                        BrightnessTools.setBrightness(activity, 255);
+                    }else{
+                        BrightnessTools.setBrightness(activity, currentPercent);
+                    }*/
                 }
                 break;
             case 15:
@@ -171,7 +177,14 @@ public class VolumeSettingDialog extends BaseDialog {
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-                    BrightnessTools.setBrightness(activity, currentPercent * 255 / 100);
+                    BrightnessTools.setBrightness(activity, currentPercent);
+
+                    /*int v = BrightnessTools.getScreenBrightness(activity);
+                    if(v - 26 < 0){
+                        BrightnessTools.setBrightness(activity, 0);
+                    }else{
+                        BrightnessTools.setBrightness(activity, v - 26);
+                    }*/
                 }
                 break;
             case 24:
@@ -185,7 +198,8 @@ public class VolumeSettingDialog extends BaseDialog {
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-                    BrightnessTools.setBrightness(activity, currentPercent * 255 / 100);
+//                    BrightnessTools.setBrightness(activity, currentPercent * 255 / 100);
+
                 }
                 break;
             /*case 25:

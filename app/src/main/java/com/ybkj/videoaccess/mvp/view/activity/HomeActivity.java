@@ -17,6 +17,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ import com.ybkj.videoaccess.app.ConstantSys;
 import com.ybkj.videoaccess.eventbus.EventUserInfoQRCode;
 import com.ybkj.videoaccess.mvp.base.BaseActivity;
 import com.ybkj.videoaccess.mvp.control.HomeControl;
+import com.ybkj.videoaccess.mvp.data.bean.DeviceDetectInfo;
 import com.ybkj.videoaccess.mvp.data.bean.MediaInfo;
 import com.ybkj.videoaccess.mvp.data.bean.RemoteResultBean;
 import com.ybkj.videoaccess.mvp.data.bean.RequestGateOpenRecordBean;
@@ -61,7 +63,9 @@ import com.ybkj.videoaccess.util.AudioMngHelper;
 import com.ybkj.videoaccess.util.CommonUtil;
 import com.ybkj.videoaccess.util.DataUtil;
 import com.ybkj.videoaccess.util.FileUtil;
+import com.ybkj.videoaccess.util.GsonUtils;
 import com.ybkj.videoaccess.util.HomeSurfaceViewUtil;
+import com.ybkj.videoaccess.util.ImageUtil;
 import com.ybkj.videoaccess.util.LogUtil;
 import com.ybkj.videoaccess.util.PreferencesUtils;
 import com.ybkj.videoaccess.util.ToastUtil;
@@ -160,7 +164,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 创建存放二维码照片的文件夹
         FileUtil.createDirectory(ConstantSys.QRCODE_PATH);
 
-//        initWrtdev();
+        initWrtdev();
 
         //启动远程监听服务
 //        startJWebSClientService();
@@ -170,7 +174,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
 //        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -214,7 +218,32 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         int widthPixels = outMetrics.widthPixels;
         int heightPixels = outMetrics.heightPixels;
-        homeSurfaceViewUtil = new HomeSurfaceViewUtil(surfaceView,widthPixels,heightPixels);
+        homeSurfaceViewUtil = new HomeSurfaceViewUtil(surfaceView, widthPixels, heightPixels, new HomeSurfaceViewUtil.IOnTakenPhotoListener() {
+            @Override
+            public void onTakenPhoto(String path) {
+                Log.e("onTakenPhoto","begin---");
+//                String result = QRRecognizeHelper.getReult(BitmapFactory.decodeFile(path));
+                try {
+                    String result = iFaceApi.detect(ImageUtil.imageToBase64(path), null,2,1,1);
+                    Log.e("onTakenPhoto","result---"+result);
+                    DeviceDetectInfo deviceDetectInfo = GsonUtils.getGson().fromJson(result,DeviceDetectInfo.class);
+
+                    if(deviceDetectInfo != null && deviceDetectInfo.getRetStr().equals("ok")
+                            && deviceDetectInfo.getFaceInfos() != null) {
+                        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
+                    }
+
+                    File file = new File(path);
+                    if(file.exists()){
+                        file.delete();
+                    }
+                    Log.e("onTakenPhoto","end---");
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Log.e("widthPixels",widthPixels+"  "+heightPixels);
     }
 
     private long dealTime = 0;
@@ -274,7 +303,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 }
             }
         });
-//        videoView.start();
+        videoView.start();
     }
 
     private void initAidlService(){
@@ -389,12 +418,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             public void run() {
 //                faceHandler.sendEmptyMessage(0);
 
-                if(needFaceCheck) {
+                /*if(needFaceCheck) {
                     int value = wrtdevManager.getMicroWaveState();
                     Message message = new Message();
                     message.what = value;
                     handler.sendMessage(message);
-                }
+                }*/
 
                 if(needListenIcCard) {
                     byte[] bytes = wrtdevManager.getIcCardNo();
@@ -453,6 +482,31 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
     }
 
+    private Timer timerFaceListener;
+    private TimerTask timerTaskFaceListener;
+    private void startFaceListenerTimer(){
+        cancelFaceListenerTimer();
+        timerFaceListener = new Timer();
+        timerTaskFaceListener = new TimerTask() {
+            @Override
+            public void run() {
+//                faceHandler.sendEmptyMessage(0);
+                homeSurfaceViewUtil.takePhoto();
+            }
+        };
+        timerFaceListener.schedule(timerTaskFaceListener, 0, 2500);//延时1s，每隔500毫秒执行一次run方法
+    }
+
+    /**
+     * 取消有无人像出现监听
+     */
+    private void cancelFaceListenerTimer() {
+        if (timerFaceListener != null) {
+            timerFaceListener.cancel();
+            timerFaceListener = null;
+        }
+    }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -461,7 +515,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 case FACE_APPEAR:
                     // 有人出现
                     showTime ++;
-                     Log.e("startTimer", "  --- "+showTime);
+//                     Log.e("startTimer", "  --- "+showTime);
                     if(showTime >= 2) {
                         needFaceCheck = false;
                         startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
@@ -534,12 +588,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     @Override
     public void onResume() {
 //        startTimer();
+        startFaceListenerTimer();
+
         needFaceCheck = true;
         needListenIcCard = true;
         if(videoView.canPause()){
             videoView.start();
         }
         homeSurfaceViewUtil.initCamare();
+
+        startFaceListenerTimer();
         super.onResume();
     }
 
@@ -576,8 +634,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        cancelFaceListenerTimer();
+        homeSurfaceViewUtil.releaseCamera();
         needFaceCheck = false;
-        needFaceCheck = false;
+        needListenIcCard = false;
         if(listDialog == null){
             listDialog = new ListDialog(HomeActivity.this, new ListDialog.OnKeyDownListener() {
                 @Override
@@ -614,7 +674,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 3:
                             // 3 呼叫业主
-
+                            startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
                             needFaceCheck = false;
                             break;
                         case 4:
@@ -633,16 +693,38 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 5:
                             // 5.音量设置
+                            if(volumeSettingDialog == null){
+                                volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
+                                    @Override
+                                    public void onSubmit(String pwd) {
+
+                                    }
+                                });
+                            }
+                            volumeSettingDialog.setType(VolumeSettingDialog.TYPE_VOLUME_SET);
+                            volumeSettingDialog.setTitle("音量设置");
+                            volumeSettingDialog.show();
                             break;
                         case 6:
                             // 6.屏幕亮度设置
+                            if(volumeSettingDialog == null){
+                                volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
+                                    @Override
+                                    public void onSubmit(String pwd) {
+
+                                    }
+                                });
+                            }
+                            volumeSettingDialog.setType(VolumeSettingDialog.TYPE_BRIGHT_SET);
+                            volumeSettingDialog.setTitle("屏幕亮度设置");
+                            volumeSettingDialog.show();
                             break;
                         case 7:
                             // #关闭
 
                             // 关闭了列表框，要重新开始监听人像和IC卡刷卡
 //                            startTimer();
-                            needFaceCheck = true;
+                            needListenIcCard = true;
                             needFaceCheck = true;
                             break;
                     }
@@ -671,17 +753,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             volumeSettingDialog.setTitle("屏幕亮度设置");
             volumeSettingDialog.show();*/
 
-            if(volumeSettingDialog == null){
-                volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
-                    @Override
-                    public void onSubmit(String pwd) {
 
-                    }
-                });
-            }
-            volumeSettingDialog.setType(VolumeSettingDialog.TYPE_VOLUME_SET);
-            volumeSettingDialog.setTitle("音量设置");
-            volumeSettingDialog.show();
             return false;
         }
         return super.onKeyDown(keyCode, event);

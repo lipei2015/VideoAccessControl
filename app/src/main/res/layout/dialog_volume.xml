@@ -59,20 +59,17 @@
         android:layout_width="@dimen/list_dialog_item_width"
         android:layout_height="@dimen/list_dialog_item_height"
         android:textColor="@color/black"
-        android:textSize="@dimen/dialog_title_text_size"
+        android:textSize="@dimen/dialog_item_text_size"
         android:gravity="center_horizontal"
-        android:text="请按 2 键加亮度或 8 键 减亮度"
-        android:textStyle="bold"/>
+        android:text="请按 2 键加亮度或 8 键 减亮度"/>
 
     <TextView
         android:id="@+id/tvPwdRight"
         android:layout_width="@dimen/list_dialog_item_width"
         android:layout_height="@dimen/list_dialog_item_height"
         android:textColor="@color/black"
-        android:textSize="@dimen/dialog_title_text_size"
+        android:textSize="@dimen/dialog_item_text_size"
         android:gravity="center_horizontal"
-        android:text="# 键退出当前设置界面"
-        android:textStyle="bold"
-        android:layout_marginTop="40px"/>
+        android:text="# 键退出当前设置界面"/>
 
 </LinearLayout>

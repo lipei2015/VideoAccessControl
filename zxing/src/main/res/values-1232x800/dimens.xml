@@ -46,20 +46,20 @@
     <dimen name="list_dialog_padding">40px</dimen>
     <dimen name="list_dialog_item_height">80px</dimen>
     <dimen name="list_dialog_item_margin_top">20px</dimen>
-    <dimen name="list_dialog_item_width">500px</dimen>
+    <dimen name="list_dialog_item_width">400px</dimen>
     <dimen name="list_dialog_item_size">26sp</dimen>
 
     <dimen name="dialog_item_text_size">25sp</dimen>
-    <dimen name="dialog_title_text_size">25sp</dimen>
+    <dimen name="dialog_title_text_size">26sp</dimen>
     <dimen name="dialog_input_text_size">26sp</dimen>
     <dimen name="dialog_input_promet_text_size">21sp</dimen>
     <dimen name="dialog_confirm_padding">50px</dimen>
     <dimen name="dialog_line_spacing_extra">20px</dimen>
-    <dimen name="dialog_success_img_height">70px</dimen>
+    <dimen name="dialog_success_img_height">90px</dimen>
 
     <dimen name="face_check_text_margin_bottom">50px</dimen>
     <dimen name="face_check_surface_margin">15px</dimen>
-    <dimen name="face_check_surface_height">960px</dimen>
+    <dimen name="face_check_surface_height">924px</dimen>
     <dimen name="face_check_surface_width">600px</dimen>
 
     <dimen name="face_regist_promet_margin_top">15px</dimen>
@@ -69,10 +69,8 @@
     <dimen name="zxing_text_margin_top">20px</dimen>
     <dimen name="zxing_secend_text_size">26sp</dimen>
 
-    <dimen name="bind_card_dialog_item_width">300px</dimen>
-    <dimen name="bind_card_dialog_item_height">45px</dimen>
-    <dimen name="dialog_qrcode_width">135px</dimen>
-    <dimen name="bind_card_dialog_layout_padding">40px</dimen>
-    <dimen name="bind_card_dialog_layout_padding_top">90px</dimen>
-    <dimen name="bind_card_dialog_item_text_size">25sp</dimen>
+    <dimen name="dialog_progress_width">500px</dimen>
+    <dimen name="dialog_progress_height">30px</dimen>
+    <dimen name="x15">15px</dimen>
+    <dimen name="x50">50px</dimen>
 </resources>

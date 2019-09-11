@@ -38,12 +38,18 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
 
     private int widthPixels;
     private int heightPixels;
+    private IOnTakenPhotoListener iOnTakenPhotoListener;
 
-    public HomeSurfaceViewUtil(SurfaceView surfaceView,int widthPixels, int heightPixels){
+    public interface IOnTakenPhotoListener{
+        void onTakenPhoto(String path);
+    }
+
+    public HomeSurfaceViewUtil(SurfaceView surfaceView,int widthPixels, int heightPixels, IOnTakenPhotoListener iOnTakenPhotoListener){
         this.surfaceHolder = surfaceView.getHolder();
         this.surfaceView = surfaceView;
         this.widthPixels = widthPixels;
         this.heightPixels = heightPixels;
+        this.iOnTakenPhotoListener = iOnTakenPhotoListener;
         surfaceHolder.addCallback(this);
     }
 
@@ -65,12 +71,16 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
                 // 拍照之后继续显示预览界面
                 setStartPreview (mCamera, surfaceHolder);
 
-                Message msg = new Message();
+                if(iOnTakenPhotoListener != null){
+                    iOnTakenPhotoListener.onTakenPhoto(path);
+                }
+
+                /*Message msg = new Message();
                 msg.what = CASE_DEAL_PICTURE;
                 Bundle bundle = new Bundle();
                 bundle.putString("path",tempfile.getAbsolutePath());
                 msg.setData(bundle);
-                handler.sendMessage(msg);
+                handler.sendMessage(msg);*/
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -134,7 +144,7 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
     }
 
     private void startTimer() {
-        Log.e("startTimer",safeToTakePicture+"");
+//        Log.e("startTimer",safeToTakePicture+"");
         cancelTimer();
         takePictureTimer = new Timer();
         takePictureTimer.schedule(new TimerTask() {
@@ -145,7 +155,7 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
                     handler.sendEmptyMessage(CASE_TAKE_PICTURE);
                 }
             }
-        }, 2000);
+        }, 1000);
     }
 
     private boolean needTackPhoto = false;
@@ -170,23 +180,25 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
      * @param view
      */
     public void capture(View view) {
-        Camera.Parameters parameters = mCamera.getParameters();
-        parameters.setPictureFormat(ImageFormat.JPEG);//设置照片格式
-        parameters.setJpegQuality(100);
-        parameters.setPreviewSize(widthPixels, heightPixels);
-        parameters.setPictureSize(heightPixels, widthPixels);
+        if(mCamera != null) {
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPictureFormat(ImageFormat.JPEG);//设置照片格式
+            parameters.setJpegQuality(100);
+            parameters.setPreviewSize(widthPixels, heightPixels);
+            parameters.setPictureSize(heightPixels, widthPixels);
 //        parameters.setPictureSize(widthPixels, heightPixels);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
 //        mCamera.setParameters(parameters);
-        //摄像头聚焦
-        mCamera.autoFocus(new Camera.AutoFocusCallback() {
-            @Override
-            public void onAutoFocus(boolean success, Camera camera) {
-                if (success) {
-                    mCamera.takePicture(null, null, mpictureCallback);
+            //摄像头聚焦
+            mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+                    if (success) {
+                        mCamera.takePicture(null, null, mpictureCallback);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -233,6 +245,7 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
      * 定义释放摄像头的方法
      */
     public void releaseCamera() {
+        cancelTimer();
         if (mCamera != null) {//如果摄像头还未释放，则执行下面代码
             mCamera.stopPreview();//1.首先停止预览
             mCamera.setPreviewCallback(null);//2.预览返回值为null

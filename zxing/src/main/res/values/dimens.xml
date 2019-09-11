@@ -86,4 +86,9 @@
 
   <dimen name="zxing_text_margin_top">20px</dimen>
   <dimen name="zxing_secend_text_size">26sp</dimen>
+
+  <dimen name="dialog_progress_width">500px</dimen>
+  <dimen name="dialog_progress_height">30px</dimen>
+  <dimen name="x15">15px</dimen>
+  <dimen name="x50">50px</dimen>
 </resources>
