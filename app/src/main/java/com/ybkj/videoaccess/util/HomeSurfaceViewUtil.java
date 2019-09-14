@@ -39,12 +39,23 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
     private int widthPixels;
     private int heightPixels;
     private IOnTakenPhotoListener iOnTakenPhotoListener;
+    public static final int TYPE_FACE_LISTENER = 1;     // 检测人像出现
+    public static final int TYPE_IC_CARD_BIND = 2;      // 绑定IC卡时拍用户二维码
+    public int type = 1;        // 拍照类型
 
     public interface IOnTakenPhotoListener{
         void onTakenPhoto(String path);
     }
 
-    public HomeSurfaceViewUtil(SurfaceView surfaceView,int widthPixels, int heightPixels, IOnTakenPhotoListener iOnTakenPhotoListener){
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public HomeSurfaceViewUtil(SurfaceView surfaceView, int widthPixels, int heightPixels, IOnTakenPhotoListener iOnTakenPhotoListener){
         this.surfaceHolder = surfaceView.getHolder();
         this.surfaceView = surfaceView;
         this.widthPixels = widthPixels;
@@ -71,16 +82,18 @@ public class HomeSurfaceViewUtil implements SurfaceHolder.Callback{
                 // 拍照之后继续显示预览界面
                 setStartPreview (mCamera, surfaceHolder);
 
-                if(iOnTakenPhotoListener != null){
-                    iOnTakenPhotoListener.onTakenPhoto(path);
+                if(type == TYPE_FACE_LISTENER){
+                    if(iOnTakenPhotoListener != null){
+                        iOnTakenPhotoListener.onTakenPhoto(path);
+                    }
+                }else{
+                    Message msg = new Message();
+                    msg.what = CASE_DEAL_PICTURE;
+                    Bundle bundle = new Bundle();
+                    bundle.putString("path",tempfile.getAbsolutePath());
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
                 }
-
-                /*Message msg = new Message();
-                msg.what = CASE_DEAL_PICTURE;
-                Bundle bundle = new Bundle();
-                bundle.putString("path",tempfile.getAbsolutePath());
-                msg.setData(bundle);
-                handler.sendMessage(msg);*/
             } catch (IOException e) {
                 e.printStackTrace();
             }

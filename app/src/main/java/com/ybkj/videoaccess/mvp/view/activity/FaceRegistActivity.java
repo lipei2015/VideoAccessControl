@@ -349,6 +349,11 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                             startTimer();
                         }
                     }
+
+                    File file = new File(path);
+                    if(file.exists()){
+                        file.delete();
+                    }
                     break;
                 case CASE_COUNT_DOWN:
                     int time = msg.arg1;

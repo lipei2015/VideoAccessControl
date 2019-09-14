@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.ybkj.videoaccess.R;
@@ -30,8 +31,10 @@ import java.text.NumberFormat;
  */
 public class VolumeSettingDialog extends BaseDialog {
     private TextView title;
+    private TextView tvPromet1;
     private View v;
     private CustomProgress customProgress;
+    private SeekBar seekBar;
     private OnKeyDownListener onKeyDownListener;
 
     private DecimalFormat df = new DecimalFormat("######0.00");
@@ -45,6 +48,7 @@ public class VolumeSettingDialog extends BaseDialog {
 
     public VolumeSettingDialog(Context context, OnKeyDownListener onKeyDownListener) {
         super(context);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         findView(context);
         setCancelable(true);
         this.onKeyDownListener = onKeyDownListener;
@@ -58,6 +62,7 @@ public class VolumeSettingDialog extends BaseDialog {
         this.type = type;
 
         if(type == TYPE_VOLUME_SET){
+            tvPromet1.setText("请按 2 键调大音量或 8 键调小音量");
             if(audioMngHelper == null){
                 audioMngHelper = new AudioMngHelper(activity);
                 audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
@@ -72,17 +77,21 @@ public class VolumeSettingDialog extends BaseDialog {
 
                 }
             });
+            seekBar.setMax(100);
+            seekBar.setProgress(currentPercent);
         }else{
-            boolean isAuto = BrightnessTools.isAutoBrightness(activity.getContentResolver());
+            tvPromet1.setText("请按 2 键调大亮度或 8 键调小亮度");
+            boolean isAuto = BrightnessTools.isAutoBrightness(activity);
             if(isAuto){
                 BrightnessTools.stopAutoBrightness(activity);
             }
+            seekBar.setMax(100);
             float current = BrightnessTools.getScreenBrightness(activity);
 
             NumberFormat numberFormat = NumberFormat.getInstance();
             // 设置精确到小数点后2位
             numberFormat.setMaximumFractionDigits(2);
-            String result = numberFormat.format((float) current / (float) 255 * 100);   // 255是最大亮度值
+            String result = numberFormat.format((float) current / (float) 70 * 100);   // 70是最大亮度值
 
             if(result.contains(".")){
                 currentPercent = Integer.parseInt(result.substring(0,result.indexOf(".")));
@@ -90,7 +99,7 @@ public class VolumeSettingDialog extends BaseDialog {
                 currentPercent = Integer.parseInt(result);
             }
 
-            Log.e("progress",current+"--"+currentPercent);
+            Log.e("progress","current:"+current+"--"+"currentPercent:"+currentPercent);
             customProgress.setProgress(currentPercent > 100 ? 100 : currentPercent);
             customProgress.setProgressListener(new CustomProgress.ProgressListener() {
                 @Override
@@ -98,6 +107,7 @@ public class VolumeSettingDialog extends BaseDialog {
 
                 }
             });
+            seekBar.setProgress(currentPercent);
         }
     }
 
@@ -109,7 +119,9 @@ public class VolumeSettingDialog extends BaseDialog {
         this.activity = (Activity) context;
         v = View.inflate(context, R.layout.dialog_volume, null);
         title = (TextView) v.findViewById(R.id.dialogTitle);
+        tvPromet1 = (TextView) v.findViewById(R.id.tvPromet1);
         customProgress = (CustomProgress) v.findViewById(R.id.customProgress);
+        seekBar = (SeekBar) v.findViewById(R.id.seekBar);
         setContentView(v);
 
         Window window = getWindow();
@@ -141,7 +153,7 @@ public class VolumeSettingDialog extends BaseDialog {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        ToastUtil.showMsg(keyCode+"++++++++");
+//        ToastUtil.showMsg(keyCode+"++++++++");
         switch (keyCode){
 
             case 9:
@@ -153,13 +165,19 @@ public class VolumeSettingDialog extends BaseDialog {
                     currentPercent += 10;
                 }
                 customProgress.setProgress(currentPercent);
+                seekBar.setProgress(currentPercent);
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-                    BrightnessTools.setBrightness(activity, currentPercent);
+                    Log.e("BrightnessTools","current:"+BrightnessTools.getScreenBrightness(activity)+"  currentPercent"+currentPercent);
+//                    BrightnessTools.setBrightness(activity, currentPercent);
+//                    BrightnessTools.setBrightness(activity, (int) (currentPercent / 100f * 70));
+                    BrightnessTools.saveBrightness(activity, (int) (currentPercent / 100f * 70));
+
+                    Log.e("BrightnessTools end",BrightnessTools.getScreenBrightness(activity)+"");
                     /*int v = BrightnessTools.getScreenBrightness(activity);
-                    if(v + 26 > 255){
-                        BrightnessTools.setBrightness(activity, 255);
+                    if(v + 26 > 70){
+                        BrightnessTools.setBrightness(activity, 70);
                     }else{
                         BrightnessTools.setBrightness(activity, currentPercent);
                     }*/
@@ -174,10 +192,16 @@ public class VolumeSettingDialog extends BaseDialog {
                     currentPercent -= 10;
                 }
                 customProgress.setProgress(currentPercent);
+                seekBar.setProgress(currentPercent);
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-                    BrightnessTools.setBrightness(activity, currentPercent);
+                    Log.e("BrightnessTools","current:"+BrightnessTools.getScreenBrightness(activity)+"  currentPercent"+currentPercent);
+//                    BrightnessTools.setBrightness(activity, currentPercent);
+//                    BrightnessTools.setBrightness(activity, (int) (currentPercent / 100f * 70));
+                    BrightnessTools.saveBrightness(activity, (int) (currentPercent / 100f * 70));
+
+                    Log.e("BrightnessTools end",BrightnessTools.getScreenBrightness(activity)+"");
 
                     /*int v = BrightnessTools.getScreenBrightness(activity);
                     if(v - 26 < 0){
@@ -198,7 +222,7 @@ public class VolumeSettingDialog extends BaseDialog {
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-//                    BrightnessTools.setBrightness(activity, currentPercent * 255 / 100);
+//                    BrightnessTools.setBrightness(activity, currentPercent * 70 / 100);
 
                 }
                 break;
@@ -214,7 +238,7 @@ public class VolumeSettingDialog extends BaseDialog {
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-                    BrightnessTools.setBrightness(activity, currentPercent * 255 / 100);
+                    BrightnessTools.setBrightness(activity, currentPercent * 70 / 100);
                 }
                 break;*/
             case 135:
@@ -236,7 +260,7 @@ public class VolumeSettingDialog extends BaseDialog {
             if(type == TYPE_VOLUME_SET){
                 audioMngHelper.setVoice100(currentPercent);
             }else {
-                BrightnessTools.setBrightness(activity, currentPercent * 255 / 100);
+                BrightnessTools.setBrightness(activity, currentPercent * 70 / 100);
             }
             return false;
         }*/

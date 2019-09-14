@@ -176,12 +176,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 实例化远程调用设备SDK服务
         initAidlService();
 
-//        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
-//        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
-//        audioMngHelper.setAudioType(AudioMngHelper.TYPE_ALARM);
-//        audioMngHelper.setAudioType(AudioMngHelper.TYPE_RING);
-//        audioMngHelper.setVoice100(60);
-
 //        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
 
 //        byte[] bytes = new byte[]{23,33,55,55};
@@ -212,7 +206,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 开启全天时间处理器
         startAliveTimer();
 
-//        startTimer();
+        // 开始监听IC卡刷卡
+        startTimer();
 
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
@@ -233,13 +228,17 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                         startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
                     }
 
-                    File file = new File(path);
+                    /*File file = new File(path);
                     if(file.exists()){
                         file.delete();
-                    }
+                    }*/
                     Log.e("onTakenPhoto","end---");
                 } catch (RemoteException e) {
                     e.printStackTrace();
+                }
+                File file = new File(path);
+                if(file.exists()){
+                    file.delete();
                 }
             }
         });
@@ -469,7 +468,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 }
             }
         };
-        timer.schedule(timerTask, 2000, 1500);//延时1s，每隔500毫秒执行一次run方法
+        timer.schedule(timerTask, 2000, 1200);//延时1s，每隔500毫秒执行一次run方法
     }
 
     /**
@@ -485,12 +484,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     private Timer timerFaceListener;
     private TimerTask timerTaskFaceListener;
     private void startFaceListenerTimer(){
+        homeSurfaceViewUtil.initCamare();
         cancelFaceListenerTimer();
         timerFaceListener = new Timer();
         timerTaskFaceListener = new TimerTask() {
             @Override
             public void run() {
 //                faceHandler.sendEmptyMessage(0);
+                homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_FACE_LISTENER);
                 homeSurfaceViewUtil.takePhoto();
             }
         };
@@ -596,8 +597,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             videoView.start();
         }
         homeSurfaceViewUtil.initCamare();
-
-        startFaceListenerTimer();
         super.onResume();
     }
 
@@ -683,6 +682,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             if(bindCardDialog == null){
                                 bindCardDialog = new BindCardDialog(HomeActivity.this);
                             }
+                            homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_IC_CARD_BIND);
+                            homeSurfaceViewUtil.initCamare();
                             homeSurfaceViewUtil.takePhoto();
                             bindCardDialog.setPromet1("请出示住户验证码（15S）");
                             bindCardDialog.show();
@@ -724,6 +725,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
                             // 关闭了列表框，要重新开始监听人像和IC卡刷卡
 //                            startTimer();
+                            startFaceListenerTimer();
                             needListenIcCard = true;
                             needFaceCheck = true;
                             break;
@@ -859,6 +861,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     bindCardDialog.hidePromet3();
                     bindCardDialog.setPromet1("请出示住户验证码（15S）");
                     bindCardDialog.show();
+                    homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_IC_CARD_BIND);
                     homeSurfaceViewUtil.takePhoto();
 
                     countDown = 15;
@@ -890,7 +893,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }else{
             prometDialog.setSuccessIcon(R.mipmap.fail);
             prometDialog.setMessageTextColor(getResources().getColor(R.color.red));
-            prometDialog.setMessage("发卡失败，请按 * 键重试或 # 退出");
+            prometDialog.setMessage("卡片关联失败，请按 * 键重试或 # 退出");
 
             VoiceUtils.getInstance().playVoice(HomeActivity.this,R.raw.create_ic_card_fail);
         }

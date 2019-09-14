@@ -49,7 +49,7 @@
     <dimen name="list_dialog_item_width">500px</dimen>
     <dimen name="list_dialog_item_size">26sp</dimen>
 
-    <dimen name="dialog_item_text_size">25sp</dimen>
+    <dimen name="dialog_item_text_size">22sp</dimen>
     <dimen name="dialog_title_text_size">26sp</dimen>
     <dimen name="dialog_input_text_size">26sp</dimen>
     <dimen name="dialog_input_promet_text_size">21sp</dimen>
@@ -79,5 +79,6 @@
     <dimen name="dialog_progress_width">500px</dimen>
     <dimen name="dialog_progress_height">30px</dimen>
     <dimen name="x15">15px</dimen>
-    <dimen name="x50">50px</dimen>
+    <dimen name="x50">30px</dimen>
+    <dimen name="dialog_progress_promet_height">40px</dimen>
 </resources>

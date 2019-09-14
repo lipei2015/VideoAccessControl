@@ -91,4 +91,5 @@
   <dimen name="dialog_progress_height">30px</dimen>
   <dimen name="x15">15px</dimen>
   <dimen name="x50">50px</dimen>
+    <dimen name="dialog_progress_promet_height">30dp</dimen>
 </resources>

@@ -109,10 +109,6 @@ public class StartActivity extends BaseActivity<StartPresenter, StartModel> impl
         // 先检测本地有无下载的数据，有的话直接进入主界面展示，没有的话直接每隔2秒拉取数据数据，
         // 没有数据说明没有绑定成功，拉取到了数据就说明绑定成功，开始下载数据并且进入主页播放日常视频
 
-        AudioMngHelper audioMngHelper = new AudioMngHelper(this);
-        audioMngHelper.setAudioType(AudioMngHelper.TYPE_MUSIC);
-//        audioMngHelper.setVoice100(60);
-
         FileUtil.createDirectory(ConstantSys.HOME_VEDIO_PATH);
         List<String> urlList = new ArrayList<>();
         urlList.add(testUrl);

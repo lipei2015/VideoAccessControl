@@ -3,12 +3,12 @@
     android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="40dp"
     android:background="@drawable/shape_white"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingLeft="40px"
-    android:paddingRight="40px">
+    android:paddingRight="40px"
+    android:paddingBottom="25dp">
 
     <TextView
         android:id="@+id/dialogTitle"
@@ -27,46 +27,36 @@
         android:layout_height="@dimen/dialog_progress_height"
         android:max="100"
         android:progress="20"
-        android:layout_marginTop="40px"/>
+        android:layout_marginTop="40px"
+        android:visibility="gone"/>
     <!--android:progressDrawable="@drawable/progress_red"-->
-
-    <LinearLayout
-        android:layout_width="@dimen/list_dialog_item_width"
+    <SeekBar android:id="@+id/seekBar"
+        android:layout_width="@dimen/dialog_progress_width"
         android:layout_height="wrap_content"
-        android:gravity="center" android:visibility="gone">
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="@dimen/list_dialog_item_width"
-            android:layout_height="@dimen/list_dialog_item_height"
-            android:background="@null"
-            android:layout_weight="1"
-            android:text="* 确认"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dialog_input_promet_text_size"/>
-        <Button
-            android:id="@+id/btnPromet"
-            android:layout_width="@dimen/list_dialog_item_width"
-            android:layout_height="@dimen/list_dialog_item_height"
-            android:background="@null"
-            android:text="# 关闭"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:textSize="@dimen/dialog_input_promet_text_size"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <TextView android:layout_marginTop="40px"
+        android:focusable="true"
+        android:maxHeight="10px"
+        android:minHeight="10px"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:thumbOffset="0dp"
+        android:layout_marginTop="40px"
+        android:progressDrawable="@drawable/po_seekbar"
+        android:thumb="@drawable/seekbar_thumb"
+        android:background="@null"/>
+
+    <TextView android:id="@+id/tvPromet1"
+        android:layout_marginTop="40px"
         android:layout_width="@dimen/list_dialog_item_width"
-        android:layout_height="@dimen/list_dialog_item_height"
+        android:layout_height="@dimen/dialog_progress_promet_height"
         android:textColor="@color/black"
         android:textSize="@dimen/dialog_item_text_size"
         android:gravity="center_horizontal"
         android:text="请按 2 键加亮度或 8 键 减亮度"/>
 
     <TextView
-        android:id="@+id/tvPwdRight"
+        android:id="@+id/tvPromet2"
         android:layout_width="@dimen/list_dialog_item_width"
-        android:layout_height="@dimen/list_dialog_item_height"
+        android:layout_height="@dimen/dialog_progress_promet_height"
         android:textColor="@color/black"
         android:textSize="@dimen/dialog_item_text_size"
         android:gravity="center_horizontal"
