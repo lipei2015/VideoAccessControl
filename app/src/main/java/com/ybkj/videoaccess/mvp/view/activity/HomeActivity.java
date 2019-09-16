@@ -164,7 +164,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 创建存放二维码照片的文件夹
         FileUtil.createDirectory(ConstantSys.QRCODE_PATH);
 
-        initWrtdev();
+//        initWrtdev();
 
         //启动远程监听服务
 //        startJWebSClientService();
@@ -174,7 +174,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-        initAidlService();
+//        initAidlService();
 
 //        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
 
@@ -207,7 +207,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         startAliveTimer();
 
         // 开始监听IC卡刷卡
-        startTimer();
+//        startTimer();
 
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
@@ -492,7 +492,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             public void run() {
 //                faceHandler.sendEmptyMessage(0);
                 homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_FACE_LISTENER);
-                homeSurfaceViewUtil.takePhoto();
+//                homeSurfaceViewUtil.takePhoto();
             }
         };
         timerFaceListener.schedule(timerTaskFaceListener, 0, 2500);//延时1s，每隔500毫秒执行一次run方法
@@ -589,6 +589,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     @Override
     public void onResume() {
 //        startTimer();
+        Log.e("onResume","onResume");
         startFaceListenerTimer();
 
         needFaceCheck = true;
@@ -602,6 +603,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     public void onPause() {
+        Log.e("onPause","onPause");
         needFaceCheck = false;
         if(videoView.isPlaying()){
             videoView.pause();
@@ -612,6 +614,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 
     @Override
     protected void onStop() {
+        Log.e("onStop","onStop");
         needFaceCheck = false;
         if(videoView.isPlaying()){
             videoView.pause();
@@ -684,7 +687,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             }
                             homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_IC_CARD_BIND);
                             homeSurfaceViewUtil.initCamare();
-                            homeSurfaceViewUtil.takePhoto();
+//                            homeSurfaceViewUtil.takePhoto();
                             bindCardDialog.setPromet1("请出示住户验证码（15S）");
                             bindCardDialog.show();
 
@@ -694,31 +697,33 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 5:
                             // 5.音量设置
-                            if(volumeSettingDialog == null){
+                            /*if(volumeSettingDialog == null){
                                 volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
                                     @Override
                                     public void onSubmit(String pwd) {
 
                                     }
                                 });
-                            }
+                            }*/
                             volumeSettingDialog.setType(VolumeSettingDialog.TYPE_VOLUME_SET);
                             volumeSettingDialog.setTitle("音量设置");
-                            volumeSettingDialog.show();
+//                            volumeSettingDialog.show();
+                            startActivity(new Intent(HomeActivity.this,VolumeSettingDialog.class));
                             break;
                         case 6:
                             // 6.屏幕亮度设置
-                            if(volumeSettingDialog == null){
+                            /*if(volumeSettingDialog == null){
                                 volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
                                     @Override
                                     public void onSubmit(String pwd) {
 
                                     }
                                 });
-                            }
+                            }*/
                             volumeSettingDialog.setType(VolumeSettingDialog.TYPE_BRIGHT_SET);
                             volumeSettingDialog.setTitle("屏幕亮度设置");
-                            volumeSettingDialog.show();
+//                            volumeSettingDialog.show();
+                            startActivity(new Intent(HomeActivity.this,VolumeSettingDialog.class));
                             break;
                         case 7:
                             // #关闭
@@ -752,9 +757,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 });
             }
             volumeSettingDialog.setType(VolumeSettingDialog.TYPE_BRIGHT_SET);
-            volumeSettingDialog.setTitle("屏幕亮度设置");
-            volumeSettingDialog.show();*/
-
+            volumeSettingDialog.setTitle("屏幕亮度设置");*/
+//            volumeSettingDialog.show();
+            startActivity(new Intent(HomeActivity.this,VolumeSettingDialog.class));
 
             return false;
         }
@@ -862,7 +867,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     bindCardDialog.setPromet1("请出示住户验证码（15S）");
                     bindCardDialog.show();
                     homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_IC_CARD_BIND);
-                    homeSurfaceViewUtil.takePhoto();
+//                    homeSurfaceViewUtil.takePhoto();
 
                     countDown = 15;
                     cancelCountDownTimer();

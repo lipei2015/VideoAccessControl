@@ -3,6 +3,8 @@ package com.ybkj.videoaccess.mvp.view.dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -29,7 +31,7 @@ import java.text.NumberFormat;
  * <p>
  * Created by lp
  */
-public class VolumeSettingDialog extends BaseDialog {
+public class VolumeSettingDialog extends Activity {
     private TextView title;
     private TextView tvPromet1;
     private View v;
@@ -46,12 +48,34 @@ public class VolumeSettingDialog extends BaseDialog {
     public static final int TYPE_BRIGHT_SET = 2;
     private int type = 1;   // 1为音量设置；2为屏幕亮度设置
 
-    public VolumeSettingDialog(Context context, OnKeyDownListener onKeyDownListener) {
-        super(context);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+/*    public VolumeSettingDialog(Context context, OnKeyDownListener onKeyDownListener) {
+//        super(context);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         findView(context);
-        setCancelable(true);
+//        setCancelable(true);
         this.onKeyDownListener = onKeyDownListener;
+    }*/
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_volume);
+//        v = View.inflate(context, R.layout.dialog_volume, null);
+        title = (TextView) findViewById(R.id.dialogTitle);
+        tvPromet1 = (TextView) findViewById(R.id.tvPromet1);
+        customProgress = (CustomProgress) findViewById(R.id.customProgress);
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+//        setContentView(v);
+
+        /*Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attr = window.getAttributes();
+            if (attr != null) {
+                attr.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                attr.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                attr.gravity = Gravity.CENTER;//设置dialog 在布局中的位置
+            }
+        }*/
     }
 
     public int getType() {
@@ -122,7 +146,7 @@ public class VolumeSettingDialog extends BaseDialog {
         tvPromet1 = (TextView) v.findViewById(R.id.tvPromet1);
         customProgress = (CustomProgress) v.findViewById(R.id.customProgress);
         seekBar = (SeekBar) v.findViewById(R.id.seekBar);
-        setContentView(v);
+//        setContentView(v);
 
         Window window = getWindow();
         if (window != null) {
@@ -219,14 +243,17 @@ public class VolumeSettingDialog extends BaseDialog {
                     currentPercent += 10;
                 }
                 customProgress.setProgress(currentPercent);
+                seekBar.setProgress(currentPercent);
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-//                    BrightnessTools.setBrightness(activity, currentPercent * 70 / 100);
+                    Log.e("BrightnessTools","current:"+BrightnessTools.getScreenBrightness(activity)+"  currentPercent"+currentPercent);
+                    BrightnessTools.saveBrightness(activity, (int) (currentPercent / 100f * 70));
 
+                    Log.e("BrightnessTools end",BrightnessTools.getScreenBrightness(activity)+"");
                 }
                 break;
-            /*case 25:
+            case 25:
             case 82:
                 // 音量 - 键
                 if (currentPercent - 10 < 0) {
@@ -235,18 +262,22 @@ public class VolumeSettingDialog extends BaseDialog {
                     currentPercent -= 10;
                 }
                 customProgress.setProgress(currentPercent);
+                seekBar.setProgress(currentPercent);
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
-                    BrightnessTools.setBrightness(activity, currentPercent * 70 / 100);
+                    Log.e("BrightnessTools","current:"+BrightnessTools.getScreenBrightness(activity)+"  currentPercent"+currentPercent);
+                    BrightnessTools.saveBrightness(activity, (int) (currentPercent / 100f * 70));
+                    Log.e("BrightnessTools end",BrightnessTools.getScreenBrightness(activity)+"");
                 }
-                break;*/
+                break;
             case 135:
                 // * 确认提交密码
                 break;
             case 136:
                 // # 关闭
-                dismiss();
+//                dismiss();
+                finish();
                 break;
         }
 
