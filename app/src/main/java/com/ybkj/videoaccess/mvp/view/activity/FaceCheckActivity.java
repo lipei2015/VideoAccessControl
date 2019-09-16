@@ -368,7 +368,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                         cancelCountDownTimer();
                         if(prometDialog != null && prometDialog.isShowing()){
                             prometDialog.cancel();
-                            finish();
+                            startActivity(new Intent(FaceCheckActivity.this,HomeActivity.class));
                         }
                     }else{
                         prometDialog.setMessage("对不起，您不是授权用户("+time+"S)");
@@ -376,7 +376,7 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
                     }
                     break;
                 case FINISH_ACTIVITY:
-                    finish();
+                    startActivity(new Intent(FaceCheckActivity.this,HomeActivity.class));
                     break;
             }
             super.handleMessage(msg);
@@ -505,8 +505,10 @@ public class FaceCheckActivity extends BaseActivity<FaceCheckPresenter, FaceChec
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        mCamera.stopPreview();//如果预览界面改变，则首先停止预览界面
-        setStartPreview(mCamera, mHolder);//调整再重新打开预览界面
+        if(mCamera != null) {
+            mCamera.stopPreview();//如果预览界面改变，则首先停止预览界面
+            setStartPreview(mCamera, mHolder);//调整再重新打开预览界面
+        }
     }
 
     @Override

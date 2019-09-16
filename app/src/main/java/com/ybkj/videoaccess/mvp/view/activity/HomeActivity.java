@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -164,7 +165,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         // 创建存放二维码照片的文件夹
         FileUtil.createDirectory(ConstantSys.QRCODE_PATH);
 
-//        initWrtdev();
+        initWrtdev();
 
         //启动远程监听服务
 //        startJWebSClientService();
@@ -174,7 +175,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //        registerReceiver();
 
         // 实例化远程调用设备SDK服务
-//        initAidlService();
+        initAidlService();
 
 //        startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
 
@@ -207,7 +208,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         startAliveTimer();
 
         // 开始监听IC卡刷卡
-//        startTimer();
+        startTimer();
 
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
@@ -243,6 +244,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             }
         });
         Log.e("widthPixels",widthPixels+"  "+heightPixels);
+
+        enableListener();
     }
 
     private long dealTime = 0;
@@ -336,7 +339,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             //IFaceApi.Stub.asInterface()方法将传入的IBinder对象传换成了mAIDL_Service对象
             iFaceApi = IFaceApi.Stub.asInterface(service);
 
-            try {
+            /*try {
                 //通过该对象调用在MyAIDLService.aidl文件中定义的接口方法,从而实现跨进程通信
                 iFaceApi.recognition_config(70,1);
 
@@ -344,7 +347,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
 //                Log.e("unregResult", "unregResult:"+unregResult);
             } catch (RemoteException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
     };
@@ -395,6 +398,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             RemoteResultBean remoteResultBean = new Gson().fromJson(message,RemoteResultBean.class);
             Log.e("onReceive", "收到："+message);
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        enableListener();
+        super.onNewIntent(intent);
     }
 
     @SuppressLint("WrongConstant")
@@ -492,7 +501,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             public void run() {
 //                faceHandler.sendEmptyMessage(0);
                 homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_FACE_LISTENER);
-//                homeSurfaceViewUtil.takePhoto();
+                homeSurfaceViewUtil.takePhoto();
             }
         };
         timerFaceListener.schedule(timerTaskFaceListener, 0, 2500);//延时1s，每隔500毫秒执行一次run方法
@@ -586,43 +595,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         }
     };
 
-    @Override
-    public void onResume() {
-//        startTimer();
-        Log.e("onResume","onResume");
-        startFaceListenerTimer();
-
-        needFaceCheck = true;
-        needListenIcCard = true;
-        if(videoView.canPause()){
-            videoView.start();
-        }
-        homeSurfaceViewUtil.initCamare();
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        Log.e("onPause","onPause");
-        needFaceCheck = false;
-        if(videoView.isPlaying()){
-            videoView.pause();
-        }
-        homeSurfaceViewUtil.releaseCamera();
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.e("onStop","onStop");
-        needFaceCheck = false;
-        if(videoView.isPlaying()){
-            videoView.pause();
-        }
-        homeSurfaceViewUtil.releaseCamera();
-        super.onStop();
-    }
-
     private ListDialog listDialog;      // 选项列表框
     private InputDialog inputDialog;    // 密码输入框
     private BindCardDialog bindCardDialog;    // 开卡提示框
@@ -636,10 +608,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        cancelFaceListenerTimer();
-        homeSurfaceViewUtil.releaseCamera();
-        needFaceCheck = false;
-        needListenIcCard = false;
+        disableListener();
         if(listDialog == null){
             listDialog = new ListDialog(HomeActivity.this, new ListDialog.OnKeyDownListener() {
                 @Override
@@ -647,13 +616,22 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     switch (key){
                         case 1:
                             // 人脸注册
+//                            homeSurfaceViewUtil.releaseCamera();
+                            /*try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }*/
                             Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
+//                            Intent intent = new Intent(HomeActivity.this, FaceCheckActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra(CaptureActivity.SCAN_TYPE,CaptureActivity.SCAN_TYPE_FACE_REGIST);
-                            startActivityForResult(intent, FACE_REGIST);
+//                            startActivityForResult(intent, FACE_REGIST);
+                            startActivity(intent);
                             break;
                         case 2:
                             // 2 输入开门密码
+
                             if(inputDialog == null){
                                 inputDialog = new InputDialog(HomeActivity.this, new InputDialog.OnKeyDownListener() {
                                     @Override
@@ -670,14 +648,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                                 });
                             }
                             inputDialog.show();
-
-                            needFaceCheck = false;
                             CommonUtil.hiddenSoftInput(HomeActivity.this);
                             break;
                         case 3:
                             // 3 呼叫业主
                             startActivity(new Intent(HomeActivity.this, FaceCheckActivity.class));
-                            needFaceCheck = false;
                             break;
                         case 4:
                             // 4 卡片关联
@@ -687,7 +662,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             }
                             homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_IC_CARD_BIND);
                             homeSurfaceViewUtil.initCamare();
-//                            homeSurfaceViewUtil.takePhoto();
+                            homeSurfaceViewUtil.takePhoto();
                             bindCardDialog.setPromet1("请出示住户验证码（15S）");
                             bindCardDialog.show();
 
@@ -697,46 +672,52 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                             break;
                         case 5:
                             // 5.音量设置
-                            /*if(volumeSettingDialog == null){
+                            if(volumeSettingDialog == null){
                                 volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
                                     @Override
                                     public void onSubmit(String pwd) {
 
                                     }
                                 });
-                            }*/
+                            }
                             volumeSettingDialog.setType(VolumeSettingDialog.TYPE_VOLUME_SET);
                             volumeSettingDialog.setTitle("音量设置");
-//                            volumeSettingDialog.show();
-                            startActivity(new Intent(HomeActivity.this,VolumeSettingDialog.class));
+                            volumeSettingDialog.show();
                             break;
                         case 6:
                             // 6.屏幕亮度设置
-                            /*if(volumeSettingDialog == null){
+                            if(volumeSettingDialog == null){
                                 volumeSettingDialog = new VolumeSettingDialog(HomeActivity.this, new VolumeSettingDialog.OnKeyDownListener() {
                                     @Override
                                     public void onSubmit(String pwd) {
 
                                     }
                                 });
-                            }*/
+                            }
                             volumeSettingDialog.setType(VolumeSettingDialog.TYPE_BRIGHT_SET);
                             volumeSettingDialog.setTitle("屏幕亮度设置");
-//                            volumeSettingDialog.show();
-                            startActivity(new Intent(HomeActivity.this,VolumeSettingDialog.class));
+                            volumeSettingDialog.show();
                             break;
                         case 7:
                             // #关闭
 
                             // 关闭了列表框，要重新开始监听人像和IC卡刷卡
 //                            startTimer();
-                            startFaceListenerTimer();
+                            /*startFaceListenerTimer();
                             needListenIcCard = true;
-                            needFaceCheck = true;
+                            needFaceCheck = true;*/
+
+                            enableListener();
                             break;
                     }
                 }
             });
+            /*listDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    enableListener();
+                }
+            });*/
             listDialog.show();
         }else{
             listDialog.show();
@@ -757,13 +738,30 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                 });
             }
             volumeSettingDialog.setType(VolumeSettingDialog.TYPE_BRIGHT_SET);
-            volumeSettingDialog.setTitle("屏幕亮度设置");*/
-//            volumeSettingDialog.show();
-            startActivity(new Intent(HomeActivity.this,VolumeSettingDialog.class));
+            volumeSettingDialog.setTitle("屏幕亮度设置");
+            volumeSettingDialog.show();*/
+
 
             return false;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 暂停拍照和监听刷卡
+     */
+    private void disableListener() {
+        homeSurfaceViewUtil.releaseCamera();
+        cancelFaceListenerTimer();
+
+        needFaceCheck = false;
+        needListenIcCard = false;
+    }
+
+    private void enableListener() {
+        startFaceListenerTimer();
+        needFaceCheck = true;
+        needListenIcCard = true;
     }
 
     private Timer closeTimer;
@@ -867,7 +865,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     bindCardDialog.setPromet1("请出示住户验证码（15S）");
                     bindCardDialog.show();
                     homeSurfaceViewUtil.setType(HomeSurfaceViewUtil.TYPE_IC_CARD_BIND);
-//                    homeSurfaceViewUtil.takePhoto();
+                    homeSurfaceViewUtil.takePhoto();
 
                     countDown = 15;
                     cancelCountDownTimer();
@@ -905,4 +903,35 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
         prometDialog.show();
     }
 
+    @Override
+    public void onResume() {
+//        startTimer();
+        needFaceCheck = true;
+        needListenIcCard = true;
+        if(videoView.canPause()){
+            videoView.start();
+        }
+//        homeSurfaceViewUtil.initCamare();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        needFaceCheck = false;
+        if(videoView.isPlaying()){
+            videoView.pause();
+        }
+        disableListener();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        needFaceCheck = false;
+        if(videoView.isPlaying()){
+            videoView.pause();
+        }
+        disableListener();
+        super.onStop();
+    }
 }

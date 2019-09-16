@@ -169,7 +169,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
      */
     @Override
     public void showUserAuthReportResult(StringMessageInfo stringMessageInfo) {
-        finish();
+        finishThis();
     }
 
     @Override
@@ -313,7 +313,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
 
                                             @Override
                                             public void onExit() {
-                                                finish();
+                                                finishThis();
                                             }
                                         });
                                     }
@@ -361,7 +361,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                         cancelCountDownTimer();
                         if(confirmDialog != null && confirmDialog.isShowing()){
                             confirmDialog.cancel();
-                            finish();
+                            finishThis();
                         }
                     }else{
                         confirmDialog.setMessage("用户未经登记，不能进行登记采集("+time+"S)");
@@ -566,7 +566,7 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
                 break;
             case 136:
                 // # 退出当前注册界面
-                finish();
+                finishThis();
                 break;
         }
 
@@ -575,5 +575,9 @@ public class FaceRegistActivity extends BaseActivity<FaceRegistPresenter, FaceRe
         }*/
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void finishThis(){
+        startActivity(new Intent(FaceRegistActivity.this,HomeActivity.class));
     }
 }
