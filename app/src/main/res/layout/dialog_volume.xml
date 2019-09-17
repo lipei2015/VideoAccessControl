@@ -21,14 +21,6 @@
         android:textSize="@dimen/dialog_title_text_size" />
 
     <!--<ProgressBar android:id="@+id/progressBar"-->
-    <com.ybkj.videoaccess.weight.CustomProgress android:id="@+id/customProgress"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="@dimen/dialog_progress_width"
-        android:layout_height="@dimen/dialog_progress_height"
-        android:max="100"
-        android:progress="20"
-        android:layout_marginTop="40px"
-        android:visibility="gone"/>
     <!--android:progressDrawable="@drawable/progress_red"-->
     <SeekBar android:id="@+id/seekBar"
         android:layout_width="@dimen/dialog_progress_width"

@@ -33,7 +33,6 @@ public class VolumeSettingDialog extends BaseDialog {
     private TextView title;
     private TextView tvPromet1;
     private View v;
-    private CustomProgress customProgress;
     private SeekBar seekBar;
     private OnKeyDownListener onKeyDownListener;
 
@@ -70,13 +69,6 @@ public class VolumeSettingDialog extends BaseDialog {
             currentPercent = audioMngHelper.get100CurrentVolume();
             Log.e("currentPercent",audioMngHelper.getSystemCurrentVolume()+"--"+currentPercent+"  "+audioMngHelper.getSystemMaxVolume());
 
-            customProgress.setProgress(currentPercent > 100 ? 100 : currentPercent);
-            customProgress.setProgressListener(new CustomProgress.ProgressListener() {
-                @Override
-                public void getProgress(float progress) {
-
-                }
-            });
             seekBar.setMax(100);
             seekBar.setProgress(currentPercent);
         }else{
@@ -98,15 +90,9 @@ public class VolumeSettingDialog extends BaseDialog {
             }else{
                 currentPercent = Integer.parseInt(result);
             }
+            currentPercent = 100 - currentPercent;
 
             Log.e("progress","current:"+current+"--"+"currentPercent:"+currentPercent);
-            customProgress.setProgress(currentPercent > 100 ? 100 : currentPercent);
-            customProgress.setProgressListener(new CustomProgress.ProgressListener() {
-                @Override
-                public void getProgress(float progress) {
-
-                }
-            });
             seekBar.setProgress(currentPercent);
         }
     }
@@ -120,7 +106,6 @@ public class VolumeSettingDialog extends BaseDialog {
         v = View.inflate(context, R.layout.dialog_volume, null);
         title = (TextView) v.findViewById(R.id.dialogTitle);
         tvPromet1 = (TextView) v.findViewById(R.id.tvPromet1);
-        customProgress = (CustomProgress) v.findViewById(R.id.customProgress);
         seekBar = (SeekBar) v.findViewById(R.id.seekBar);
         setContentView(v);
 
@@ -164,23 +149,14 @@ public class VolumeSettingDialog extends BaseDialog {
                 } else {
                     currentPercent += 10;
                 }
-                customProgress.setProgress(currentPercent);
                 seekBar.setProgress(currentPercent);
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
                     Log.e("BrightnessTools","current:"+BrightnessTools.getScreenBrightness(activity)+"  currentPercent"+currentPercent);
-//                    BrightnessTools.setBrightness(activity, currentPercent);
-//                    BrightnessTools.setBrightness(activity, (int) (currentPercent / 100f * 70));
-                    BrightnessTools.saveBrightness(activity, (int) (currentPercent / 100f * 70));
+                    BrightnessTools.saveBrightness(activity, (int) ((100-currentPercent) / 100f * 70)); // 设备的亮度和手机相反，所以要用100减去当前百分比
 
                     Log.e("BrightnessTools end",BrightnessTools.getScreenBrightness(activity)+"");
-                    /*int v = BrightnessTools.getScreenBrightness(activity);
-                    if(v + 26 > 70){
-                        BrightnessTools.setBrightness(activity, 70);
-                    }else{
-                        BrightnessTools.setBrightness(activity, currentPercent);
-                    }*/
                 }
                 break;
             case 15:
@@ -191,24 +167,14 @@ public class VolumeSettingDialog extends BaseDialog {
                 } else {
                     currentPercent -= 10;
                 }
-                customProgress.setProgress(currentPercent);
                 seekBar.setProgress(currentPercent);
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {
                     Log.e("BrightnessTools","current:"+BrightnessTools.getScreenBrightness(activity)+"  currentPercent"+currentPercent);
-//                    BrightnessTools.setBrightness(activity, currentPercent);
-//                    BrightnessTools.setBrightness(activity, (int) (currentPercent / 100f * 70));
-                    BrightnessTools.saveBrightness(activity, (int) (currentPercent / 100f * 70));
+                    BrightnessTools.saveBrightness(activity, (int) ((100-currentPercent) / 100f * 70)); // 设备的亮度和手机相反，所以要用100减去当前百分比
 
                     Log.e("BrightnessTools end",BrightnessTools.getScreenBrightness(activity)+"");
-
-                    /*int v = BrightnessTools.getScreenBrightness(activity);
-                    if(v - 26 < 0){
-                        BrightnessTools.setBrightness(activity, 0);
-                    }else{
-                        BrightnessTools.setBrightness(activity, v - 26);
-                    }*/
                 }
                 break;
             case 24:
@@ -218,7 +184,6 @@ public class VolumeSettingDialog extends BaseDialog {
                 } else {
                     currentPercent += 10;
                 }
-                customProgress.setProgress(currentPercent);
                 if(type == TYPE_VOLUME_SET){
                     audioMngHelper.setVoice100(currentPercent);
                 }else {

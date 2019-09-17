@@ -59,7 +59,7 @@
 
     <dimen name="face_check_text_margin_bottom">50px</dimen>
     <dimen name="face_check_surface_margin">15px</dimen>
-    <dimen name="face_check_surface_height">924px</dimen>
+    <dimen name="face_check_surface_height">824px</dimen>
     <dimen name="face_check_surface_width">600px</dimen>
 
     <dimen name="face_regist_promet_margin_top">15px</dimen>
